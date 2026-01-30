@@ -73,8 +73,8 @@
 
 <div align="center">
 
-| | | |
-|---|---|---|
+
+
 | **📧** | **ایمیل اصلی** | `gh_rezaei2003@yahoo.com` |
 | **📧** | **ایمیل دوم** | `ghrezaei1399@gmail.com` |
 | **💼** | **لینکدین** | [پروفایل حرفه‌ای](https://www.linkedin.com/in/rezaei-researcher) |
