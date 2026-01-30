@@ -73,13 +73,13 @@
 
 <div align="center">
 
-| **📧** | **ایمیل اصلی** | `gh_rezaei2003@yahoo.com` |
+| **📧** | **ایمیل اصلی 1** | `gh_rezaei2003@yahoo.com` |
 
-| **📧** | **ایمیل دوم** | `ghrezaei1399@gmail.com` |
 
-| **💼** | **لینکدین** | [پروفایل حرفه‌ای](https://www.linkedin.com/in/rezaei-researcher) |
+| **📧** | **ایمیل اصلی 2** | `ghrezaei1399@gmail.com` |
 
-| **👨‍💻** | **گیت‌هاب** | [github.com/ghrezaei1399](https://github.com/ghrezaei1399) |
+
+|| 👨‍💻 | گیتهاب | [github.com/ghrezaei1399](https://github.com/ghrezaei1399) |
 
 | **🆔** | **ORCID** | `0009-0007-5840-8833` |
 
@@ -92,8 +92,7 @@
 
 ---
 
-**🌐 English Version:** [View in English](/en)
-
+**🌐 English Version:** [View in English](https://ghrezaei1399-code.github.io/en/)
 ---
 > **نقل قول محوری:**  
 > *"ساختن چارچوب‌هایی که نه ترس را دامن بزنند، نه خام‌اندیشی را؛  
