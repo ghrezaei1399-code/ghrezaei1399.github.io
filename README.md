@@ -73,12 +73,14 @@
 
 <div align="center">
 
-
-
 | **📧** | **ایمیل اصلی** | `gh_rezaei2003@yahoo.com` |
+
 | **📧** | **ایمیل دوم** | `ghrezaei1399@gmail.com` |
+
 | **💼** | **لینکدین** | [پروفایل حرفه‌ای](https://www.linkedin.com/in/rezaei-researcher) |
+
 | **👨‍💻** | **گیت‌هاب** | [github.com/ghrezaei1399](https://github.com/ghrezaei1399) |
+
 | **🆔** | **ORCID** | `0009-0007-5840-8833` |
 
 </div>
