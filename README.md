@@ -94,7 +94,7 @@
 
 ---
 
-**🌐 English Version:** [View in English][(https://ghrezaei1399-code.github.io/en/)](https://ghrezaei1399-code.github.io/english-site/)
+**🌐 English Version:** [View in English](https://ghrezaei1399-code.github.io/english-site/)
 ---
 > **نقل قول محوری:**  
 > *"ساختن چارچوب‌هایی که نه ترس را دامن بزنند، نه خام‌اندیشی را؛  
