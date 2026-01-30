@@ -1,3 +1,99 @@
+<style>
+/* رنگ‌های اصلی */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --text-color: #333;
+}
+
+/* استایل کلی */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* سرصفحه */
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    padding: 20px;
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+/* کارت‌ها */
+section {
+    background: white;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-right: 5px solid var(--secondary-color);
+}
+
+/* جدول */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+th {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px;
+}
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+tr:hover {
+    background: var(--light-bg);
+}
+
+/* دکمه‌ها */
+a[href*="http"] {
+    display: inline-block;
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 10px 0;
+    transition: all 0.3s;
+}
+a[href*="http"]:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* نقل‌قول */
+blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    background: var(--light-bg);
+    padding: 15px;
+    border-radius: 0 10px 10px 0;
+}
+
+/* فوتر */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #666;
+    border-top: 2px dashed #ddd;
+}
+</style>
+
 # 👨‍🔬 دکتر غلامرضا رضائی
 
 **محقق · نظریه‌پرداز · نویسنده · شاعر**  
