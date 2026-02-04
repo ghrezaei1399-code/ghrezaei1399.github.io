@@ -19,11 +19,9 @@
         body { font-family: 'Vazirmatn', 'Segoe UI', sans-serif; background: var(--light-bg); color: #333; }
         
         /* دکمه زبان در هدر */
-        .lang-switcher {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            z-index: 1000;
+                 <div class="lang-switcher">
+    <a href="#" class="lang-btn">English</a>
+</div>
         }
         .lang-btn {
             background: rgba(255, 255, 255, 0.2);
