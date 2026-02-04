@@ -759,25 +759,26 @@
         }
         /* رفع مشکل عرض */
 @media (min-width: 1400px) {
-    /* رفع محدودیت عرض *//* رفع محدودیت عرض */
+    .header-container,
+    .stats-container,
+    .call-to-action-grid,
+    .research-grid,
+    .footer-content,
+    .investment-content,
+    .slideshow-container,
+    .books-slider {
+        max-width: 1400px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+/* رفع محدودیت عرض */
 html, body { 
     width: 100% !important; 
     max-width: 100% !important; 
     min-width: 100vw !important;
     overflow-x: hidden !important; 
-}
-body { overflow-x: hidden; }
-.header-container,
-.stats-container,
-.call-to-action-grid,
-.research-grid,
-.footer-content,
-.investment-content,
-.slideshow-container,
-.books-slider {
-    max-width: 90% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
 }
     
 }
