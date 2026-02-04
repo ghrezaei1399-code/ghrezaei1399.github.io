@@ -759,18 +759,21 @@
         }
         /* رفع مشکل عرض */
 @media (min-width: 1400px) {
-    .header-container,
-    .stats-container,
-    .call-to-action-grid,
-    .research-grid,
-    .footer-content,
-    .investment-content,
-    .slideshow-container,
-    .books-slider {
-        max-width: 1400px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
+    /* رفع محدودیت عرض */
+body { overflow-x: hidden; }
+.header-container,
+.stats-container,
+.call-to-action-grid,
+.research-grid,
+.footer-content,
+.investment-content,
+.slideshow-container,
+.books-slider {
+    max-width: 90% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+    
 }
     </style>
 </head>
