@@ -447,8 +447,10 @@
             position: relative;
         }
         .slides-wrapper {
-            display: flex;
-            transition: transform 0.4s ease;
+    display: flex;
+    transition: transform 0.4s ease;
+    direction: ltr;
+}
         }
         .slide-item {
             min-width: 100%;
@@ -497,10 +499,11 @@
             border-radius: 22px;
             box-shadow: 0 20px 40px rgba(106, 76, 147, 0.18);
         }
-        .books-track {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
+       .books-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    direction: ltr;
+}
         .book-slide {
             min-width: 25%;
             padding: 15px;
