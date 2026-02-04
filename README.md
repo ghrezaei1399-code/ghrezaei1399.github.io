@@ -20,7 +20,7 @@
         
         /* دکمه زبان در هدر */
                  <div class="lang-switcher">
-    <a href="https://ghrezaei1399-code.github.io/سایت-انگلیسی-ghrezaei/" class="lang-btn">English</a>
+    <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" class="lang-btn">English</a>
 </div>
         }
         .lang-btn {
