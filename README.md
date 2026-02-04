@@ -1,4 +1,4 @@
-<html lang="<?php echo $lang; ?>" dir="<?php echo $lang == 'fa' ? 'rtl' : 'ltr'; ?>">
+<html lang="fa" dir="rtl">
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
