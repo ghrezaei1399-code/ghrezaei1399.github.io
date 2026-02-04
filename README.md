@@ -759,7 +759,13 @@
         }
         /* رفع مشکل عرض */
 @media (min-width: 1400px) {
-    /* رفع محدودیت عرض */
+    /* رفع محدودیت عرض *//* رفع محدودیت عرض */
+html, body { 
+    width: 100% !important; 
+    max-width: 100% !important; 
+    min-width: 100vw !important;
+    overflow-x: hidden !important; 
+}
 body { overflow-x: hidden; }
 .header-container,
 .stats-container,
