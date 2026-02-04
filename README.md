@@ -757,6 +757,21 @@
             .lang-switcher { top: 15px; left: 15px; }
             .lang-btn { padding: 6px 12px; font-size: 0.9rem; }
         }
+        /* رفع مشکل عرض */
+@media (min-width: 1400px) {
+    .header-container,
+    .stats-container,
+    .call-to-action-grid,
+    .research-grid,
+    .footer-content,
+    .investment-content,
+    .slideshow-container,
+    .books-slider {
+        max-width: 1400px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
     </style>
 </head>
 <body>
