@@ -1,4 +1,4 @@
-<html lang="fa" dir="rtl">
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -16,12 +16,26 @@
             --card-shadow: rgba(10, 36, 99, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Vazirmatn', 'Segoe UI', sans-serif; background: var(--light-bg); color: #333; }
+        
+        /* رفع مشکل عرض صفحه */
+        html, body { 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            overflow-x: hidden !important; 
+        }
+        
+        body { 
+            font-family: 'Vazirmatn', 'Segoe UI', sans-serif; 
+            background: var(--light-bg); 
+            color: #333; 
+        }
         
         /* دکمه زبان در هدر */
-                 <div class="lang-switcher">
-    <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" class="lang-btn">English</a>
-</div>
+        .lang-switcher {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
         }
         .lang-btn {
             background: rgba(255, 255, 255, 0.2);
@@ -51,14 +65,16 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            width: 100%;
         }
         .header-container {
-            max-width: 1300px;
+            max-width: 100%;
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 280px;
             gap: 30px;
             align-items: start;
+            padding: 0 20px;
         }
         .profile-section {
             background: rgba(255, 255, 255, 0.12);
@@ -150,6 +166,7 @@
         .global-call-section {
             padding: 80px 30px;
             background: linear-gradient(135deg, #f0f7ff, #e3f2fd);
+            width: 100%;
         }
         .section-title {
             text-align: center;
@@ -161,8 +178,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            max-width: 1300px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 20px;
         }
         .call-card {
             background: white;
@@ -210,13 +228,15 @@
         .stats-section {
             padding: 50px 30px;
             background: white;
+            width: 100%;
         }
         .stats-container {
-            max-width: 1300px;
+            max-width: 100%;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
+            padding: 0 20px;
         }
         .stat-box {
             background: linear-gradient(135deg, #ffffff, #f0f7ff);
@@ -254,6 +274,7 @@
         .research-section {
             padding: 80px 30px;
             background: white;
+            width: 100%;
         }
         .research-tabs {
             display: flex;
@@ -298,6 +319,7 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
+            padding: 0 20px;
         }
         .research-card {
             background: #f8fafc;
@@ -384,11 +406,13 @@
         .notes-section {
             padding: 80px 30px;
             background: #f8fafc;
+            width: 100%;
         }
         .timeline {
-            max-width: 900px;
+            max-width: 100%;
             margin: 50px auto;
             position: relative;
+            padding: 0 20px;
         }
         .timeline::before {
             content: '';
@@ -437,20 +461,21 @@
         .slideshow-section {
             padding: 70px 30px;
             background: white;
+            width: 100%;
         }
         .slideshow-container {
-            max-width: 1000px;
+            max-width: 100%;
             margin: 40px auto;
             border-radius: 22px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
             position: relative;
+            padding: 0 20px;
         }
         .slides-wrapper {
-    display: flex;
-    transition: transform 0.4s ease;
-    direction: ltr;
-}
+            display: flex;
+            transition: transform 0.4s ease;
+            direction: ltr;
         }
         .slide-item {
             min-width: 100%;
@@ -491,19 +516,21 @@
         .books-slideshow {
             padding: 70px 30px;
             background: linear-gradient(135deg, #f9f5ff, #f0ebfa);
+            width: 100%;
         }
         .books-slider {
-            max-width: 1100px;
+            max-width: 100%;
             margin: 40px auto;
             overflow: hidden;
             border-radius: 22px;
             box-shadow: 0 20px 40px rgba(106, 76, 147, 0.18);
+            padding: 0 20px;
         }
-       .books-track {
-    display: flex;
-    transition: transform 0.5s ease;
-    direction: ltr;
-}
+        .books-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            direction: ltr;
+        }
         .book-slide {
             min-width: 25%;
             padding: 15px;
@@ -563,10 +590,12 @@
             background: linear-gradient(135deg, var(--navy-blue), var(--deep-teal));
             color: white;
             text-align: center;
+            width: 100%;
         }
         .investment-content {
-            max-width: 900px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 20px;
         }
         .investment-content h2 {
             font-size: 2.3rem;
@@ -626,14 +655,15 @@
             margin-right: 10px;
         }
         
-        /* پنل مدیریت (نمای اولیه) */
+        /* پنل مدیریت (مخفی) */
         .admin-panel-section {
             padding: 50px 30px;
             background: #f0f7ff;
-            display: none; /* ابتدا مخفی */
+            display: none;
+            width: 100%;
         }
         .admin-panel {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -667,6 +697,7 @@
             padding: 18px 0;
             overflow: hidden;
             margin-top: 50px;
+            width: 100%;
         }
         .bar-content {
             display: flex;
@@ -691,10 +722,12 @@
             color: white;
             padding: 50px 30px;
             text-align: center;
+            width: 100%;
         }
         .footer-content {
-            max-width: 1000px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 20px;
         }
         .footer-content h3 {
             font-size: 1.8rem;
@@ -757,37 +790,12 @@
             .lang-switcher { top: 15px; left: 15px; }
             .lang-btn { padding: 6px 12px; font-size: 0.9rem; }
         }
-        /* رفع مشکل عرض */
-@media (min-width: 1400px) {
-    .header-container,
-    .stats-container,
-    .call-to-action-grid,
-    .research-grid,
-    .footer-content,
-    .investment-content,
-    .slideshow-container,
-    .books-slider {
-        max-width: 1400px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-}
-
-/* رفع محدودیت عرض */
-html, body { 
-    width: 100% !important; 
-    max-width: 100% !important; 
-    min-width: 100vw !important;
-    overflow-x: hidden !important; 
-}
-    
-}
     </style>
 </head>
 <body>
     <!-- دکمه زبان -->
     <div class="lang-switcher">
-        <a href="#" class="lang-btn">English</a>
+        <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" class="lang-btn" target="_blank">English</a>
     </div>
     
     <!-- هدر اصلی -->
@@ -1351,13 +1359,12 @@ html, body {
             });
         }
         
-        // 7. دکمه زبان (نمایشی)
+        // 7. دکمه زبان
         document.querySelector('.lang-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('نسخه انگلیسی در حال توسعه است. به زودی...');
+            // لینک مستقیم است، نیاز به alert نیست
         });
         
-        // 8. پنل مدیریت (نمایشی - منطق کامل بعداً)
+        // 8. پنل مدیریت (نمایشی)
         document.getElementById('adminForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('پنل مدیریت در حال تکمیل است. این فرم در نسخه نهایی، محتوا را ذخیره و نمایش می‌دهد.');
