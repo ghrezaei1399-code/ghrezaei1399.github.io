@@ -1190,7 +1190,7 @@
             });
             
             function updateArticleSlideshow() {
-                slidesContainer.style.transform = `translateX(-${currentArticleSlide * 100}%)`;
+                slidesContainer.style.transform = `translateX(${currentArticleSlide * 100}%)`;
                 document.querySelectorAll('#articlesDots .slide-dot').forEach((dot, i) => {
                     dot.classList.toggle('active', i === currentArticleSlide);
                 });
@@ -1236,7 +1236,7 @@
                 const totalSlides = booksData.length;
                 const slideWidth = 100 / totalSlides;
                 
-                track.style.transform = `translateX(-${currentBookSlide * slideWidth}%)`;
+                track.style.transform = `translateX(${currentBookSlide * slideWidth}%)`;
                 
                 if (currentBookSlide >= totalSlides) {
                     setTimeout(() => {
