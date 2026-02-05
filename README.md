@@ -31,28 +31,34 @@
         
         /* دکمه زبان در هدر */
         .lang-switcher {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 9999;
-        }
-        .lang-btn {
-            background: #D4AF37;
-            color: #0A2463;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            text-decoration: none;
-            border: 2px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: inline-block;
-            transition: all 0.3s;
-        }
-        .lang-btn:hover {
-            background: #0A2463;
-            color: #D4AF37;
-            transform: scale(1.05);
-        }
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999999;
+    background: rgba(10, 36, 99, 0.9);
+    padding: 5px;
+    border-radius: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    border: 2px solid #D4AF37;
+}
+.lang-btn {
+    background: #D4AF37;
+    color: #0A2463;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+}
+.lang-btn:hover {
+    background: #0A2463;
+    color: #D4AF37;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
         
         /* هدر اصلی */
         .main-header {
