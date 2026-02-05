@@ -32,8 +32,8 @@
         /* دکمه زبان در هدر */
         .lang-switcher {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 25px;
+    left: 25px;
     z-index: 999999;
     background: rgba(10, 36, 99, 0.9);
     padding: 5px;
