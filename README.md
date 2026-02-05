@@ -804,11 +804,9 @@
 </head>
 <body>
     <!-- دکمه زبان -->
-    <div class="lang-switcher">
-        <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" 
-           class="lang-btn" 
-           target="_blank">English</a>
-    </div>
+   <div class="lang-switcher">
+    <a href="https://github.com/ghrezaei1399-code/ghrezaei1399.github.io/" class="lang-btn">فارسی</a>
+</div>
     
     <!-- هدر اصلی -->
     <header class="main-header">
