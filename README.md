@@ -17,7 +17,6 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* رفع مشکل عرض صفحه */
         html, body { 
             width: 100% !important; 
             max-width: 100% !important; 
@@ -32,42 +31,39 @@
         
         /* دکمه زبان در هدر */
         .lang-switcher {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            z-index: 1000;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 9999;
         }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: #D4AF37;
+            color: #0A2463;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
             text-decoration: none;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             display: inline-block;
+            transition: all 0.3s;
         }
         .lang-btn:hover {
-            background: var(--accent-gold);
-            color: var(--navy-blue);
+            background: #0A2463;
+            color: #D4AF37;
             transform: scale(1.05);
         }
         
         /* هدر اصلی */
-        /* هدر اصلی */
-.main-header {
-    background: linear-gradient(135deg, var(--navy-blue), var(--deep-teal));
-    min-height: 50vh;
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative; /* ← این خط را اضافه کن */
-    width: 100%;
-}
+        .main-header {
+            background: linear-gradient(135deg, var(--navy-blue), var(--deep-teal));
+            min-height: 50vh;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
         }
         .header-container {
             max-width: 100%;
@@ -790,26 +786,24 @@
             .stat-number { font-size: 2.3rem; }
             .section-title { font-size: 1.8rem; }
             .lang-switcher { 
-        top: 10px; 
-        left: 10px; 
-        z-index: 1001; 
-    }
-    .lang-btn { 
-        padding: 6px 12px; 
-        font-size: 0.85rem; 
-        background: rgba(255, 255, 255, 0.3); 
-    }
+                top: 10px; 
+                left: 10px; 
+            }
+            .lang-btn { 
+                padding: 8px 16px; 
+                font-size: 0.9rem; 
+            }
+        }
     </style>
 </head>
 <body>
     <!-- دکمه زبان -->
-      <!-- دکمه زبان -->
-<!-- دکمه زبان فیکس شده -->
-<div class="lang-switcher" style="position:fixed; top:15px; left:15px; z-index:9999; background:#D4AF37; color:#0A2463; padding:10px 20px; border-radius:25px; border:2px solid white; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
-   <a href="https://ghrezaei1399-code.github.io/ghrezaei-english-site/" 
-   style="color:#0A2463; text-decoration:none; font-weight:bold;" 
-   target="_blank">English</a>
-</div>
+    <div class="lang-switcher">
+        <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" 
+           class="lang-btn" 
+           target="_blank">English</a>
+    </div>
+    
     <!-- هدر اصلی -->
     <header class="main-header">
         <div class="header-container">
@@ -954,7 +948,7 @@
                     <div class="research-card-body">
                         ارائه چارچوبی برای ایجاد همکار دیجیتالی وفادار تحت استیلای کامل کاربر مصلح فرهنگی.
                     </div>
-                    <button class="request-ppt-btn">📥 درخواست فایل ارائه (PPT)</button>
+                    <button class="request-ppt-btn" onclick="location.href='#contact'">📥 درخواست فایل ارائه (PPT)</button>
                     <div class="research-card-footer">چارچوب عملیاتی برای مهندسان فرهنگ</div>
                 </div>
                 
@@ -973,7 +967,7 @@
                     <div class="research-card-body">
                         معرفی معماری بدیل بنیادین با سه اصل یکپارچه برای توسعه امن هوش مصنوعی.
                     </div>
-                    <button class="request-ppt-btn">📥 درخواست فایل ارائه (PPT)</button>
+                    <button class="request-ppt-btn" onclick="location.href='#contact'">📥 درخواست فایل ارائه (PPT)</button>
                     <div class="research-card-footer">پارادایم جدید برای توسعه امن</div>
                 </div>
             </div>
@@ -997,7 +991,7 @@
                     <div class="research-card-body">
                         ارائه نقشه‌راهی برای تبدیل هوشمندسازی به یک «سفر تحول فرهنگی» در خدمت شکوفایی جمعی.
                     </div>
-                    <button class="request-ppt-btn">📥 درخواست فایل ارائه (PPT)</button>
+                    <button class="request-ppt-btn" onclick="location.href='#contact'">📥 درخواست فایل ارائه (PPT)</button>
                     <div class="research-card-footer">پاسخ به نرخ شکست ۷۰٪ پروژه‌ها</div>
                 </div>
             </div>
@@ -1021,7 +1015,7 @@
                     <div class="research-card-body">
                         معرفی چارچوب عملیاتی طرح ملی با ارائه «نظریه هوشمندسازی همراهان روشنایی».
                     </div>
-                    <button class="request-ppt-btn">📥 درخواست فایل ارائه (PPT)</button>
+                    <button class="request-ppt-btn" onclick="location.href='#contact'">📥 درخواست فایل ارائه (PPT)</button>
                     <div class="research-card-footer">پاسخ بومی به بحران حکمرانی فرهنگی</div>
                 </div>
             </div>
@@ -1045,7 +1039,7 @@
                     <div class="research-card-body">
                         تحلیل پارادوکس کاهش اثرگذاری کنش جمعی علی‌رغم دسترسی بی‌سابقه به فناوری.
                     </div>
-                    <button class="request-ppt-btn">📥 درخواست فایل ارائه (PPT)</button>
+                    <button class="request-ppt-btn" onclick="location.href='#contact'">📥 درخواست فایل ارائه (PPT)</button>
                     <div class="research-card-footer">چارچوب یکپارچه تحلیل بحران کنشگری</div>
                 </div>
             </div>
@@ -1351,14 +1345,7 @@
     
     // 5. مودال پاورپوینت
     function initPPTButtons() {
-        const buttons = document.querySelectorAll('.request-ppt-btn');
         const modal = document.getElementById('pptModal');
-        
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.classList.add('active');
-            });
-        });
         
         window.closeModal = function() {
             modal.classList.remove('active');
@@ -1386,12 +1373,7 @@
         });
     }
     
-    // 7. دکمه زبان
-    document.querySelector('.lang-btn').addEventListener('click', function(e) {
-        // لینک مستقیم است، نیاز به alert نیست
-    });
-    
-    // 8. پنل مدیریت (نمایشی)
+    // 7. پنل مدیریت (نمایشی)
     document.getElementById('adminForm').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('پنل مدیریت در حال تکمیل است. این فرم در نسخه نهایی، محتوا را ذخیره و نمایش می‌دهد.');
