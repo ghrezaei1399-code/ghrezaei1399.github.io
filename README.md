@@ -805,7 +805,7 @@
 <body>
     <!-- دکمه زبان -->
    <div class="lang-switcher">
-    <a href="[(https://github.com/ghrezaei1399-code/ghrezaei-english-site)]/">English</a>
+   <a href="https://ghrezaei1399-code.github.io/ghrezaei-english-site/" class="lang-btn" target="_blank">English</a>
 </div>
     
     <!-- هدر اصلی -->
