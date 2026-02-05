@@ -57,15 +57,17 @@
         }
         
         /* هدر اصلی */
-        .main-header {
-            background: linear-gradient(135deg, var(--navy-blue), var(--deep-teal));
-            min-height: 50vh;
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100%;
+        /* هدر اصلی */
+.main-header {
+    background: linear-gradient(135deg, var(--navy-blue), var(--deep-teal));
+    min-height: 50vh;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* ← این خط را اضافه کن */
+    width: 100%;
+}
         }
         .header-container {
             max-width: 100%;
@@ -787,17 +789,27 @@
             .nav-item { padding: 12px 16px; font-size: 0.9rem; }
             .stat-number { font-size: 2.3rem; }
             .section-title { font-size: 1.8rem; }
-            .lang-switcher { top: 15px; left: 15px; }
-            .lang-btn { padding: 6px 12px; font-size: 0.9rem; }
-        }
+            .lang-switcher { 
+        top: 10px; 
+        left: 10px; 
+        z-index: 1001; 
+    }
+    .lang-btn { 
+        padding: 6px 12px; 
+        font-size: 0.85rem; 
+        background: rgba(255, 255, 255, 0.3); 
+    }
     </style>
 </head>
 <body>
     <!-- دکمه زبان -->
-    <div class="lang-switcher">
-        <a href="https://ghrezaei1399.github.io/سایت-انگلیسی-ghrezaei/" class="lang-btn" target="_blank">English</a>
-    </div>
-    
+      <!-- دکمه زبان -->
+<!-- دکمه زبان فیکس شده -->
+<div class="lang-switcher" style="position:fixed; top:15px; left:15px; z-index:9999; background:#D4AF37; color:#0A2463; padding:10px 20px; border-radius:25px; border:2px solid white; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+   <a href="https://ghrezaei1399-code.github.io/ghrezaei-english-site/" 
+   style="color:#0A2463; text-decoration:none; font-weight:bold;" 
+   target="_blank">English</a>
+</div>
     <!-- هدر اصلی -->
     <header class="main-header">
         <div class="header-container">
@@ -1165,220 +1177,238 @@
     </footer>
     
     <script>
-        // داده‌های مقالات (اسلایدشو - ۱۱ عکس)
-        const articleSlides = [
-            'https://i.postimg.cc/g2d9gwHj/dh-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/521csHS6/dw-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/DwFVxWPS/sh-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/GmjWVcXh/shsh-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/ht0k6S2G/nh-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/RZTkyMgN/hsht-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/x1Pwh06C/hft-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/qv0f1txH/pnj-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/vZMR01tD/chhar-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/0yCTF8V6/yazdh-az-syzdh-aslayd.jpg',
-            'https://i.postimg.cc/3xZsVKtG/yk-az-syzdh-aslayd.jpg'
-        ];
+    // داده‌های مقالات (اسلایدشو - ۱۱ عکس)
+    const articleSlides = [
+        'https://i.postimg.cc/g2d9gwHj/dh-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/521csHS6/dw-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/DwFVxWPS/sh-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/GmjWVcXh/shsh-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/ht0k6S2G/nh-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/RZTkyMgN/hsht-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/x1Pwh06C/hft-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/qv0f1txH/pnj-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/vZMR01tD/chhar-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/0yCTF8V6/yazdh-az-syzdh-aslayd.jpg',
+        'https://i.postimg.cc/3xZsVKtG/yk-az-syzdh-aslayd.jpg'
+    ];
+    
+    // داده‌های کتاب‌ها (۱۸ عکس)
+    const booksData = [
+        { img: 'https://i.postimg.cc/nr7K5hYW/20240301-203438-(3).jpg', title: 'آوای دل', desc: 'اشعار عاشقانه ۱۳۹۷' },
+        { img: 'https://i.postimg.cc/PJZbc5Qd/20240301-203516-(2).jpg', title: 'ترنم دل', desc: 'غزلیات و مثنویات ۱۳۹۷' },
+        { img: 'https://i.postimg.cc/6qRVSpf9/20240301-203539-(2).jpg', title: 'دیوان اشعار', desc: 'گزیده اشعار کلاسیک' },
+        { img: 'https://i.postimg.cc/7h71cZnL/20240301-203802-(2).jpg', title: 'مجموعه شعر نو', desc: 'آفرینش‌های معاصر' },
+        { img: 'https://i.postimg.cc/d3dRXVjD/20240301-204004-(2).jpg', title: 'در انتظار محور', desc: 'داستان نوآورانه' },
+        { img: 'https://i.postimg.cc/pVnBysb0/20240301-204056-(2).jpg', title: 'هوشمندنگاری', desc: 'کتاب آموزشی' },
+        { img: 'https://i.postimg.cc/zDRk3xZ0/20240301-204119-(2).jpg', title: 'زمزمه دل', desc: 'اشعار عارفانه' },
+        { img: 'https://i.postimg.cc/L4ZVhxKb/20240301-204156-(2).jpg', title: 'نغمه دل', desc: 'اشعار اجتماعی' },
+        { img: 'https://i.postimg.cc/MK2mB1zG/20240301-204217.jpg', title: 'آوای دل ۲', desc: 'اشعار منتخب' },
+        { img: 'https://i.postimg.cc/jdHQ4Cjy/20240301-204444.jpg', title: 'ترنم دل ۲', desc: 'غزلیات جدید' },
+        { img: 'https://i.postimg.cc/7Y3MnbLM/20240301-205811.jpg', title: 'مجموعه شعر کهن', desc: 'بازسرایی اشعار کلاسیک' },
+        { img: 'https://i.postimg.cc/BQTcBtvC/20240301-205901.jpg', title: 'داستان‌های کوتاه', desc: 'آثار داستانی' },
+        { img: 'https://i.postimg.cc/65rLfTQ0/20240301-210721-(2).jpg', title: 'هوشمندنگاری پیشرفته', desc: 'جلد دوم' },
+        { img: 'https://i.postimg.cc/kg7N19VF/20240301-211151-(2).jpg', title: 'در انتظار محور ۲', desc: 'ادامه داستان' },
+        { img: 'https://i.postimg.cc/CxwCPYZm/20240301-211220-(2).jpg', title: 'اشعار اجتماعی ۲', desc: 'نقد جامعه' },
+        { img: 'https://i.postimg.cc/YCtNnk4V/20240301-211256-(2).jpg', title: 'عرفان و هوش مصنوعی', desc: 'تلفیق فلسفی' },
+        { img: 'https://i.postimg.cc/pLPQGx94/20240301-211527-(2).jpg', title: 'تحول سازمانی در شعر', desc: 'نگاهی نو' },
+        { img: 'https://i.postimg.cc/pLPQGx93/20240301-211628-(2).jpg', title: 'هزار بیت از سپهر', desc: 'گزیده‌ای از ۲۰۰۰۰ بیت' }
+    ];
+    
+    // 1. اسلایدشو مقالات
+    let currentArticleSlide = 0;
+    let articleInterval;
+
+    function initArticleSlideshow() {
+        const slidesContainer = document.getElementById('articlesSlides');
+        const dotsContainer = document.getElementById('articlesDots');
         
-        // داده‌های کتاب‌ها (۱۸ عکس)
-        const booksData = [
-            { img: 'https://i.postimg.cc/nr7K5hYW/20240301-203438-(3).jpg', title: 'آوای دل', desc: 'اشعار عاشقانه ۱۳۹۷' },
-            { img: 'https://i.postimg.cc/PJZbc5Qd/20240301-203516-(2).jpg', title: 'ترنم دل', desc: 'غزلیات و مثنویات ۱۳۹۷' },
-            { img: 'https://i.postimg.cc/6qRVSpf9/20240301-203539-(2).jpg', title: 'دیوان اشعار', desc: 'گزیده اشعار کلاسیک' },
-            { img: 'https://i.postimg.cc/7h71cZnL/20240301-203802-(2).jpg', title: 'مجموعه شعر نو', desc: 'آفرینش‌های معاصر' },
-            { img: 'https://i.postimg.cc/d3dRXVjD/20240301-204004-(2).jpg', title: 'در انتظار محور', desc: 'داستان نوآورانه' },
-            { img: 'https://i.postimg.cc/pVnBysb0/20240301-204056-(2).jpg', title: 'هوشمندنگاری', desc: 'کتاب آموزشی' },
-            { img: 'https://i.postimg.cc/zDRk3xZ0/20240301-204119-(2).jpg', title: 'زمزمه دل', desc: 'اشعار عارفانه' },
-            { img: 'https://i.postimg.cc/L4ZVhxKb/20240301-204156-(2).jpg', title: 'نغمه دل', desc: 'اشعار اجتماعی' },
-            { img: 'https://i.postimg.cc/MK2mB1zG/20240301-204217.jpg', title: 'آوای دل ۲', desc: 'اشعار منتخب' },
-            { img: 'https://i.postimg.cc/jdHQ4Cjy/20240301-204444.jpg', title: 'ترنم دل ۲', desc: 'غزلیات جدید' },
-            { img: 'https://i.postimg.cc/7Y3MnbLM/20240301-205811.jpg', title: 'مجموعه شعر کهن', desc: 'بازسرایی اشعار کلاسیک' },
-            { img: 'https://i.postimg.cc/BQTcBtvC/20240301-205901.jpg', title: 'داستان‌های کوتاه', desc: 'آثار داستانی' },
-            { img: 'https://i.postimg.cc/65rLfTQ0/20240301-210721-(2).jpg', title: 'هوشمندنگاری پیشرفته', desc: 'جلد دوم' },
-            { img: 'https://i.postimg.cc/kg7N19VF/20240301-211151-(2).jpg', title: 'در انتظار محور ۲', desc: 'ادامه داستان' },
-            { img: 'https://i.postimg.cc/CxwCPYZm/20240301-211220-(2).jpg', title: 'اشعار اجتماعی ۲', desc: 'نقد جامعه' },
-            { img: 'https://i.postimg.cc/YCtNnk4V/20240301-211256-(2).jpg', title: 'عرفان و هوش مصنوعی', desc: 'تلفیق فلسفی' },
-            { img: 'https://i.postimg.cc/pLPQGx94/20240301-211527-(2).jpg', title: 'تحول سازمانی در شعر', desc: 'نگاهی نو' },
-            { img: 'https://i.postimg.cc/pLPQGx93/20240301-211628-(2).jpg', title: 'هزار بیت از سپهر', desc: 'گزیده‌ای از ۲۰۰۰۰ بیت' }
-        ];
+        // پاک کردن محتوای قبلی
+        slidesContainer.innerHTML = '';
+        dotsContainer.innerHTML = '';
         
-        // 1. اسلایدشو مقالات
-        let currentArticleSlide = 0;
-        let articleInterval;
-        function initArticleSlideshow() {
-            const slidesContainer = document.getElementById('articlesSlides');
-            const dotsContainer = document.getElementById('articlesDots');
+        articleSlides.forEach((slide, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = 'slide-item';
+            slideDiv.innerHTML = `<img src="${slide}" alt="مقاله ${index + 1}" style="width: auto; height: auto; max-width: 90%; max-height: 90%;">`;
+            slidesContainer.appendChild(slideDiv);
             
-            articleSlides.forEach((slide, index) => {
-                const slideDiv = document.createElement('div');
-                slideDiv.className = 'slide-item';
-                slideDiv.innerHTML = `<img src="${slide}" alt="مقاله ${index + 1}">`;
-                slidesContainer.appendChild(slideDiv);
-                
-                const dot = document.createElement('div');
-                dot.className = `slide-dot ${index === 0 ? 'active' : ''}`;
-                dot.addEventListener('click', () => {
-                    currentArticleSlide = index;
-                    updateArticleSlideshow();
-                    resetArticleInterval();
-                });
-                dotsContainer.appendChild(dot);
+            const dot = document.createElement('div');
+            dot.className = `slide-dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => {
+                currentArticleSlide = index;
+                updateArticleSlideshow();
+                resetArticleInterval();
             });
-            
-            function updateArticleSlideshow() {
-                slidesContainer.style.transform = `translateX(${currentArticleSlide * 100}%)`;
-                document.querySelectorAll('#articlesDots .slide-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === currentArticleSlide);
-                });
-            }
-            
-            function resetArticleInterval() {
-                clearInterval(articleInterval);
-                articleInterval = setInterval(() => {
-                    currentArticleSlide = (currentArticleSlide + 1) % articleSlides.length;
-                    updateArticleSlideshow();
-                }, 2000);
-            }
-            
-            resetArticleInterval();
+            dotsContainer.appendChild(dot);
+        });
+        
+        function updateArticleSlideshow() {
+            slidesContainer.style.transform = `translateX(-${currentArticleSlide * 100}%)`;
+            document.querySelectorAll('#articlesDots .slide-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentArticleSlide);
+            });
         }
         
-        // 2. اسلایدشو کتاب‌ها
-        let currentBookSlide = 0;
-        function initBooksSlideshow() {
-            const track = document.getElementById('booksTrack');
-            
-            // دو بار اضافه می‌کنیم برای افکت بی‌پایان
-            [...booksData, ...booksData].forEach((book, index) => {
-                const slide = document.createElement('div');
-                slide.className = 'book-slide';
-                slide.innerHTML = `
-                    <div class="book-item">
-                        <div class="book-cover">
-                            <img src="${book.img}" alt="${book.title}">
-                        </div>
-                        <div class="book-info">
-                            <div class="book-title">${book.title}</div>
-                            <div class="book-desc">${book.desc}</div>
-                            <div class="book-status">منتشر شده</div>
-                        </div>
+        function resetArticleInterval() {
+            clearInterval(articleInterval);
+            articleInterval = setInterval(() => {
+                currentArticleSlide = (currentArticleSlide + 1) % articleSlides.length;
+                updateArticleSlideshow();
+            }, 3000);
+        }
+        
+        updateArticleSlideshow();
+        resetArticleInterval();
+    }
+
+    // 2. اسلایدشو کتاب‌ها
+    let currentBookSlide = 0;
+    let bookInterval;
+
+    function initBooksSlideshow() {
+        const track = document.getElementById('booksTrack');
+        
+        // پاک کردن محتوای قبلی
+        track.innerHTML = '';
+        
+        // فقط یک بار اضافه کن
+        booksData.forEach((book, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'book-slide';
+            slide.innerHTML = `
+                <div class="book-item">
+                    <div class="book-cover">
+                        <img src="${book.img}" alt="${book.title}">
                     </div>
-                `;
-                track.appendChild(slide);
-            });
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-desc">${book.desc}</div>
+                        <div class="book-status">منتشر شده</div>
+                    </div>
+                </div>
+            `;
+            track.appendChild(slide);
+        });
+        
+        // ریست اینتروال قبلی
+        clearInterval(bookInterval);
+        
+        bookInterval = setInterval(() => {
+            currentBookSlide++;
+            const totalSlides = booksData.length;
+            const slideWidth = 100 / 4; // 4 کتاب در هر صفحه
             
-            setInterval(() => {
-                currentBookSlide++;
-                const totalSlides = booksData.length;
-                const slideWidth = 100 / totalSlides;
-                
-                track.style.transform = `translateX(${currentBookSlide * slideWidth}%)`;
-                
-                if (currentBookSlide >= totalSlides) {
+            track.style.transform = `translateX(-${currentBookSlide * slideWidth}%)`;
+            
+            // اگر به انتها رسید، برگرد به اول
+            if (currentBookSlide >= totalSlides - 3) {
+                setTimeout(() => {
+                    track.style.transition = 'none';
+                    currentBookSlide = 0;
+                    track.style.transform = 'translateX(0)';
                     setTimeout(() => {
-                        track.style.transition = 'none';
-                        currentBookSlide = 0;
-                        track.style.transform = 'translateX(0)';
-                        setTimeout(() => {
-                            track.style.transition = 'transform 0.5s ease';
-                        }, 50);
-                    }, 500);
-                }
-            }, 2200);
-        }
-        
-        // 3. شمارنده آمار
-        function animateStats() {
-            const stats = document.querySelectorAll('.stat-number');
-            stats.forEach(stat => {
-                const target = parseInt(stat.textContent);
-                let current = 0;
-                const increment = target / 50;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    stat.textContent = Math.floor(current);
-                }, 25);
-            });
-        }
-        
-        // 4. سیستم تب‌ها
-        function initResearchTabs() {
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tabId = btn.getAttribute('data-tab');
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        }
-        
-        // 5. مودال پاورپوینت
-        function initPPTButtons() {
-            const buttons = document.querySelectorAll('.request-ppt-btn');
-            const modal = document.getElementById('pptModal');
-            
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    modal.classList.add('active');
-                });
-            });
-            
-            window.closeModal = function() {
-                modal.classList.remove('active');
+                        track.style.transition = 'transform 0.5s ease';
+                    }, 50);
+                }, 500);
             }
+        }, 2500);
+    }
+    
+    // 3. شمارنده آمار
+    function animateStats() {
+        const stats = document.querySelectorAll('.stat-number');
+        stats.forEach(stat => {
+            const target = parseInt(stat.textContent);
+            let current = 0;
+            const increment = target / 50;
             
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) closeModal();
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                stat.textContent = Math.floor(current);
+            }, 25);
+        });
+    }
+    
+    // 4. سیستم تب‌ها
+    function initResearchTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
             });
+        });
+    }
+    
+    // 5. مودال پاورپوینت
+    function initPPTButtons() {
+        const buttons = document.querySelectorAll('.request-ppt-btn');
+        const modal = document.getElementById('pptModal');
+        
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.classList.add('active');
+            });
+        });
+        
+        window.closeModal = function() {
+            modal.classList.remove('active');
         }
         
-        // 6. اسکرول نرم
-        function initSmoothScroll() {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'start' 
-                        });
-                    }
-                });
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+    }
+    
+    // 6. اسکرول نرم
+    function initSmoothScroll() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }
             });
-        }
-        
-        // 7. دکمه زبان
-        document.querySelector('.lang-btn').addEventListener('click', function(e) {
-            // لینک مستقیم است، نیاز به alert نیست
         });
+    }
+    
+    // 7. دکمه زبان
+    document.querySelector('.lang-btn').addEventListener('click', function(e) {
+        // لینک مستقیم است، نیاز به alert نیست
+    });
+    
+    // 8. پنل مدیریت (نمایشی)
+    document.getElementById('adminForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('پنل مدیریت در حال تکمیل است. این فرم در نسخه نهایی، محتوا را ذخیره و نمایش می‌دهد.');
+    });
+    
+    // اجرای همه
+    window.addEventListener('DOMContentLoaded', () => {
+        // اول اسلایدشوها
+        initArticleSlideshow();
+        initBooksSlideshow();
         
-        // 8. پنل مدیریت (نمایشی)
-        document.getElementById('adminForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('پنل مدیریت در حال تکمیل است. این فرم در نسخه نهایی، محتوا را ذخیره و نمایش می‌دهد.');
-        });
-        
-        // اجرای همه
-        window.addEventListener('DOMContentLoaded', () => {
-            initArticleSlideshow();
-            initBooksSlideshow();
-            initResearchTabs();
-            initPPTButtons();
-            initSmoothScroll();
-            setTimeout(animateStats, 400);
-        });
-    </script>
+        // بقیه
+        initResearchTabs();
+        initPPTButtons();
+        initSmoothScroll();
+        setTimeout(animateStats, 400);
+    });
+</script>
 </body>
 </html>
