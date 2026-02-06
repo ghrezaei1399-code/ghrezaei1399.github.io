@@ -53,6 +53,45 @@
     transition: all 0.3s;
     font-size: 0.95rem;
 }
+    /* دکمه بازگشت به بالا */
+    .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #1a2a6c, #2a3a8c);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+        background: linear-gradient(135deg, #2a3a8c, #3a4a9c);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .back-to-top:active {
+        transform: translateY(1px);
+    }
 .lang-btn:hover {
     background: #0A2463;
     color: #D4AF37;
@@ -1396,5 +1435,7 @@
         setTimeout(animateStats, 400);
     });
 </script>
+    <button class="back-to-top" aria-label="بازگشت به بالای صفحه">↑</button>
+</body>
 </body>
 </html>
