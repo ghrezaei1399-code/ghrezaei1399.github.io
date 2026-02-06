@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -808,37 +809,36 @@
 </div>
     
     <!-- هدر اصلی -->
-  
-   <header class="main-header">
-    <div class="header-container">
-        <div class="profile-section">
-            <div class="profile-img-container">
-                <div class="profile-img">
-                    <img src="https://i.postimg.cc/02YrBwDP/%CA%BEks-khwdm2.jpg" alt="دکتر رضائی">
-                </div>
-                <div class="profile-titles">
-                    <h1>دکتر غلامرضا رضائی</h1>
-                    <div class="tagline">
-                        معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی | شاعر و نویسنده
+    <header class="main-header">
+        <div class="header-container">
+            <div class="profile-section">
+                <div class="profile-img-container">
+                    <div class="profile-img">
+                        <img src="https://i.postimg.cc/02YrBwDP/%CA%BEks-khwdm2.jpg" alt="دکتر رضائی">
+                    </div>
+                    <div class="profile-titles">
+                        <h1>دکتر غلامرضا رضائی</h1>
+                        <div class="tagline">
+                            معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی | شاعر و نویسنده
+                        </div>
                     </div>
                 </div>
+                <div class="motto-box">
+                    <span class="motto">شعار: </span>ترکیب خرد انسانی با فناوری‌های پیشرفته برای فردایی امن و شکوفا
+                </div>
             </div>
-            <div class="motto-box">
-                <span class="motto">شعار: </span>ترکیب خرد انسانی با فناوری‌های پیشرفته برای فردایی امن و شکوفا
-            </div>
+            
+            <nav class="vertical-nav">
+                <a href="#global-call" class="nav-item"><span class="nav-icon">🌍</span> فراخوان جهانی</a>
+                <a href="#stats" class="nav-item"><span class="nav-icon">📊</span> آمار و دستاوردها</a>
+                <a href="#research" class="nav-item"><span class="nav-icon">📄</span> مقالات و پژوهش‌ها</a>
+                <a href="#notes" class="nav-item"><span class="nav-icon">📝</span> یادداشت‌های روزانه</a>
+                <a href="#books" class="nav-item"><span class="nav-icon">📚</span> آثار ادبی</a>
+                <a href="#investment" class="nav-item"><span class="nav-icon">🔒</span> همکاری و سرمایه‌گذاری</a>
+                <a href="#contact" class="nav-item"><span class="nav-icon">📞</span> تماس و ارتباط</a>
+            </nav>
         </div>
-        
-        <nav class="vertical-nav">
-            <a href="#global-call" class="nav-item"><span class="nav-icon">🌍</span> فراخوان جهانی</a>
-            <a href="#stats" class="nav-item"><span class="nav-icon">📊</span> آمار و دستاوردها</a>
-            <a href="#research" class="nav-item"><span class="nav-icon">📄</span> مقالات و پژوهش‌ها</a>
-            <a href="#notes" class="nav-item"><span class="nav-icon">📝</span> یادداشت‌های روزانه</a>
-            <a href="#books" class="nav-item"><span class="nav-icon">📚</span> آثار ادبی</a>
-            <a href="#investment" class="nav-item"><span class="nav-icon">🔒</span> همکاری و سرمایه‌گذاری</a>
-            <a href="#contact" class="nav-item"><span class="nav-icon">📞</span> تماس و ارتباط</a>
-        </nav>
-    </div>
-</header>
+    </header>
     
     <!-- بخش فراخوان جهانی -->
     <section id="global-call" class="global-call-section">
@@ -876,21 +876,45 @@
             </div>
         </div>
     </section>
-        <!-- باکس شمارنده -->
-        <section id="stats" class="stats-section">
-    <div class="stats-container">
-        <div class="stat-box">
-           <span class="stat-number animated-counter" data-target="18">0</span>
-<span class="stat-number animated-counter" data-target="2">0</span>
-<span class="stat-number animated-counter" data-target="33">0</span>
-<span class="stat-number animated-counter" data-target="4">0</span>
-<span class="stat-number animated-counter" data-target="1">0</span>
-<span class="stat-number animated-counter" data-target="13">0</span>
-<span class="stat-number animated-counter" data-target="1">0</span>
-<span class="stat-number animated-counter" data-target="1">0</span>
-</section>
-  
-      
+    
+    <!-- باکس شمارنده -->
+    <section id="stats" class="stats-section">
+        <div class="stats-container">
+            <div class="stat-box">
+                <span class="stat-number">18</span>
+                <div class="stat-label">مقاله علمی-نظری با ثبت بین‌المللی (DOI)</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">2</span>
+                <div class="stat-label">مقاله سیاسی-اجتماعی تحلیلی</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">33+</span>
+                <div class="stat-label">نظریه جدید در هوش مصنوعی و تحول سازمانی</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">4</span>
+                <div class="stat-label">کتاب شعر منتشر شده</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">1</span>
+                <div class="stat-label">کتاب داستان منتشر شده</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">13</span>
+                <div class="stat-label">کتاب داستان در حال اخذ مجوز</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">1</span>
+                <div class="stat-label">کتاب هوشمندنگاری</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">1</span>
+                <div class="stat-label">کتاب در حال نگارش (فساد سازمانی)</div>
+            </div>
+        </div>
+    </section>
+    
     <!-- بخش مقالات و پژوهش‌ها -->
     <section id="research" class="research-section">
         <h2 class="section-title">مقاله‌ها و پژوهش‌های علمی-نظری</h2>
@@ -1289,7 +1313,6 @@
     }
     
     // 3. شمارنده آمار
-       // 3. شمارنده آمار پیشرفته
     function animateStats() {
         const stats = document.querySelectorAll('.stat-number');
         stats.forEach(stat => {
@@ -1302,17 +1325,12 @@
                 if (current >= target) {
                     current = target;
                     clearInterval(timer);
-                    // اضافه کردن % برای عدد ۶۰۰
-                    if (target === 600) stat.textContent = target + '%';
                 }
                 stat.textContent = Math.floor(current);
-                // اضافه کردن % در حین شمارش برای ۶۰۰
-                if (target === 600 && current < target) {
-                    stat.textContent = Math.floor(current) + '%';
-                }
             }, 25);
         });
-    }    
+    }
+    
     // 4. سیستم تب‌ها
     function initResearchTabs() {
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1376,66 +1394,7 @@
         initPPTButtons();
         initSmoothScroll();
         setTimeout(animateStats, 400);
-    });<script>
-// شمارنده متحرک - فارسی
-function initCounters() {
-    const counters = document.querySelectorAll('.animated-counter');
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        let current = 0;
-        const increment = target / 100;
-        
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                counter.innerText = Math.ceil(current);
-                if (target === 600) counter.innerText += '%';
-                setTimeout(updateCounter, 20);
-            } else {
-                counter.innerText = target + (target === 600 ? '%' : '');
-            }
-        };
-        
-        setTimeout(updateCounter, 500);
     });
-}
-window.addEventListener('DOMContentLoaded', initCounters);
-// شمارنده متحرک پیشرفته
-function initAdvancedCounters() {
-    const counters = document.querySelectorAll('.animated-counter');
-    
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        let current = 0;
-        const increment = target / 80; // سرعت شمارش
-        
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                const displayValue = Math.ceil(current);
-                counter.textContent = displayValue + (target === 600 ? '%' : '');
-                setTimeout(updateCounter, 30);
-            } else {
-                counter.textContent = target + (target === 600 ? '%' : '');
-            }
-        };
-        
-        // فعال‌سازی هنگام نمایش در صفحه
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setTimeout(updateCounter, 300);
-                    observer.unobserve(counter);
-                }
-            });
-        });
-        
-        observer.observe(counter);
-    });
-}
-
-// اجرا پس از بارگذاری
-window.addEventListener('DOMContentLoaded', initAdvancedCounters);
 </script>
 </body>
 </html>
