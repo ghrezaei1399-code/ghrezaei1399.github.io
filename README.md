@@ -2201,11 +2201,12 @@
     <!-- بقیه کدها ادامه دارد -->
     
     <!-- دکمه زبان -->
-    <div class="lang-switcher">
-        <a href="#" class="lang-btn" aria-label="سویچ به زبان انگلیسی">
-            <i class="fas fa-globe"></i> English
-        </a>
-    </div>
+  <div class="lang-switcher">
+    <a href="https://ghrezaei1399-code.github.io/ghrezaei-english-site/" 
+       class="lang-btn" aria-label="سویچ به زبان انگلیسی">
+        <i class="fas fa-globe"></i> English
+    </a>
+</div>
     
     <!-- هدر اصلی -->
     <header class="main-header" role="banner">
