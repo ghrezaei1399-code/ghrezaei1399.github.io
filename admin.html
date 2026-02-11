@@ -1136,8 +1136,758 @@ document.querySelectorAll('.sidebar-menu a').forEach(link => {
         }
     });
 });
+        // بارگذاری کتاب‌ها هنگام نمایش صفحه
+document.querySelectorAll('.sidebar-menu a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const page = this.getAttribute('data-page');
+        if (page === 'books') {
+            setTimeout(loadBooksTable, 100);
+        }
+    });
+});
+        }); // این خط از قبل وجود دارد
+
+// ==================== کدهای هوشمند برای صفحه اصلی ====================
+
+// تابع برای پیدا کردن نشانگرهای هوشمند در صفحه
+function findSmartPlaceholders(pageContent) {
+    const placeholders = {};
+    
+    // کتاب‌ها
+    const booksMatch = pageContent.match(/<section[^>]*id="books-section-placeholder"[^>]*>/);
+    if (booksMatch) {
+        placeholders.books = {
+            start: pageContent.indexOf(booksMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(booksMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // مقالات
+    const articlesMatch = pageContent.match(/<section[^>]*id="articles-section-placeholder"[^>]*>/);
+    if (articlesMatch) {
+        placeholders.articles = {
+            start: pageContent.indexOf(articlesMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(articlesMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // یادداشت‌ها
+    const notesMatch = pageContent.match(/<section[^>]*id="notes-section-placeholder"[^>]*>/);
+    if (notesMatch) {
+        placeholders.notes = {
+            start: pageContent.indexOf(notesMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(notesMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // گالری
+    const galleryMatch = pageContent.match(/<section[^>]*id="gallery-section-placeholder"[^>]*>/);
+    if (galleryMatch) {
+        placeholders.gallery = {
+            start: pageContent.indexOf(galleryMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(galleryMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    return placeholders;
+}
+
+// تابع برای آپدیت صفحه اصلی با کتاب جدید (هوشمند)
+async function updateHomepageWithBook(bookData, bookPath) {
+    try {
+        // دریافت صفحه اصلی
+        const homeResult = await getGitHubFile('index.html');
+        if (!homeResult.success) return homeResult;
+        
+        let homeContent = homeResult.content;
+        
+        // بررسی نشانگرهای هوشمند
+        const placeholders = findSmartPlaceholders(homeContent);
+        
+        // ساخت کارت کتاب
+        const bookCard = `
+<div class="book-card smart-card">
+    <div class="book-cover-smart">
+        <i class="fas fa-book"></i>
+    </div>
+    <div class="book-info-smart">
+        <h3>${bookData.title}</h3>
+        <p class="book-type">📚 ${bookData.type === 'poetry' ? 'شعر' : 
+                                  bookData.type === 'story' ? 'داستان' : 
+                                  bookData.type === 'research' ? 'پژوهشی' : 'آموزشی'}</p>
+        <p class="book-desc">${bookData.description.substring(0, 100)}...</p>
+        <a href="${bookPath}" class="request-link">
+            <i class="fas fa-shopping-cart"></i> درخواست کتاب
+        </a>
+        <a href="${bookPath}" class="view-link">
+            <i class="fas fa-eye"></i> مشاهده جزئیات
+        </a>
+    </div>
+</div>
+
+<style>
+.book-card.smart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 20px;
+    border-right: 4px solid #6f42c1;
+    transition: transform 0.3s;
+}
+.book-card.smart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+.book-cover-smart {
+    width: 80px;
+    height: 110px;
+    background: linear-gradient(135deg, #6f42c1, #8957e5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+.book-info-smart {
+    flex: 1;
+}
+.book-info-smart h3 {
+    color: #1A5276;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+.book-type {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.book-desc {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+.request-link, .view-link {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.request-link {
+    background: linear-gradient(135deg, #6f42c1, #8957e5);
+    color: white;
+}
+.view-link {
+    background: #f0f7ff;
+    color: #0A2463;
+    border: 1px solid #0A2463;
+}
+</style>
+        `;
+        
+        // اگر نشانگر کتاب‌ها وجود دارد
+        if (placeholders.books && placeholders.books.exists) {
+            // جایگزینی نشانگر با بخش کامل
+            const sectionHTML = `
+<section id="books-section" class="smart-section">
+    <h2 class="section-title-smart">
+        <i class="fas fa-book"></i> آثار ادبی منتشر شده
+        <span class="count-badge">1</span>
+    </h2>
+    <div class="books-grid-smart">
+        ${bookCard}
+    </div>
+</section>
+
+<style>
+.smart-section {
+    margin: 40px 0;
+    padding: 30px 0;
+}
+.section-title-smart {
+    color: #0A2463;
+    border-bottom: 3px solid #D4AF37;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.count-badge {
+    background: #6f42c1;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+}
+.books-grid-smart {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+</style>
+            `;
+            
+            homeContent = homeContent.substring(0, placeholders.books.start) + 
+                         sectionHTML + 
+                         homeContent.substring(placeholders.books.end);
+        } else {
+            // اگر نشانگر نیست، به انتهای smart-sections-container اضافه کن
+            const containerMatch = homeContent.match(/<div[^>]*id="smart-sections-container"[^>]*>/);
+            if (containerMatch) {
+                const containerStart = homeContent.indexOf(containerMatch[0]);
+                const containerEnd = homeContent.indexOf('</div>', containerStart) + 6;
+                const newSection = `
+<section id="books-section" class="smart-section">
+    <h2><i class="fas fa-book"></i> کتاب‌ها</h2>
+    ${bookCard}
+</section>
+                `;
+                
+                homeContent = homeContent.substring(0, containerEnd) + 
+                             newSection + 
+                             homeContent.substring(containerEnd);
+            }
+        }
+        
+        // آپدیت صفحه اصلی
+        return await updateGitHubFile(
+            'index.html',
+            homeContent,
+            `اضافه کردن کتاب هوشمند: ${bookData.title}`
+        );
+        
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// تابع getGitHubFile (اگر وجود ندارد اضافه کن)
+async function getGitHubFile(path) {
+    if (!window.smartManager) {
+        return { success: false, error: 'مدیریت هوشمند فعال نیست' };
+    }
+    return window.smartManager.getFile(path);
+}
+
+// تابع updateGitHubFile (اگر وجود ندارد اضافه کن)
+async function updateGitHubFile(path, content, message) {
+    if (!window.smartManager) {
+        return { success: false, error: 'مدیریت هوشمند فعال نیست' };
+    }
+    return window.smartManager.updateFile(path, content, message);
+}
+
+// اتصال تابع به دکمه افزودن هوشمند کتاب
+document.addEventListener('DOMContentLoaded', function() {
+    const smartBookBtn = document.getElementById('smartAddBookBtn');
+    if (smartBookBtn) {
+        smartBookBtn.addEventListener('click', async function() {
+            if (!window.smartManager) {
+                alert('لطفاً ابتدا تنظیمات GitHub را وارد کنید');
+                return;
+            }
+            
+            const bookData = {
+                title: document.getElementById('smartBookTitle').value,
+                type: document.getElementById('smartBookType').value,
+                description: document.getElementById('smartBookDescription').value,
+                image: document.getElementById('smartBookImage').value,
+                year: document.getElementById('smartBookYear').value
+            };
+            
+            if (!bookData.title || !bookData.description) {
+                alert('لطفاً عنوان و توضیح کتاب را وارد کنید');
+                return;
+            }
+            
+            // ساخت صفحه کتاب
+            const bookPage = await window.smartManager.createSmartBookPage(bookData);
+            const uploadResult = await window.smartManager.updateFile(
+                bookPage.path,
+                bookPage.content,
+        }); // این خط از قبل وجود دارد
+
+// ==================== کدهای هوشمند برای صفحه اصلی ====================
+
+// تابع برای پیدا کردن نشانگرهای هوشمند در صفحه
+function findSmartPlaceholders(pageContent) {
+    const placeholders = {};
+    
+    // کتاب‌ها
+    const booksMatch = pageContent.match(/<section[^>]*id="books-section-placeholder"[^>]*>/);
+    if (booksMatch) {
+        placeholders.books = {
+            start: pageContent.indexOf(booksMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(booksMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // مقالات
+    const articlesMatch = pageContent.match(/<section[^>]*id="articles-section-placeholder"[^>]*>/);
+    if (articlesMatch) {
+        placeholders.articles = {
+            start: pageContent.indexOf(articlesMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(articlesMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // یادداشت‌ها
+    const notesMatch = pageContent.match(/<section[^>]*id="notes-section-placeholder"[^>]*>/);
+    if (notesMatch) {
+        placeholders.notes = {
+            start: pageContent.indexOf(notesMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(notesMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    // گالری
+    const galleryMatch = pageContent.match(/<section[^>]*id="gallery-section-placeholder"[^>]*>/);
+    if (galleryMatch) {
+        placeholders.gallery = {
+            start: pageContent.indexOf(galleryMatch[0]),
+            end: pageContent.indexOf('</section>', pageContent.indexOf(galleryMatch[0])) + 9,
+            exists: true
+        };
+    }
+    
+    return placeholders;
+}
+
+// تابع برای آپدیت صفحه اصلی با کتاب جدید (هوشمند)
+async function updateHomepageWithBook(bookData, bookPath) {
+    try {
+        // دریافت صفحه اصلی
+        const homeResult = await getGitHubFile('index.html');
+        if (!homeResult.success) return homeResult;
+        
+        let homeContent = homeResult.content;
+        
+        // بررسی نشانگرهای هوشمند
+        const placeholders = findSmartPlaceholders(homeContent);
+        
+        // ساخت کارت کتاب
+        const bookCard = `
+<div class="book-card smart-card">
+    <div class="book-cover-smart">
+        <i class="fas fa-book"></i>
+    </div>
+    <div class="book-info-smart">
+        <h3>${bookData.title}</h3>
+        <p class="book-type">📚 ${bookData.type === 'poetry' ? 'شعر' : 
+                                  bookData.type === 'story' ? 'داستان' : 
+                                  bookData.type === 'research' ? 'پژوهشی' : 'آموزشی'}</p>
+        <p class="book-desc">${bookData.description.substring(0, 100)}...</p>
+        <a href="${bookPath}" class="request-link">
+            <i class="fas fa-shopping-cart"></i> درخواست کتاب
+        </a>
+        <a href="${bookPath}" class="view-link">
+            <i class="fas fa-eye"></i> مشاهده جزئیات
+        </a>
+    </div>
+</div>
+
+<style>
+.book-card.smart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 20px;
+    border-right: 4px solid #6f42c1;
+    transition: transform 0.3s;
+}
+.book-card.smart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+.book-cover-smart {
+    width: 80px;
+    height: 110px;
+    background: linear-gradient(135deg, #6f42c1, #8957e5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+.book-info-smart {
+    flex: 1;
+}
+.book-info-smart h3 {
+    color: #1A5276;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+.book-type {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.book-desc {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+.request-link, .view-link {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.request-link {
+    background: linear-gradient(135deg, #6f42c1, #8957e5);
+    color: white;
+}
+.view-link {
+    background: #f0f7ff;
+    color: #0A2463;
+    border: 1px solid #0A2463;
+}
+</style>
+        `;
+        
+        // اگر نشانگر کتاب‌ها وجود دارد
+        if (placeholders.books && placeholders.books.exists) {
+            // جایگزینی نشانگر با بخش کامل
+            const sectionHTML = `
+<section id="books-section" class="smart-section">
+    <h2 class="section-title-smart">
+        <i class="fas fa-book"></i> آثار ادبی منتشر شده
+        <span class="count-badge">1</span>
+    </h2>
+    <div class="books-grid-smart">
+        ${bookCard}
+    </div>
+</section>
+
+<style>
+.smart-section {
+    margin: 40px 0;
+    padding: 30px 0;
+}
+.section-title-smart {
+    color: #0A2463;
+    border-bottom: 3px solid #D4AF37;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.count-badge {
+    background: #6f42c1;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+}
+.books-grid-smart {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+</style>
+            `;
+            
+            homeContent = homeContent.substring(0, placeholders.books.start) + 
+                         sectionHTML + 
+                         homeContent.substring(placeholders.books.end);
+        } else {
+            // اگر نشانگر نیست، به انتهای smart-sections-container اضافه کن
+            const containerMatch = homeContent.match(/<div[^>]*id="smart-sections-container"[^>]*>/);
+            if (containerMatch) {
+                const containerStart = homeContent.indexOf(containerMatch[0]);
+                const containerEnd = homeContent.indexOf('</div>', containerStart) + 6;
+                const newSection = `
+<section id="books-section" class="smart-section">
+    <h2><i class="fas fa-book"></i> کتاب‌ها</h2>
+    ${bookCard}
+</section>
+                `;
+                
+                homeContent = homeContent.substring(0, containerEnd) + 
+                             newSection + 
+                             homeContent.substring(containerEnd);
+            }
+        }
+        
+        // آپدیت صفحه اصلی
+        return await updateGitHubFile(
+            'index.html',
+            homeContent,
+            `اضافه کردن کتاب هوشمند: ${bookData.title}`
+        );
+        
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// تابع getGitHubFile (اگر وجود ندارد اضافه کن)
+async function getGitHubFile(path) {
+    if (!window.smartManager) {
+        return { success: false, error: 'مدیریت هوشمند فعال نیست' };
+    }
+    return window.smartManager.getFile(path);
+}
+
+// تابع updateGitHubFile (اگر وجود ندارد اضافه کن)
+async function updateGitHubFile(path, content, message) {
+    if (!window.smartManager) {
+        return { success: false, error: 'مدیریت هوشمند فعال نیست' };
+    }
+    return window.smartManager.updateFile(path, content, message);
+}
+
+// اتصال تابع به دکمه افزودن هوشمند کتاب
+document.addEventListener('DOMContentLoaded', function() {
+    const smartBookBtn = document.getElementById('smartAddBookBtn');
+    if (smartBookBtn) {
+        smartBookBtn.addEventListener('click', async function() {
+            if (!window.smartManager) {
+                alert('لطفاً ابتدا تنظیمات GitHub را وارد کنید');
+                return;
+            }
+            
+            const bookData = {
+                title: document.getElementById('smartBookTitle').value,
+                type: document.getElementById('smartBookType').value,
+                description: document.getElementById('smartBookDescription').value,
+                image: document.getElementById('smartBookImage').value,
+                year: document.getElementById('smartBookYear').value
+            };
+            
+            if (!bookData.title || !bookData.description) {
+                alert('لطفاً عنوان و توضیح کتاب را وارد کنید');
+                return;
+            }
+            
+            // ساخت صفحه کتاب
+            const bookPage = await window.smartManager.createSmartBookPage(bookData);
+            const uploadResult = await window.smartManager.updateFile(
+                bookPage.path,
+                bookPage.content,
+                `کتاب جدید: ${bookData.title}`
+            );
+            
+            if (uploadResult.success) {
+                // آپدیت صفحه اصلی
+                await updateHomepageWithBook(bookData, bookPage.path);
+                alert('کتاب هوشمند اضافه شد! به صفحه اصلی مراجعه کنید.');
+            } else {
+                alert('خطا: ' + uploadResult.error);
+            }
+        });
+    }
+});
+               });
+
+// ==================== کدهای هوشمند ====================
+
+// تابع ساده برای آپدیت صفحه اصلی
+async function updateHomepageWithBookSmart(bookData, bookPath) {
+    try {
+        // ۱. دریافت صفحه اصلی
+        const homeResult = await window.smartManager.getFile('index.html');
+        if (!homeResult.success) throw new Error(homeResult.error);
+        
+        let homeContent = homeResult.content;
+        
+        // ۲. ساخت کارت کتاب
+        const bookCard = `
+<div class="book-card" style="background: white; border-radius: 10px; padding: 20px; margin: 15px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <h3 style="color: #1A5276; margin-bottom: 10px;">${bookData.title}</h3>
+    <p style="color: #666; margin-bottom: 10px;">📚 ${bookData.type === 'research' ? 'پژوهشی' : 'ادبی'}</p>
+    <p style="color: #555; line-height: 1.6; margin-bottom: 15px;">${bookData.description.substring(0, 80)}...</p>
+    <a href="${bookPath}" style="display: inline-block; padding: 8px 15px; background: #6f42c1; color: white; text-decoration: none; border-radius: 5px;">
+        <i class="fas fa-eye"></i> مشاهده و درخواست
+    </a>
+</div>
+        `;
+        
+        // ۳. اگر نشانگر کتاب‌ها وجود دارد
+        const placeholder = 'id="books-section-placeholder"';
+        const placeholderIndex = homeContent.indexOf(placeholder);
+        
+        if (placeholderIndex !== -1) {
+            const sectionEnd = homeContent.indexOf('</section>', placeholderIndex) + 9;
+            const sectionHTML = `
+<section id="books-section" style="margin: 40px 0; padding: 20px; background: #f8fafc; border-radius: 10px;">
+    <h2 style="color: #0A2463; margin-bottom: 20px;">
+        <i class="fas fa-book"></i> آثار ادبی منتشر شده
+    </h2>
+    ${bookCard}
+</section>
+            `;
+            
+            homeContent = homeContent.substring(0, placeholderIndex) + 
+                         sectionHTML + 
+                         homeContent.substring(sectionEnd);
+        } else {
+            // اگر نشانگر نیست، قبل از اسکریپت‌ها اضافه کن
+            const bodyEnd = homeContent.lastIndexOf('</body>');
+            if (bodyEnd !== -1) {
+                const sectionHTML = `
+<!-- کتاب‌ها -->
+<section id="books-section" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="color: #0A2463; margin-bottom: 25px;">
+        <i class="fas fa-book"></i> کتاب‌ها
+    </h2>
+    ${bookCard}
+</section>
+                `;
+                
+                homeContent = homeContent.substring(0, bodyEnd) + 
+                             sectionHTML + 
+                             homeContent.substring(bodyEnd);
+            }
+        }
+        
+        // ۴. آپدیت صفحه
+        return await window.smartManager.updateFile(
+            'index.html',
+            homeContent,
+            `کتاب جدید: ${bookData.title}`
+        );
+        
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
+// دکمه هوشمند
+setTimeout(() => {
+    const smartBtn = document.getElementById('smartAddBookBtn');
+    if (smartBtn) {
+        smartBtn.addEventListener('click', async function() {
+            if (!window.smartManager) {
+                alert('ابتدا تنظیمات GitHub را وارد کنید');
+                return;
+            }
+            
+            const title = document.getElementById('smartBookTitle')?.value || 'کتاب تست';
+            const desc = document.getElementById('smartBookDescription')?.value || 'توضیح کتاب';
+            
+            const bookData = { title, type: 'research', description: desc };
+            const bookPath = `books/${Date.now()}-${title.replace(/\s+/g, '-')}.html`;
+            
+            // ساخت صفحه کتاب ساده
+            const bookContent = `<!DOCTYPE html>
+<html lang="fa">
+<head><meta charset="UTF-8"><title>${title}</title></head>
+<body style="font-family: Vazirmatn; padding: 20px;">
+    <h1>${title}</h1>
+    <p>${desc}</p>
+    <p><a href="../index.html">← بازگشت به صفحه اصلی</a></p>
+</body></html>`;
+            
+            const result = await window.smartManager.updateFile(
+                bookPath, 
+                bookContent, 
+                `کتاب: ${title}`
+            );
+            
+            if (result.success) {
+                await updateHomepageWithBookSmart(bookData, bookPath);
+                alert('✅ کتاب اضافه شد! صفحه اصلی را بررسی کنید.');
+            } else {
+                alert('❌ خطا: ' + result.error);
+            }
+        });
+    }
+}, 1000);
+if (result.success) {
+    await updateHomepageWithBookSmart(bookData, bookPath);
+    alert('✅ کتاب اضافه شد! صفحه اصلی را بررسی کنید.');
+} else {
+    alert('❌ خطا: ' + result.error);
+}
+    });
+}
+        }, 1000);
+
+// ==================== تابع آپدیت صفحه اصلی ====================
+async function updateHomepageWithBookSmart(bookData, bookPath) {
+    try {
+        const homeResult = await window.smartManager.getFile('index.html');
+        if (!homeResult.success) throw new Error(homeResult.error);
+        
+        let homeContent = homeResult.content;
+        
+        // ساخت کارت کتاب
+        const bookCard = `
+<div class="smart-book-card" style="background: white; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-right: 4px solid #6f42c1;">
+    <h3 style="color: #1A5276; margin-bottom: 10px;">${bookData.title}</h3>
+    <p style="color: #666; margin-bottom: 10px;">📖 کتاب پژوهشی</p>
+    <p style="color: #555; line-height: 1.6;">${bookData.description.substring(0, 80)}...</p>
+    <a href="${bookPath}" style="display: inline-block; margin-top: 15px; padding: 8px 15px; background: #6f42c1; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9rem;">
+        <i class="fas fa-eye"></i> مشاهده و درخواست
+    </a>
+</div>
+        `;
+        
+        // پیدا کردن جای مناسب برای اضافه کردن
+        const placeholder = 'books-section-placeholder';
+        if (homeContent.includes(placeholder)) {
+            // جایگزینی placeholder
+            homeContent = homeContent.replace(
+                `<section id="${placeholder}"></section>`,
+                `<section id="books-section">${bookCard}</section>`
+            );
+        } else {
+            // اضافه کردن قبل از footer
+            const footerIndex = homeContent.indexOf('<footer');
+            if (footerIndex !== -1) {
+                const sectionHTML = `
+<section id="books-section" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="color: #0A2463; margin-bottom: 25px; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">
+        <i class="fas fa-book"></i> کتاب‌های منتشر شده
+    </h2>
+    ${bookCard}
+</section>
+                `;
+                homeContent = homeContent.substring(0, footerIndex) + sectionHTML + homeContent.substring(footerIndex);
+            }
+        }
+        
+        // آپدیت صفحه
+        return await window.smartManager.updateFile(
+            'index.html',
+            homeContent,
+            `کتاب جدید: ${bookData.title}`
+        );
+        
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
     </script>
 </body>
 </html>
-
-
