@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/font.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* استایل‌های پنل هوشمند - دقیقاً مثل قبل */
         :root {
             --primary: #0A2463;
             --secondary: #1A5276;
@@ -22,6 +22,8 @@
             --github: #333;
             --github-green: #238636;
             --github-purple: #8957e5;
+            --literary-purple: #6A4C93;
+            --justice-green: #27AE60;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -128,6 +130,16 @@
             color: white;
         }
         
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+        
         .btn-github {
             background: var(--github);
             color: white;
@@ -148,8 +160,10 @@
             font-size: 0.9rem;
         }
         
+        /* صفحه اصلی */
         .admin-page { display: none; }
         
+        /* نوار کناری */
         .sidebar {
             position: fixed;
             right: 0;
@@ -161,22 +175,13 @@
             padding: 20px 0;
             box-shadow: 5px 0 20px rgba(0,0,0,0.1);
             z-index: 1000;
+            transition: transform 0.3s;
         }
         
         .sidebar-header {
             padding: 0 20px 30px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .sidebar-header h2 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-header p {
-            font-size: 0.85rem;
-            opacity: 0.8;
         }
         
         .sidebar-menu {
@@ -204,6 +209,7 @@
             border-right: 4px solid var(--accent);
         }
         
+        /* محتوای اصلی */
         .main-content {
             margin-right: var(--sidebar-width);
             padding: 20px;
@@ -226,6 +232,7 @@
             color: var(--primary);
         }
         
+        /* فرم‌ها */
         .form-section {
             background: white;
             border-radius: 15px;
@@ -265,6 +272,7 @@
             border-top: 2px solid #f0f7ff;
         }
         
+        /* مدال */
         .modal {
             display: none;
             position: fixed;
@@ -296,29 +304,59 @@
             margin-bottom: 20px;
         }
         
-        .modal-title {
-            color: var(--primary);
-            font-size: 1.3rem;
+        /* تب‌ها */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f7ff;
+            padding-bottom: 5px;
         }
         
-        .modal-close {
+        .tab-btn {
+            padding: 10px 25px;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
             color: #666;
             cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
         }
         
-        .hidden { display: none !important; }
-        
-        .page-section { display: none; }
-        .page-section.active { display: block; animation: fadeIn 0.5s ease; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab-btn.active {
+            color: var(--primary);
+            background: #f0f7ff;
         }
         
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* پیش‌نمایش */
+        .preview-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 30px;
+        }
+        
+        .preview-container {
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            background: #f8fafc;
+            min-height: 200px;
+            overflow: auto;
+        }
+        
+        /* جداول */
         .table-container {
             background: white;
             border-radius: 15px;
@@ -326,18 +364,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 30px;
             overflow-x: auto;
-        }
-        
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .table-title {
-            font-size: 1.2rem;
-            color: var(--primary);
         }
         
         table {
@@ -359,6 +385,11 @@
         
         tr:hover {
             background: #f8f9fa;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
         }
         
         .status {
@@ -383,42 +414,7 @@
             color: var(--github-purple);
         }
         
-        .actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .github-status {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-right: 4px solid var(--github-purple);
-        }
-        
-        .github-status-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .github-status-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .github-status-label {
-            color: #666;
-        }
-        
-        .github-status-value {
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
+        /* اعلان‌ها */
         .alert {
             padding: 15px 20px;
             border-radius: 10px;
@@ -452,54 +448,65 @@
             border-right: 4px solid var(--warning);
         }
         
-        .tabs {
+        /* گیت‌هاب استاتوس */
+        .github-status {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--github-purple);
+        }
+        
+        .github-status-header {
             display: flex;
+            align-items: center;
             gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #f0f7ff;
-            padding-bottom: 5px;
-            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
         
-        .tab-btn {
-            padding: 10px 25px;
-            background: none;
-            border: none;
-            border-radius: 10px 10px 0 0;
-            font-weight: 600;
+        .github-status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .github-status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .github-status-label {
             color: #666;
-            cursor: pointer;
-            transition: all 0.3s;
         }
         
-        .tab-btn.active {
+        .github-status-value {
+            font-weight: 600;
             color: var(--primary);
-            background: #f0f7ff;
         }
         
-        .tab-content {
+        .github-status-value.connected {
+            color: var(--success);
+        }
+        
+        .github-status-value.disconnected {
+            color: var(--danger);
+        }
+        
+        /* مخفی/نمایشی */
+        .hidden { display: none !important; }
+        
+        .page-section {
             display: none;
         }
         
-        .tab-content.active {
+        .page-section.active {
             display: block;
+            animation: fadeIn 0.5s ease;
         }
         
-        .preview-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-top: 30px;
-        }
-        
-        .preview-container {
-            border: 2px dashed #e2e8f0;
-            border-radius: 10px;
-            padding: 25px;
-            background: #f8fafc;
-            min-height: 200px;
-            overflow: auto;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @media (max-width: 992px) {
@@ -526,7 +533,7 @@
             
             <div class="alert alert-info">
                 <i class="fas fa-info-circle"></i>
-                توکن خود را وارد کنید
+                توکن GitHub خود را وارد کنید
             </div>
             
             <div class="form-group">
@@ -550,8 +557,13 @@
             </div>
             
             <div class="form-group">
-                <label>فرم‌اسپری ID (اختیاری)</label>
-                <input type="text" id="formspreeId" class="form-control" placeholder="xqkrwqkj">
+                <label>فایل فارسی (مثلا: index.html)</label>
+                <input type="text" id="githubPathFa" class="form-control" value="index.html">
+            </div>
+            
+            <div class="form-group">
+                <label>فایل انگلیسی (مثلا: en.html)</label>
+                <input type="text" id="githubPathEn" class="form-control" value="en.html">
             </div>
             
             <div class="form-actions">
@@ -572,7 +584,7 @@
                 <i class="fas fa-lock"></i>
             </div>
             <h1>ورود به پنل مدیریت هوشمند</h1>
-            <p class="subtitle">دکتر غلامرضا رضائی</p>
+            <p class="subtitle">دکتر غلامرضا رضائی | یکپارچه با GitHub</p>
             
             <form id="loginForm">
                 <div class="form-group">
@@ -592,58 +604,77 @@
             
             <div class="alert alert-info" style="margin-top: 20px;">
                 <i class="fas fa-info-circle"></i>
-                نام کاربری: admin | رمز عبور: drrezaei2025
+                نام کاربری: <code>admin</code><br>
+                رمز عبور: <code>drrezaei2025</code>
             </div>
         </div>
     </div>
     
     <!-- صفحه اصلی پنل -->
     <div class="admin-page" id="adminPage">
+        <!-- نوار کناری -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>دکتر رضائی</h2>
                 <p>پنل مدیریت هوشمند</p>
                 <div style="margin-top: 10px; font-size: 0.8rem; color: var(--accent);">
-                    <i class="fas fa-brain"></i> سیستم هوشمند
+                    <i class="fas fa-brain"></i> هوشمندسازی کامل
                 </div>
             </div>
             
             <ul class="sidebar-menu">
                 <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>داشبورد</span></a></li>
                 <li><a href="#" data-page="smartAdd"><i class="fas fa-magic"></i><span>افزودن هوشمند</span></a></li>
-                <li><a href="#" data-page="books"><i class="fas fa-book"></i><span>کتاب‌ها</span></a></li>
+                <li><a href="#" data-page="editor"><i class="fas fa-edit"></i><span>ویرایشگر سایت</span></a></li>
                 <li><a href="#" data-page="articles"><i class="fas fa-file-alt"></i><span>مقالات</span></a></li>
+                <li><a href="#" data-page="books"><i class="fas fa-book"></i><span>کتاب‌ها</span></a></li>
+                <li><a href="#" data-page="notes"><i class="fas fa-sticky-note"></i><span>یادداشت‌ها</span></a></li>
+                <li><a href="#" data-page="calls"><i class="fas fa-bullhorn"></i><span>فراخوان‌ها</span></a></li>
                 <li><a href="#" data-page="stats"><i class="fas fa-chart-bar"></i><span>آمار</span></a></li>
-                <li><a href="#" data-page="github"><i class="fab fa-github"></i><span>GitHub</span></a></li>
+                <li><a href="#" data-page="github"><i class="fab fa-github"></i><span>تنظیمات GitHub</span></a></li>
                 <li style="margin-top: 30px;"><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>خروج</span></a></li>
             </ul>
         </div>
         
+        <!-- محتوای اصلی -->
         <div class="main-content">
+            <!-- نوار بالایی -->
             <div class="top-bar">
                 <h1 id="pageTitle">داشبورد</h1>
-                <div>
+                
+                <div class="user-info">
                     <button class="btn btn-github" id="configureGithubBtn">
                         <i class="fab fa-github"></i> تنظیمات GitHub
+                    </button>
+                    <button class="btn btn-primary" id="previewSiteBtn">
+                        <i class="fas fa-eye"></i> پیش‌نمایش سایت
                     </button>
                 </div>
             </div>
             
+            <!-- بخش‌های مختلف -->
             <div id="pageContent">
-                <!-- داشبورد -->
+                <!-- ========== داشبورد ========== -->
                 <div class="page-section active" id="dashboardPage">
                     <div class="github-status">
                         <div class="github-status-header">
                             <i class="fab fa-github"></i>
                             <h4>وضعیت اتصال GitHub</h4>
+                            <button class="btn btn-sm btn-github" id="refreshGithubStatus">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
                         </div>
                         <div class="github-status-item">
                             <span class="github-status-label">اتصال:</span>
-                            <span class="github-status-value" id="githubStatus">قطع</span>
+                            <span class="github-status-value disconnected" id="githubConnectionStatus">قطع</span>
                         </div>
                         <div class="github-status-item">
                             <span class="github-status-label">ریپازیتوری:</span>
-                            <span class="github-status-value" id="githubRepoName">  </span>
+                            <span class="github-status-value" id="githubRepoName">-</span>
+                        </div>
+                        <div class="github-status-item">
+                            <span class="github-status-label">آخرین انتشار:</span>
+                            <span class="github-status-value" id="githubLastPublish">-</span>
                         </div>
                     </div>
                     
@@ -651,75 +682,237 @@
                         <i class="fas fa-check-circle"></i>
                         <div>
                             <strong>سیستم هوشمند فعال است</strong><br>
-                            برای افزودن کتاب، به بخش "افزودن هوشمند" بروید.
+                            کتاب‌ها و مقالات جدید به صورت خودکار در سایت منتشر می‌شوند.
                         </div>
                     </div>
                 </div>
                 
-                <!-- افزودن هوشمند -->
+                <!-- ========== افزودن هوشمند ========== -->
                 <div class="page-section" id="smartAddPage">
                     <div class="form-section">
-                        <h2><i class="fas fa-magic"></i> افزودن هوشمند کتاب</h2>
+                        <h2><i class="fas fa-magic"></i> افزودن هوشمند محتوا</h2>
                         
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            کتاب به صورت هوشمند اضافه می‌شود: صفحه کتاب + صفحه اصلی + آمار + منو
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="smartBook">📚 کتاب</button>
+                            <button class="tab-btn" data-tab="smartArticle">📄 مقاله</button>
+                            <button class="tab-btn" data-tab="smartNote">📝 یادداشت</button>
+                            <button class="tab-btn" data-tab="smartCall">📢 فراخوان</button>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group form-full">
-                                <label>عنوان کتاب *</label>
-                                <input type="text" id="smartBookTitle" class="form-control" placeholder="هوشمندسازی مسئولیت اجتماعی" required>
+                        <!-- تب کتاب -->
+                        <div class="tab-content active" id="smartBook">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                کتاب جدید به گالری، اسلایدشو و آمار اضافه می‌شود.
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>عنوان کتاب *</label>
+                                    <input type="text" id="smartBookTitle" class="form-control" placeholder="عنوان کتاب">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>نوع کتاب</label>
+                                    <select id="smartBookType" class="form-control">
+                                        <option value="شعر">شعر</option>
+                                        <option value="داستان">داستان</option>
+                                        <option value="پژوهشی">پژوهشی</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>سال انتشار</label>
+                                    <input type="number" id="smartBookYear" class="form-control" value="1403">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>توضیح مختصر *</label>
+                                    <textarea id="smartBookDesc" class="form-control" rows="4" placeholder="توضیح کتاب..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>آدرس عکس جلد (اختیاری)</label>
+                                    <input type="text" id="smartBookImage" class="form-control" placeholder="https://...">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-github-purple" id="smartPublishBookBtn">
+                                    <i class="fas fa-magic"></i> افزودن هوشمند کتاب
+                                </button>
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>نوع کتاب</label>
-                                <select id="smartBookType" class="form-control">
-                                    <option value="research" selected>پژوهشی</option>
-                                    <option value="poetry">شعر</option>
-                                    <option value="story">داستان</option>
-                                    <option value="educational">آموزشی</option>
-                                </select>
+                        <!-- تب مقاله -->
+                        <div class="tab-content" id="smartArticle">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                مقاله جدید به تب‌های دسته‌بندی و نتایج جستجو اضافه می‌شود.
                             </div>
-                            
-                            <div class="form-group">
-                                <label>سال انتشار</label>
-                                <input type="number" id="smartBookYear" class="form-control" value="1403">
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>عنوان مقاله *</label>
+                                    <input type="text" id="smartArticleTitle" class="form-control" placeholder="عنوان مقاله">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>دسته‌بندی</label>
+                                    <select id="smartArticleCategory" class="form-control">
+                                        <option value="tab1">هوش مصنوعی انسان‌محور</option>
+                                        <option value="tab2">تحول سازمانی هوشمند</option>
+                                        <option value="tab3">مهندسی فرهنگی دیجیتال</option>
+                                        <option value="tab4">نظریه‌های شناختی-اجتماعی</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>تاریخ انتشار</label>
+                                    <input type="date" id="smartArticleDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>کلمات کلیدی (با کاما جدا کنید)</label>
+                                    <input type="text" id="smartArticleKeywords" class="form-control" placeholder="هوش مصنوعی, تحول سازمانی, ...">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>چکیده مقاله *</label>
+                                    <textarea id="smartArticleAbstract" class="form-control" rows="6" placeholder="متن چکیده..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-github-purple" id="smartPublishArticleBtn">
+                                    <i class="fas fa-magic"></i> افزودن هوشمند مقاله
+                                </button>
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group form-full">
-                                <label>توضیح مختصر *</label>
-                                <textarea id="smartBookDescription" class="form-control" rows="4" required></textarea>
+                        <!-- تب یادداشت -->
+                        <div class="tab-content" id="smartNote">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                یادداشت جدید به تایم‌لاین اضافه می‌شود.
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>عنوان یادداشت *</label>
+                                    <input type="text" id="smartNoteTitle" class="form-control" placeholder="عنوان یادداشت">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>تاریخ</label>
+                                    <input type="date" id="smartNoteDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>متن یادداشت *</label>
+                                    <textarea id="smartNoteContent" class="form-control" rows="6" placeholder="متن یادداشت..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-github-purple" id="smartPublishNoteBtn">
+                                    <i class="fas fa-magic"></i> افزودن هوشمند یادداشت
+                                </button>
                             </div>
                         </div>
                         
-                        <div class="form-actions">
-                            <button class="btn btn-github-purple" id="smartAddBookBtn">
-                                <i class="fas fa-magic"></i> افزودن هوشمند کتاب
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="preview-section">
-                        <h3><i class="fas fa-eye"></i> پیش‌نمایش</h3>
-                        <div class="preview-container" id="smartPreview">
-                            <p style="color: #666; text-align: center; padding: 40px;">
-                                پس از پر کردن فرم، پیش‌نمایش اینجا نمایش داده می‌شود
-                            </p>
+                        <!-- تب فراخوان -->
+                        <div class="tab-content" id="smartCall">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                فراخوان جدید به بخش همکاری جهانی اضافه می‌شود.
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>عنوان فراخوان *</label>
+                                    <input type="text" id="smartCallTitle" class="form-control" placeholder="عنوان فراخوان">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>متن فراخوان *</label>
+                                    <textarea id="smartCallDesc" class="form-control" rows="4" placeholder="متن توضیحات..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group form-full">
+                                    <label>هایلایت (نکته برجسته)</label>
+                                    <input type="text" id="smartCallHighlight" class="form-control" placeholder="متن کوتاه برای برجسته‌سازی">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-github-purple" id="smartPublishCallBtn">
+                                    <i class="fas fa-magic"></i> افزودن هوشمند فراخوان
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- کتاب‌ها -->
+                <!-- ========== ویرایشگر سایت ========== -->
+                <div class="page-section" id="editorPage">
+                    <div class="form-section">
+                        <h2><i class="fas fa-edit"></i> ویرایشگر محتوای سایت</h2>
+                        
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="editIndex">صفحه اصلی فارسی</button>
+                            <button class="tab-btn" data-tab="editEn">صفحه انگلیسی</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="editIndex">
+                            <div class="form-group">
+                                <label>ویرایش محتوای صفحه فارسی (HTML)</label>
+                                <textarea id="indexContent" class="form-control" rows="15" placeholder="محتوای HTML صفحه فارسی..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-success" id="saveIndexContent">ذخیره محلی</button>
+                                <button class="btn btn-github" id="publishIndexContent">انتشار در GitHub</button>
+                                <button class="btn btn-primary" id="loadIndexContent">بارگذاری از GitHub</button>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="editEn">
+                            <div class="form-group">
+                                <label>ویرایش محتوای صفحه انگلیسی (HTML)</label>
+                                <textarea id="enContent" class="form-control" rows="15" placeholder="English page content..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-success" id="saveEnContent">ذخیره محلی</button>
+                                <button class="btn btn-github" id="publishEnContent">انتشار در GitHub</button>
+                                <button class="btn btn-primary" id="loadEnContent">بارگذاری از GitHub</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ========== مقالات ========== -->
+                <div class="page-section" id="articlesPage">
+                    <div class="table-container">
+                        <h3>مقالات منتشر شده</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>دسته‌بندی</th>
+                                    <th>تاریخ</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="articlesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- ========== کتاب‌ها ========== -->
                 <div class="page-section" id="booksPage">
                     <div class="table-container">
-                        <div class="table-header">
-                            <h3 class="table-title">کتاب‌های منتشر شده</h3>
-                        </div>
+                        <h3>کتاب‌های منتشر شده</h3>
                         <table>
                             <thead>
                                 <tr>
@@ -730,69 +923,91 @@
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
-                            <tbody id="booksTable">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 30px;">
-                                        <i class="fas fa-book" style="font-size: 2rem; color: #ccc; margin-bottom: 10px; display: block;"></i>
-                                        هنوز کتابی اضافه نشده است
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="booksTable"></tbody>
                         </table>
                     </div>
                 </div>
                 
-                <!-- مقالات -->
-                <div class="page-section" id="articlesPage">
+                <!-- ========== یادداشت‌ها ========== -->
+                <div class="page-section" id="notesPage">
                     <div class="table-container">
-                        <div class="table-header">
-                            <h3 class="table-title">مقالات</h3>
-                        </div>
+                        <h3>یادداشت‌های روزانه</h3>
                         <table>
                             <thead>
                                 <tr>
                                     <th>عنوان</th>
-                                    <th>دسته‌بندی</th>
                                     <th>تاریخ</th>
                                     <th>عملیات</th>
                                 </tr>
                             </thead>
-                            <tbody id="articlesTable">
-                                <tr>
-                                    <td colspan="4" style="text-align: center; padding: 30px;">
-                                        <i class="fas fa-file-alt" style="font-size: 2rem; color: #ccc; margin-bottom: 10px; display: block;"></i>
-                                        هنوز مقاله‌ای اضافه نشده است
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="notesTable"></tbody>
                         </table>
                     </div>
                 </div>
                 
-                <!-- آمار -->
+                <!-- ========== فراخوان‌ها ========== -->
+                <div class="page-section" id="callsPage">
+                    <div class="table-container">
+                        <h3>فراخوان‌های همکاری</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>تاریخ</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="callsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- ========== آمار ========== -->
                 <div class="page-section" id="statsPage">
                     <div class="form-section">
                         <h2><i class="fas fa-chart-bar"></i> آمار سایت</h2>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
-                            <div style="background: #f0f7ff; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2rem; color: var(--primary);" id="statsBooksCount">0</div>
-                                <div style="color: #666;">کتاب</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                            <div class="stat-box">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--primary);" id="statsBooksCount">0</div>
+                                <div>کتاب</div>
                             </div>
-                            <div style="background: #f0f7ff; padding: 20px; border-radius: 10px; text-align: center;">
-                                <div style="font-size: 2rem; color: var(--primary);" id="statsArticlesCount">0</div>
-                                <div style="color: #666;">مقاله</div>
+                            <div class="stat-box">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--primary);" id="statsArticlesCount">0</div>
+                                <div>مقاله</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--primary);" id="statsNotesCount">0</div>
+                                <div>یادداشت</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- تنظیمات GitHub -->
+                <!-- ========== تنظیمات GitHub ========== -->
                 <div class="page-section" id="githubPage">
                     <div class="form-section">
                         <h2><i class="fab fa-github"></i> مدیریت GitHub</h2>
-                        <div class="alert alert-success">
-                            <i class="fas fa-info-circle"></i>
-                            برای شروع، روی دکمه "تنظیمات GitHub" در بالای صفحه کلیک کنید.
+                        <div class="github-status">
+                            <div class="github-status-header">
+                                <i class="fab fa-github"></i>
+                                <h4>تنظیمات فعلی</h4>
+                            </div>
+                            <div class="github-status-item">
+                                <span class="github-status-label">نام کاربری:</span>
+                                <span class="github-status-value" id="currentGithubUser">-</span>
+                            </div>
+                            <div class="github-status-item">
+                                <span class="github-status-label">ریپازیتوری:</span>
+                                <span class="github-status-value" id="currentGithubRepo">-</span>
+                            </div>
+                            <div class="github-status-item">
+                                <span class="github-status-label">آخرین همگام‌سازی:</span>
+                                <span class="github-status-value" id="currentLastSync">-</span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-github" id="testGithubBtn">تست اتصال</button>
+                            <button class="btn btn-primary" id="syncGithubBtn">همگام‌سازی</button>
                         </div>
                     </div>
                 </div>
@@ -801,12 +1016,13 @@
     </div>
 
     <script>
-        // ==================== داده‌ها و تنظیمات ====================
+        // ==================== متغیرهای اصلی ====================
         let githubConfig = null;
-        let smartContents = [];
-        
-        // ==================== مدیریت GitHub ====================
-        class SmartGitHubManager {
+        let githubManager = null;
+        let smartContents = { books: [], articles: [], notes: [], calls: [] };
+
+        // ==================== کلاس مدیریت GitHub ====================
+        class GitHubManager {
             constructor(config) {
                 this.config = config;
                 this.headers = {
@@ -816,17 +1032,19 @@
                 };
             }
             
+            async testConnection() {
+                try {
+                    const res = await axios.get(`https://api.github.com/repos/${this.config.username}/${this.config.repo}`, { headers: this.headers });
+                    return { success: true, data: res.data };
+                } catch (error) {
+                    return { success: false, error: error.message };
+                }
+            }
+            
             async getFile(path) {
                 try {
-                    const response = await axios.get(
-                        `https://api.github.com/repos/${this.config.username}/${this.config.repo}/contents/${path}`,
-                        { headers: this.headers }
-                    );
-                    return {
-                        success: true,
-                        content: atob(response.data.content),
-                        sha: response.data.sha
-                    };
+                    const res = await axios.get(`https://api.github.com/repos/${this.config.username}/${this.config.repo}/contents/${path}`, { headers: this.headers });
+                    return { success: true, content: atob(res.data.content), sha: res.data.sha };
                 } catch (error) {
                     return { success: false, error: error.message };
                 }
@@ -835,8 +1053,10 @@
             async updateFile(path, content, message) {
                 try {
                     let sha = null;
-                    const existing = await this.getFile(path);
-                    if (existing.success) sha = existing.sha;
+                    try {
+                        const existing = await this.getFile(path);
+                        if (existing.success) sha = existing.sha;
+                    } catch(e) {}
                     
                     const data = {
                         message: message,
@@ -845,122 +1065,145 @@
                     };
                     if (sha) data.sha = sha;
                     
-                    const response = await axios.put(
-                        `https://api.github.com/repos/${this.config.username}/${this.config.repo}/contents/${path}`,
-                        data,
-                        { headers: this.headers }
-                    );
-                    return { success: true, data: response.data };
-                } catch (error) {
-                    return { success: false, error: error.message };
-                }
-            }
-            
-            // ساخت صفحه کتاب هوشمند
-            async createSmartBookPage(bookData) {
-                const path = `books/${Date.now()}-${bookData.title.replace(/\s+/g, '-')}.html`;
-                
-                const requestForm = this.config.formspreeId ? `
-                <section class="request-form" style="margin: 40px 0; padding: 30px; background: #f0f7ff; border-radius: 15px; border-right: 4px solid var(--accent);">
-                    <h3 style="color: #0A2463; margin-bottom: 20px;">
-                        <i class="fas fa-envelope"></i> درخواست خرید / اطلاعات بیشتر
-                    </h3>
-                    <form action="https://formspree.io/f/${this.config.formspreeId}" method="POST">
-                        <input type="hidden" name="نوع" value="کتاب">
-                        <input type="hidden" name="عنوان" value="${bookData.title}">
-                        <div style="display: grid; gap: 15px;">
-                            <input type="text" name="نام" placeholder="نام و نام خانوادگی *" required style="padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
-                            <input type="email" name="ایمیل" placeholder="ایمیل *" required style="padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
-                            <select name="نوع_درخواست" style="padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
-                                <option value="خرید">درخواست خرید کتاب</option>
-                                <option value="PDF">دریافت نسخه PDF</option>
-                                <option value="اطلاعات">اطلاعات بیشتر</option>
-                            </select>
-                            <textarea name="پیام" placeholder="پیام شما" rows="3" style="padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;"></textarea>
-                            <button type="submit" style="background: #6f42c1; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer;">
-                                <i class="fas fa-paper-plane"></i> ارسال درخواست
-                            </button>
-                        </div>
-                    </form>
-                </section>
-                ` : '';
-                
-                const pageHTML = `<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${bookData.title} | دکتر غلامرضا رضائی</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/font.css">
-    <style>
-        body { font-family: 'Vazirmatn', sans-serif; padding: 20px; max-width: 900px; margin: 0 auto; background: #f8f9fa; }
-        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        h1 { color: #0A2463; border-bottom: 3px solid #D4AF37; padding-bottom: 15px; }
-        .back-link { display: inline-block; margin-top: 30px; padding: 12px 25px; background: #0A2463; color: white; text-decoration: none; border-radius: 8px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>${bookData.title}</h1>
-        <p style="color: #666; margin-bottom: 20px;"><i class="fas fa-book"></i> کتاب ${bookData.type === 'research' ? 'پژوهشی' : bookData.type}</p>
-        <p style="line-height: 1.8; color: #444;">${bookData.description}</p>
-        ${requestForm}
-        <a href="../index.html" class="back-link"><i class="fas fa-arrow-right"></i> بازگشت به صفحه اصلی</a>
-    </div>
-</body>
-</html>`;
-                
-                return { path, content: pageHTML };
-            }
-            
-            // آپدیت صفحه اصلی با کتاب جدید
-            async updateHomepageWithBook(bookData, bookPath) {
-                try {
-                    const homeResult = await this.getFile('index.html');
-                    if (!homeResult.success) return homeResult;
-                    
-                    let homeContent = homeResult.content;
-                    const bookCard = `
-                    <div class="book-card" style="background: white; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-right: 4px solid #6f42c1;">
-                        <h3 style="color: #1A5276;">${bookData.title}</h3>
-                        <p style="color: #666;"><i class="fas fa-book"></i> کتاب ${bookData.type === 'research' ? 'پژوهشی' : bookData.type}</p>
-                        <p style="color: #555;">${bookData.description.substring(0, 100)}...</p>
-                        <a href="${bookPath}" style="display: inline-block; padding: 10px 20px; background: #6f42c1; color: white; text-decoration: none; border-radius: 6px;">
-                            <i class="fas fa-shopping-cart"></i> درخواست کتاب
-                        </a>
-                    </div>
-                    `;
-                    
-                    const placeholder = 'books-section-placeholder';
-                    if (homeContent.includes(placeholder)) {
-                        const placeholderHTML = `<section id="${placeholder}"></section>`;
-                        const sectionHTML = `
-                        <section id="books-section" style="max-width: 1000px; margin: 50px auto; padding: 0 20px;">
-                            <h2 style="color: #0A2463; margin-bottom: 30px;"><i class="fas fa-book"></i> کتاب‌های منتشر شده</h2>
-                            ${bookCard}
-                        </section>`;
-                        homeContent = homeContent.replace(placeholderHTML, sectionHTML);
-                    } else {
-                        const footerIndex = homeContent.indexOf('</footer>') || homeContent.indexOf('</body>');
-                        if (footerIndex !== -1) {
-                            const sectionHTML = `
-                            <section id="books-section" style="max-width: 1000px; margin: 50px auto; padding: 0 20px;">
-                                <h2 style="color: #0A2463;"><i class="fas fa-book"></i> کتاب‌ها</h2>
-                                ${bookCard}
-                            </section>`;
-                            homeContent = homeContent.substring(0, footerIndex) + sectionHTML + homeContent.substring(footerIndex);
-                        }
-                    }
-                    
-                    return await this.updateFile('index.html', homeContent, `کتاب جدید: ${bookData.title}`);
+                    const res = await axios.put(`https://api.github.com/repos/${this.config.username}/${this.config.repo}/contents/${path}`, data, { headers: this.headers });
+                    return { success: true, data: res.data };
                 } catch (error) {
                     return { success: false, error: error.message };
                 }
             }
         }
-        
-        let smartManager = null;
-        
+
+        // ==================== کلاس هوشمندساز ====================
+        class SmartUpdater {
+            constructor() {}
+            
+            // به‌روزرسانی گالری کتاب‌ها در index.html
+            updateBooksGallery(book) {
+                const galleryHTML = `
+                    <div class="gallery-item">
+                        <div class="gallery-img">
+                            <img src="${book.image || 'https://i.postimg.cc/PJZbc5Qd/20240301-203516-(2).jpg'}" alt="${book.title}">
+                        </div>
+                        <div class="gallery-caption">${book.title}</div>
+                    </div>
+                `;
+                return {
+                    selector: '#booksGallery',
+                    html: galleryHTML,
+                    mode: 'append'
+                };
+            }
+            
+            // به‌روزرسانی اسلایدشو کتاب‌ها
+            updateBooksSlideshow(book) {
+                const slideHTML = `
+                    <div class="book-slide">
+                        <div class="book-item">
+                            <div class="book-cover">
+                                <img src="${book.image || 'https://i.postimg.cc/PJZbc5Qd/20240301-203516-(2).jpg'}" alt="${book.title}">
+                            </div>
+                            <div class="book-info">
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-desc">${book.description.substring(0, 80)}...</div>
+                                <div class="book-status">منتشر شده</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return {
+                    selector: '#booksTrack',
+                    html: slideHTML,
+                    mode: 'append'
+                };
+            }
+            
+            // به‌روزرسانی کارت مقاله
+            updateArticleCard(article) {
+                const date = article.date || new Date().toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+                const keywords = article.keywords ? article.keywords.split(',').map(k => `<span class="keyword">${k.trim()}</span>`).join('') : '';
+                
+                const cardHTML = `
+                    <div class="research-card shadow-hover fade-in-up">
+                        <div class="research-card-header">
+                            <h3 class="research-card-title">${article.title}</h3>
+                            <div class="research-card-meta">
+                                <span class="research-card-date">${date}</span>
+                                <span>مقاله جدید</span>
+                            </div>
+                        </div>
+                        <div class="research-card-keywords">${keywords}</div>
+                        <div class="research-card-body">${article.abstract.substring(0, 150)}...</div>
+                        <button class="request-ppt-btn">درخواست فایل ارائه (PPT)</button>
+                        <div class="research-card-footer">مقاله هوشمند</div>
+                    </div>
+                `;
+                return {
+                    selector: `#${article.category} .research-grid`,
+                    html: cardHTML,
+                    mode: 'append'
+                };
+            }
+            
+            // به‌روزرسانی تایم‌لاین یادداشت
+            updateTimeline(note) {
+                const date = note.date || new Date().toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+                const timelineHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-date">${date}</div>
+                        <div class="timeline-content shadow-hover">
+                            <h3>${note.title}</h3>
+                            <p>${note.content.substring(0, 200)}...</p>
+                            <p><strong>منبع:</strong> پنل مدیریت هوشمند</p>
+                        </div>
+                    </div>
+                `;
+                return {
+                    selector: '.timeline',
+                    html: timelineHTML,
+                    mode: 'append'
+                };
+            }
+            
+            // به‌روزرسانی فراخوان
+            updateCall(call) {
+                const callHTML = `
+                    <div class="call-card shadow-hover fade-in-up">
+                        <div class="call-icon icon-float">📢</div>
+                        <h3>${call.title}</h3>
+                        <p>${call.description}</p>
+                        <div class="call-highlight">${call.highlight || 'فراخوان جدید'}</div>
+                        <button class="call-action-btn show-form-btn">ارسال درخواست</button>
+                    </div>
+                `;
+                return {
+                    selector: '.call-to-action-grid',
+                    html: callHTML,
+                    mode: 'append'
+                };
+            }
+            
+            // به‌روزرسانی آمار
+            updateStats(type, count) {
+                return {
+                    selector: `#stats${type}Count`,
+                    html: count.toString(),
+                    mode: 'replace'
+                };
+            }
+            
+            // به‌روزرسانی نوار بالایی
+            updateMarquee(text) {
+                const marqueeHTML = `<span><i class="fas fa-star"></i> ${text}</span>`;
+                return {
+                    selector: '.marquee-content',
+                    html: marqueeHTML,
+                    mode: 'append'
+                };
+            }
+        }
+
+        const smartUpdater = new SmartUpdater();
+
         // ==================== ذخیره‌سازی محلی ====================
         function saveToLocalStorage(key, data) {
             localStorage.setItem(`drrezaei_${key}`, JSON.stringify(data));
@@ -970,7 +1213,7 @@
             const data = localStorage.getItem(`drrezaei_${key}`);
             return data ? JSON.parse(data) : null;
         }
-        
+
         // ==================== نمایش اعلان ====================
         function showAlert(type, title, message) {
             const alertDiv = document.createElement('div');
@@ -980,7 +1223,7 @@
             document.getElementById('pageContent').prepend(alertDiv);
             setTimeout(() => alertDiv.remove(), 5000);
         }
-        
+
         // ==================== مدیریت ورود ====================
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -989,13 +1232,14 @@
             if (username === 'admin' && password === 'drrezaei2025') {
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('adminPage').style.display = 'block';
-                showAlert('success', 'خوش آمدید', 'به پنل مدیریت هوشمند دکتر رضائی');
+                showAlert('success', 'خوش آمدید', 'پنل هوشمند آماده کار است');
                 loadSavedSettings();
+                loadAllTables();
             } else {
                 showAlert('error', 'خطا', 'نام کاربری یا رمز عبور اشتباه');
             }
         });
-        
+
         // ==================== مدیریت صفحات ====================
         document.querySelectorAll('.sidebar-menu a').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -1008,202 +1252,488 @@
                 document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
                 this.classList.add('active');
                 const page = this.getAttribute('data-page');
-                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-                document.getElementById(`${page}Page`).classList.add('active');
-                document.getElementById('pageTitle').textContent = this.querySelector('span').textContent;
+                showPage(page);
             });
         });
-        
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`${pageId}Page`);
+            if (target) target.classList.add('active');
+            
+            const titles = {
+                'dashboard': 'داشبورد', 'smartAdd': 'افزودن هوشمند', 'editor': 'ویرایشگر سایت',
+                'articles': 'مقالات', 'books': 'کتاب‌ها', 'notes': 'یادداشت‌ها',
+                'calls': 'فراخوان‌ها', 'stats': 'آمار', 'github': 'تنظیمات GitHub'
+            };
+            document.getElementById('pageTitle').textContent = titles[pageId] || 'پنل مدیریت';
+        }
+
         // ==================== تنظیمات GitHub ====================
         function loadSavedSettings() {
-            const savedConfig = loadFromLocalStorage('github_config');
-            if (savedConfig) {
-                githubConfig = savedConfig;
-                smartManager = new SmartGitHubManager(savedConfig);
-                document.getElementById('githubToken').value = savedConfig.token;
-                document.getElementById('githubUsername').value = savedConfig.username;
-                document.getElementById('githubRepo').value = savedConfig.repo;
-                document.getElementById('githubBranch').value = savedConfig.branch;
-                document.getElementById('formspreeId').value = savedConfig.formspreeId || '';
-                document.getElementById('githubStatus').textContent = 'آماده';
-                document.getElementById('githubRepoName').textContent = `${savedConfig.username}/${savedConfig.repo}`;
-                window.smartManager = smartManager;
+            const saved = loadFromLocalStorage('github_config');
+            if (saved) {
+                githubConfig = saved;
+                githubManager = new GitHubManager(saved);
+                document.getElementById('currentGithubUser').textContent = saved.username;
+                document.getElementById('currentGithubRepo').textContent = saved.repo;
+                document.getElementById('githubRepoName').textContent = `${saved.username}/${saved.repo}`;
+                document.getElementById('githubConnectionStatus').textContent = 'آماده';
+                document.getElementById('githubConnectionStatus').className = 'github-status-value connected';
             }
         }
-        
+
         document.getElementById('configureGithubBtn').addEventListener('click', () => {
             document.getElementById('githubConfigModal').classList.add('active');
         });
-        
+
         document.getElementById('closeConfigModal').addEventListener('click', () => {
             document.getElementById('githubConfigModal').classList.remove('active');
         });
-        
+
         document.getElementById('testGithubConnection').addEventListener('click', async () => {
             const token = document.getElementById('githubToken').value;
             const username = document.getElementById('githubUsername').value;
             const repo = document.getElementById('githubRepo').value;
+            const branch = document.getElementById('githubBranch').value;
             if (!token || !username || !repo) {
-                showAlert('error', 'خطا', 'لطفاً همه فیلدها را پر کنید');
+                showAlert('error', 'خطا', 'فیلدهای ضروری را پر کنید');
                 return;
             }
-            try {
-                await axios.get(`https://api.github.com/repos/${username}/${repo}`, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
-                showAlert('success', 'اتصال موفق', `به ریپوی ${repo} متصل شدید`);
-            } catch (error) {
-                showAlert('error', 'خطای اتصال', 'توکن یا اطلاعات اشتباه است');
-            }
+            const temp = new GitHubManager({ token, username, repo, branch });
+            const res = await temp.testConnection();
+            if (res.success) showAlert('success', 'اتصال موفق', 'به GitHub متصل شدید');
+            else showAlert('error', 'خطا', 'اتصال برقرار نشد');
         });
-        
+
         document.getElementById('saveGithubConfig').addEventListener('click', () => {
             githubConfig = {
                 token: document.getElementById('githubToken').value,
                 username: document.getElementById('githubUsername').value,
                 repo: document.getElementById('githubRepo').value,
-                branch: document.getElementById('githubBranch').value,
-                formspreeId: document.getElementById('formspreeId').value
+                branch: document.getElementById('githubBranch').value || 'main',
+                pathFa: document.getElementById('githubPathFa').value || 'index.html',
+                pathEn: document.getElementById('githubPathEn').value || 'en.html'
             };
             saveToLocalStorage('github_config', githubConfig);
-            smartManager = new SmartGitHubManager(githubConfig);
-            window.smartManager = smartManager;
+            githubManager = new GitHubManager(githubConfig);
             document.getElementById('githubConfigModal').classList.remove('active');
-            showAlert('success', 'ذخیره شد', 'تنظیمات GitHub ذخیره شد');
-            document.getElementById('githubStatus').textContent = 'آماده';
+            document.getElementById('currentGithubUser').textContent = githubConfig.username;
+            document.getElementById('currentGithubRepo').textContent = githubConfig.repo;
             document.getElementById('githubRepoName').textContent = `${githubConfig.username}/${githubConfig.repo}`;
+            document.getElementById('githubConnectionStatus').textContent = 'متصل';
+            document.getElementById('githubConnectionStatus').className = 'github-status-value connected';
+            document.getElementById('currentLastSync').textContent = new Date().toLocaleTimeString('fa-IR');
+            showAlert('success', 'ذخیره شد', 'تنظیمات GitHub ذخیره شد');
         });
-        
-        // ==================== افزودن هوشمند کتاب ====================
-        document.getElementById('smartAddBookBtn').addEventListener('click', async () => {
-            if (!smartManager) {
-                showAlert('error', 'خطا', 'لطفاً ابتدا تنظیمات GitHub را انجام دهید');
-                return;
-            }
-            
-            const bookData = {
-                title: document.getElementById('smartBookTitle').value,
-                type: document.getElementById('smartBookType').value,
-                description: document.getElementById('smartBookDescription').value,
-                year: document.getElementById('smartBookYear').value
-            };
-            
-            if (!bookData.title || !bookData.description) {
-                showAlert('error', 'خطا', 'لطفاً عنوان و توضیح کتاب را وارد کنید');
-                return;
-            }
-            
-            showAlert('info', 'در حال پردازش...', 'سیستم هوشمند در حال کار است');
-            
-            try {
-                // ۱. ساخت صفحه کتاب
-                const bookPage = await smartManager.createSmartBookPage(bookData);
-                const uploadResult = await smartManager.updateFile(
-                    bookPage.path,
-                    bookPage.content,
-                    `کتاب جدید: ${bookData.title}`
-                );
-                
-                if (!uploadResult.success) throw new Error(uploadResult.error);
-                
-                // ۲. آپدیت صفحه اصلی
-                await smartManager.updateHomepageWithBook(bookData, bookPage.path);
-                
-                // ۳. ذخیره در لیست کتاب‌ها
-                let books = loadFromLocalStorage('books') || [];
-                books.push({
-                    id: Date.now(),
-                    ...bookData,
-                    path: bookPage.path,
-                    addedAt: new Date().toISOString()
-                });
-                saveToLocalStorage('books', books);
-                
-                // ۴. آپدیت جدول کتاب‌ها
-                loadBooksTable();
-                
-                // ۵. آپدیت آمار
-                document.getElementById('statsBooksCount').textContent = books.length;
-                
-                showAlert('success', '✅ کتاب هوشمند اضافه شد!', 
-                    `کتاب "${bookData.title}" با موفقیت اضافه شد.\nصفحه اصلی سایت بروزرسانی شد.`
-                );
-                
-                // ۶. پاک کردن فرم
-                document.getElementById('smartBookTitle').value = '';
-                document.getElementById('smartBookDescription').value = '';
-                document.getElementById('smartBookYear').value = '1403';
-                
-            } catch (error) {
-                showAlert('error', 'خطا', error.message);
-            }
-        });
-        
-        // ==================== بارگذاری کتاب‌ها ====================
+
+        // ==================== بارگذاری جداول ====================
+        function loadAllTables() {
+            loadBooksTable();
+            loadArticlesTable();
+            loadNotesTable();
+            loadCallsTable();
+            updateStatsDisplay();
+        }
+
         function loadBooksTable() {
             const books = loadFromLocalStorage('books') || [];
+            smartContents.books = books;
             const tbody = document.getElementById('booksTable');
+            if (!tbody) return;
             
             if (books.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px;">
-                    <i class="fas fa-book" style="font-size: 2rem; color: #ccc; margin-bottom: 10px; display: block;"></i>
-                    هنوز کتابی اضافه نشده است
-                </td></tr>`;
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px;">هیچ کتابی یافت نشد</td></tr>';
                 return;
             }
             
-            tbody.innerHTML = books.map(book => `
+            tbody.innerHTML = books.map((b, i) => `
                 <tr>
-                    <td>${book.title}</td>
-                    <td>${book.type === 'research' ? 'پژوهشی' : book.type}</td>
-                    <td>${book.year || '1403'}</td>
+                    <td>${b.title}</td>
+                    <td>${b.type}</td>
+                    <td>${b.year || '1403'}</td>
                     <td><span class="status published">منتشر شده</span></td>
-                    <td>
-                        <div class="actions">
-                            <button class="btn btn-sm btn-primary" onclick="window.open('${book.path}', '_blank')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-github" onclick="window.open('https://github.com/${githubConfig?.username}/${githubConfig?.repo}/blob/main/${book.path}', '_blank')">
-                                <i class="fab fa-github"></i>
-                            </button>
-                        </div>
-                    </td>
+                    <td><div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="alert('${b.description}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem('books', ${i})"><i class="fas fa-trash"></i></button>
+                    </div></td>
                 </tr>
             `).join('');
             
             document.getElementById('statsBooksCount').textContent = books.length;
         }
-        
-        // ==================== پیش‌نمایش هوشمند ====================
-        function updateSmartPreview() {
-            const title = document.getElementById('smartBookTitle').value || 'عنوان کتاب';
-            const desc = document.getElementById('smartBookDescription').value || 'توضیح مختصر کتاب...';
-            const preview = document.getElementById('smartPreview');
+
+        function loadArticlesTable() {
+            const articles = loadFromLocalStorage('articles') || [];
+            smartContents.articles = articles;
+            const tbody = document.getElementById('articlesTable');
+            if (!tbody) return;
             
-            preview.innerHTML = `
-                <div style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; background: white;">
-                    <h4 style="color: #6f42c1; margin-bottom: 15px;"><i class="fas fa-book"></i> پیش‌نمایش کتاب</h4>
-                    <div style="display: flex; gap: 20px;">
-                        <div style="width: 80px; height: 110px; background: linear-gradient(135deg, #6f42c1, #8957e5); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
-                            <i class="fas fa-book" style="font-size: 2rem;"></i>
-                        </div>
-                        <div style="flex: 1;">
-                            <h5 style="color: #1A5276;">${title}</h5>
-                            <p style="color: #555;">${desc.substring(0, 150)}${desc.length > 150 ? '...' : ''}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+            if (articles.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px;">هیچ مقاله‌ای یافت نشد</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = articles.map((a, i) => `
+                <tr>
+                    <td>${a.title}</td>
+                    <td>${getCategoryName(a.category)}</td>
+                    <td>${a.date || '۱۴۰۳/۱۱/۲۳'}</td>
+                    <td><span class="status published">منتشر شده</span></td>
+                    <td><div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="alert('${a.abstract}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem('articles', ${i})"><i class="fas fa-trash"></i></button>
+                    </div></td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('statsArticlesCount').textContent = articles.length;
         }
-        
-        // ==================== راه‌اندازی اولیه ====================
-        window.addEventListener('load', () => {
-            loadSavedSettings();
+
+        function loadNotesTable() {
+            const notes = loadFromLocalStorage('notes') || [];
+            smartContents.notes = notes;
+            const tbody = document.getElementById('notesTable');
+            if (!tbody) return;
+            
+            if (notes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px;">هیچ یادداشتی یافت نشد</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = notes.map((n, i) => `
+                <tr>
+                    <td>${n.title}</td>
+                    <td>${n.date || '۱۴۰۳/۱۱/۲۳'}</td>
+                    <td><div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="alert('${n.content}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem('notes', ${i})"><i class="fas fa-trash"></i></button>
+                    </div></td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('statsNotesCount').textContent = notes.length;
+        }
+
+        function loadCallsTable() {
+            const calls = loadFromLocalStorage('calls') || [];
+            smartContents.calls = calls;
+            const tbody = document.getElementById('callsTable');
+            if (!tbody) return;
+            
+            if (calls.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px;">هیچ فراخوانی یافت نشد</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = calls.map((c, i) => `
+                <tr>
+                    <td>${c.title}</td>
+                    <td>${new Date().toLocaleDateString('fa-IR')}</td>
+                    <td><div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="alert('${c.description}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem('calls', ${i})"><i class="fas fa-trash"></i></button>
+                    </div></td>
+                </tr>
+            `).join('');
+        }
+
+        function getCategoryName(cat) {
+            const names = { tab1: 'هوش مصنوعی', tab2: 'تحول سازمانی', tab3: 'مهندسی فرهنگی', tab4: 'نظریه‌های شناختی' };
+            return names[cat] || cat;
+        }
+
+        function deleteItem(type, index) {
+            if (!confirm('آیا از حذف این آیتم مطمئن هستید؟')) return;
+            const items = loadFromLocalStorage(type) || [];
+            items.splice(index, 1);
+            saveToLocalStorage(type, items);
+            loadAllTables();
+            showAlert('success', 'حذف شد', 'آیتم با موفقیت حذف شد');
+        }
+
+        function updateStatsDisplay() {
+            const books = loadFromLocalStorage('books') || [];
+            const articles = loadFromLocalStorage('articles') || [];
+            const notes = loadFromLocalStorage('notes') || [];
+            document.getElementById('statsBooksCount').textContent = books.length;
+            document.getElementById('statsArticlesCount').textContent = articles.length;
+            document.getElementById('statsNotesCount').textContent = notes.length;
+        }
+
+        // ==================== انتشار هوشمند کتاب ====================
+        document.getElementById('smartPublishBookBtn').addEventListener('click', async function() {
+            const book = {
+                title: document.getElementById('smartBookTitle').value,
+                type: document.getElementById('smartBookType').value,
+                description: document.getElementById('smartBookDesc').value,
+                year: document.getElementById('smartBookYear').value,
+                image: document.getElementById('smartBookImage').value || 'https://i.postimg.cc/PJZbc5Qd/20240301-203516-(2).jpg'
+            };
+            
+            if (!book.title || !book.description) {
+                showAlert('error', 'خطا', 'عنوان و توضیح کتاب را وارد کنید');
+                return;
+            }
+            
+            // 1. ذخیره محلی
+            let books = loadFromLocalStorage('books') || [];
+            books.push({ ...book, id: Date.now() });
+            saveToLocalStorage('books', books);
+            
+            // 2. آپدیت جدول و آمار
             loadBooksTable();
+            
+            // 3. ساخت محتوای HTML برای index.html
+            let indexHTML = '';
+            
+            // گالری
+            const galleryUpdate = smartUpdater.updateBooksGallery(book);
+            indexHTML += `\n<!-- کتاب جدید: ${book.title} -->\n${galleryUpdate.html}`;
+            
+            // اسلایدشو
+            const slideUpdate = smartUpdater.updateBooksSlideshow(book);
+            indexHTML += `\n${slideUpdate.html}`;
+            
+            // 4. انتشار در GitHub اگر متصل است
+            if (githubManager) {
+                try {
+                    const indexResult = await githubManager.getFile('index.html');
+                    if (indexResult.success) {
+                        let content = indexResult.content;
+                        
+                        // اضافه کردن به گالری
+                        if (content.includes('id="booksGallery"')) {
+                            const galleryPos = content.indexOf('id="booksGallery"');
+                            const closeTag = content.indexOf('</div>', galleryPos);
+                            if (closeTag !== -1) {
+                                content = content.substring(0, closeTag) + galleryUpdate.html + content.substring(closeTag);
+                            }
+                        }
+                        
+                        // اضافه کردن به اسلایدشو
+                        if (content.includes('id="booksTrack"')) {
+                            const trackPos = content.indexOf('id="booksTrack"');
+                            const closeDiv = content.indexOf('</div>', trackPos);
+                            if (closeDiv !== -1) {
+                                content = content.substring(0, closeDiv) + slideUpdate.html + content.substring(closeDiv);
+                            }
+                        }
+                        
+                        await githubManager.updateFile('index.html', content, `کتاب جدید: ${book.title}`);
+                        showAlert('success', '✅ کتاب منتشر شد', 'کتاب به سایت اضافه و در GitHub منتشر شد');
+                    }
+                } catch (error) {
+                    showAlert('warning', '⚠️ کتاب ذخیره شد', 'کتاب در پنل ذخیره شد اما انتشار در GitHub انجام نشد');
+                }
+            } else {
+                showAlert('success', '✅ کتاب ذخیره شد', 'کتاب در پنل ذخیره شد (اتصال GitHub برقرار نیست)');
+            }
+            
+            // پاک کردن فرم
+            document.getElementById('smartBookTitle').value = '';
+            document.getElementById('smartBookDesc').value = '';
+            document.getElementById('smartBookImage').value = '';
+            document.getElementById('smartBookYear').value = '1403';
         });
-        
-        document.getElementById('smartBookTitle')?.addEventListener('input', updateSmartPreview);
-        document.getElementById('smartBookDescription')?.addEventListener('input', updateSmartPreview);
+
+        // ==================== انتشار هوشمند مقاله ====================
+        document.getElementById('smartPublishArticleBtn').addEventListener('click', async function() {
+            const article = {
+                title: document.getElementById('smartArticleTitle').value,
+                category: document.getElementById('smartArticleCategory').value,
+                date: document.getElementById('smartArticleDate').value || new Date().toLocaleDateString('fa-IR'),
+                keywords: document.getElementById('smartArticleKeywords').value,
+                abstract: document.getElementById('smartArticleAbstract').value
+            };
+            
+            if (!article.title || !article.abstract) {
+                showAlert('error', 'خطا', 'عنوان و چکیده مقاله را وارد کنید');
+                return;
+            }
+            
+            // ذخیره محلی
+            let articles = loadFromLocalStorage('articles') || [];
+            articles.push({ ...article, id: Date.now() });
+            saveToLocalStorage('articles', articles);
+            loadArticlesTable();
+            
+            // ساخت کارت مقاله
+            const cardUpdate = smartUpdater.updateArticleCard(article);
+            
+            // انتشار در GitHub
+            if (githubManager) {
+                try {
+                    const indexResult = await githubManager.getFile('index.html');
+                    if (indexResult.success) {
+                        let content = indexResult.content;
+                        const tabId = article.category;
+                        
+                        if (content.includes(`id="${tabId}"`)) {
+                            const tabPos = content.indexOf(`id="${tabId}"`);
+                            const gridPos = content.indexOf('research-grid', tabPos);
+                            const gridClose = content.indexOf('</div>', gridPos);
+                            
+                            if (gridPos !== -1 && gridClose !== -1) {
+                                content = content.substring(0, gridClose) + cardUpdate.html + content.substring(gridClose);
+                            }
+                        }
+                        
+                        await githubManager.updateFile('index.html', content, `مقاله جدید: ${article.title}`);
+                        showAlert('success', '✅ مقاله منتشر شد', 'مقاله به سایت اضافه شد');
+                    }
+                } catch (error) {
+                    showAlert('warning', '⚠️ مقاله ذخیره شد', 'مقاله در پنل ذخیره شد');
+                }
+            } else {
+                showAlert('success', '✅ مقاله ذخیره شد', 'مقاله در پنل ذخیره شد');
+            }
+            
+            // پاک کردن فرم
+            document.getElementById('smartArticleTitle').value = '';
+            document.getElementById('smartArticleKeywords').value = '';
+            document.getElementById('smartArticleAbstract').value = '';
+            document.getElementById('smartArticleDate').value = '';
+        });
+
+        // ==================== انتشار هوشمند یادداشت ====================
+        document.getElementById('smartPublishNoteBtn').addEventListener('click', async function() {
+            const note = {
+                title: document.getElementById('smartNoteTitle').value,
+                date: document.getElementById('smartNoteDate').value || new Date().toLocaleDateString('fa-IR'),
+                content: document.getElementById('smartNoteContent').value
+            };
+            
+            if (!note.title || !note.content) {
+                showAlert('error', 'خطا', 'عنوان و متن یادداشت را وارد کنید');
+                return;
+            }
+            
+            // ذخیره محلی
+            let notes = loadFromLocalStorage('notes') || [];
+            notes.push({ ...note, id: Date.now() });
+            saveToLocalStorage('notes', notes);
+            loadNotesTable();
+            
+            const timelineUpdate = smartUpdater.updateTimeline(note);
+            
+            if (githubManager) {
+                try {
+                    const indexResult = await githubManager.getFile('index.html');
+                    if (indexResult.success) {
+                        let content = indexResult.content;
+                        if (content.includes('class="timeline"')) {
+                            const timelinePos = content.indexOf('class="timeline"');
+                            const timelineClose = content.indexOf('</div>', content.indexOf('</div>', timelinePos) + 1);
+                            if (timelineClose !== -1) {
+                                content = content.substring(0, timelineClose) + timelineUpdate.html + content.substring(timelineClose);
+                            }
+                        }
+                        await githubManager.updateFile('index.html', content, `یادداشت جدید: ${note.title}`);
+                        showAlert('success', '✅ یادداشت منتشر شد');
+                    }
+                } catch (error) {
+                    showAlert('warning', '⚠️ یادداشت ذخیره شد');
+                }
+            } else {
+                showAlert('success', '✅ یادداشت ذخیره شد');
+            }
+            
+            document.getElementById('smartNoteTitle').value = '';
+            document.getElementById('smartNoteContent').value = '';
+            document.getElementById('smartNoteDate').value = '';
+        });
+
+        // ==================== انتشار هوشمند فراخوان ====================
+        document.getElementById('smartPublishCallBtn').addEventListener('click', async function() {
+            const call = {
+                title: document.getElementById('smartCallTitle').value,
+                description: document.getElementById('smartCallDesc').value,
+                highlight: document.getElementById('smartCallHighlight').value || 'فراخوان جدید'
+            };
+            
+            if (!call.title || !call.description) {
+                showAlert('error', 'خطا', 'عنوان و متن فراخوان را وارد کنید');
+                return;
+            }
+            
+            let calls = loadFromLocalStorage('calls') || [];
+            calls.push({ ...call, id: Date.now() });
+            saveToLocalStorage('calls', calls);
+            loadCallsTable();
+            
+            const callUpdate = smartUpdater.updateCall(call);
+            
+            if (githubManager) {
+                try {
+                    const indexResult = await githubManager.getFile('index.html');
+                    if (indexResult.success) {
+                        let content = indexResult.content;
+                        if (content.includes('class="call-to-action-grid"')) {
+                            const gridPos = content.indexOf('class="call-to-action-grid"');
+                            const gridClose = content.indexOf('</div>', content.indexOf('</div>', gridPos) + 1);
+                            if (gridClose !== -1) {
+                                content = content.substring(0, gridClose) + callUpdate.html + content.substring(gridClose);
+                            }
+                        }
+                        await githubManager.updateFile('index.html', content, `فراخوان جدید: ${call.title}`);
+                        showAlert('success', '✅ فراخوان منتشر شد');
+                    }
+                } catch (error) {
+                    showAlert('warning', '⚠️ فراخوان ذخیره شد');
+                }
+            } else {
+                showAlert('success', '✅ فراخوان ذخیره شد');
+            }
+            
+            document.getElementById('smartCallTitle').value = '';
+            document.getElementById('smartCallDesc').value = '';
+            document.getElementById('smartCallHighlight').value = '';
+        });
+
+        // ==================== ویرایشگر سایت ====================
+        document.getElementById('loadIndexContent').addEventListener('click', async () => {
+            if (!githubManager) { showAlert('error', 'خطا', 'ابتدا GitHub را تنظیم کنید'); return; }
+            const path = githubConfig.pathFa || 'index.html';
+            const res = await githubManager.getFile(path);
+            if (res.success) {
+                document.getElementById('indexContent').value = res.content;
+                showAlert('success', 'بارگذاری شد', 'محتوای صفحه فارسی بارگذاری شد');
+            } else showAlert('error', 'خطا', 'مشکلی در بارگذاری محتوا پیش آمد');
+        });
+
+        document.getElementById('publishIndexContent').addEventListener('click', async () => {
+            if (!githubManager) { showAlert('error', 'خطا', 'ابتدا GitHub را تنظیم کنید'); return; }
+            const content = document.getElementById('indexContent').value;
+            if (!content) { showAlert('error', 'خطا', 'محتوایی وارد کنید'); return; }
+            const res = await githubManager.updateFile(githubConfig.pathFa || 'index.html', content, 'بروزرسانی صفحه فارسی');
+            if (res.success) {
+                showAlert('success', 'صفحه منتشر شد', 'صفحه فارسی با موفقیت بروزرسانی شد');
+                document.getElementById('githubLastPublish').textContent = new Date().toLocaleTimeString('fa-IR');
+            } else showAlert('error', 'خطا', 'مشکلی در انتشار صفحه پیش آمد');
+        });
+
+        // ==================== پیش‌نمایش سایت ====================
+        document.getElementById('previewSiteBtn').addEventListener('click', () => {
+            if (githubConfig) {
+                window.open(`https://${githubConfig.username}.github.io/${githubConfig.repo.replace('.github.io', '')}`, '_blank');
+            } else showAlert('error', 'خطا', 'ابتدا تنظیمات GitHub را انجام دهید');
+        });
+
+        // ==================== راه‌اندازی اولیه ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedSettings();
+            loadAllTables();
+            
+            // تاریخ پیش‌فرض برای فیلدهای تاریخ
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                if (!input.value) input.value = today;
+            });
+        });
+
+        // توابع سراسری برای حذف
+        window.deleteItem = deleteItem;
     </script>
 </body>
 </html>
