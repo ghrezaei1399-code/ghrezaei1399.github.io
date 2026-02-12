@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <tit
-        le>دکتر غلامرضا رضائی | خرد + فناوری + عدالت دیجیتال</title>
+    <title>دکتر غلامرضا رضائی | خرد + فناوری + عدالت دیجیتال</title>
     
     <!-- متا تگ‌های SEO -->
     <meta name="description" content="دکتر غلامرضا رضائی - معمار تحول سازمانی، نظریه‌پرداز هوش مصنوعی انسان‌محور، شاعر و نویسنده. تلفیق خرد انسانی با فناوری برای عدالت دیجیتال.">
@@ -30,57 +29,7 @@
     <!-- پیش‌بارگذاری منابع مهم -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com/ajax/libs">
-    <script>
-    async function loadBooksGallery() {
-        try {
-            const response = await fetch('https://api.github.com/repos/ghrezaei1399-code/ghrezaei1399.github.io/contents/books');
-            const files = await response.json();
-            const bookFiles = files.filter(f => f.name.endsWith('.html'));
-            
-            let booksHtml = '';
-            
-            for (const file of bookFiles.slice(-6).reverse()) {
-                const bookResponse = await fetch(file.download_url);
-                const bookHtml = await bookResponse.text();
-                
-                const titleMatch = bookHtml.match(/<h1>(.*?)<\/h1>/);
-                const title = titleMatch ? titleMatch[1] : file.name.replace('.html', '');
-                
-                const descMatch = bookHtml.match(/<p>(.*?)<\/p>\s*<\/div>/);
-                const description = descMatch ? descMatch[1].substring(0, 100) + '...' : '';
-                
-                const yearMatch = bookHtml.match(/<p>📅 سال: (.*?)<\/p>/);
-                const year = yearMatch ? yearMatch[1] : '';
-                
-                booksHtml += `
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="book-card h-100">
-                            <div class="book-cover">
-                                <img src="${file.download_url.replace('raw', 'pages').replace('.html', '.jpg')}" 
-                                     onerror="this.src='/images/default-book.jpg'"
-                                     alt="${title}">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="book-title">${title}</h5>
-                                <p class="book-description">${description}</p>
-                                <span class="book-year">${year}</span>
-                                <a href="/books/${file.name}" class="btn btn-sm btn-outline-primary mt-2">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            const gallery = document.getElementById('booksGallery');
-            if (gallery) {
-                gallery.innerHTML = booksHtml;
-            }
-        } catch (error) {
-            console.log('خطا:', error);
-        }
-    }
-    window.addEventListener('load', loadBooksGallery);
-</script>
+    
     <!-- فونت‌ها و کتابخانه‌ها -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/font.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1198,12 +1147,11 @@
     </div>
     
     <!-- ========== دکمه زبان (جداگانه) ========== -->
-   <div class="lang-switcher">
-    <a href="https://ghrezaei1399-code.github.io/ghrezaei-english-site/" class="lang-btn">
-        <i class="fas fa-globe"></i> English
-        <span style="display: block; font-size: 10px; opacity: 0.8;">(Coming soon)</span>
-    </a>
-</div>
+    <div class="lang-switcher">
+        <a href="#" class="lang-btn" id="languageSwitch">
+            <i class="fas fa-globe"></i> English
+        </a>
+    </div>
     
     <!-- ========== هدر اصلی ========== -->
     <header class="main-header" role="banner" id="main-content">
@@ -1437,7 +1385,7 @@
     <section id="books" class="books-slideshow">
         <h2 class="section-title">آثار ادبی و اشعار منتشر شده</h2>
         <div class="books-slider">
-           <div class="books-grid" id="booksGallery">
+            <div class="books-track" id="booksTrack"></div>
         </div>
         
         <!-- توضیحات کتاب‌ها -->
