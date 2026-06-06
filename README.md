@@ -30,8 +30,8 @@
         if (oldMarquee) oldMarquee.remove();
         
         const marqueeData = [
-            "📊 ۱۸ مقاله علمی بین‌المللی",
-            "📚 ۴ کتاب شعر منتشر شده", 
+            "📊 35 مقاله علمی بین‌المللی",
+            "📚 ۴ کتاب شعر و 5 کتاب داستان و یک کتاب آموزش هنر هوشمند نگاری و 5 کتاب تمدنی منتشر شده", 
             "🧠 ۳۳+ نظریه هوش مصنوعی",
             "📝 ۲۰۰۰+ یادداشت روزانه",
             "⚖️ معمار تحول سازمانی",
@@ -2604,8 +2604,8 @@
     <!-- نوار متحرک بالایی -->
     <div class="top-marquee" role="marquee" aria-label="اطلاعات مهم سایت">
         <div class="marquee-content">
-            <span><i class="fas fa-star"></i> 19 مقاله علمی با ثبت بین‌المللی (DOI)</span>
-            <span><i class="fas fa-book"></i> 4 کتاب شعر و 13 کتاب در حال اخذ مجوز</span>
+            <span><i class="fas fa-star"></i> 35 مقاله علمی با ثبت بین‌المللی (DOI)</span>
+            <span><i class="fas fa-book"></i> 4 کتاب شعر و 5 کتاب داستان و 5 کتاب تمدنی چاپ شده</span>
             <span><i class="fas fa-brain"></i> 34+ نظریه در حوزه هوش مصنوعی و تحول سازمانی</span>
             <span><i class="fas fa-users"></i> 2000+ یادداشت روزانه منتشر شده</span>
             <span><i class="fas fa-balance-scale"></i> معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی</span>
@@ -2640,7 +2640,7 @@
                                 <i class="fas fa-balance-scale"></i> واعظ جنبش بیداری و عدالت دیجیتال
                             </div>
                             <div class="title-badge">
-                                <i class="fas fa-brain"></i> محقق و نظریه‌پرداز هوش مصنوعی انسان‌محور
+                                <i class="fas fa-brain"></i> محقق و نظریه‌پرداز هوش مصنوعی انسان‌محور و گذار تمدنی
                             </div>
                             <div class="title-badge">
                                 <i class="fas fa-pen-nib"></i> شاعر و داستان‌نویس
@@ -2696,7 +2696,7 @@
             <div class="call-card shadow-hover fade-in-up" style="animation-delay: 0.1s">
                 <div class="call-icon icon-float">🏛️</div>
                 <h3>کشورها و دولت‌ها</h3>
-                <p>اجرای طرح‌های ملی تحول دیجیتال و هوش مصنوعی انسان‌محور. بیش از ۱۰ طرح آماده اجرا با الحاقیات کامل.</p>
+                <p>اجرای طرح‌های ملی تحول دیجیتال و هوش مصنوعی انسان‌محور. بیش از ۱8 طرح آماده اجرا با الحاقیات کامل.</p>
                 <div class="call-highlight">مشارکت در پروژه‌های کلان ملی</div>
                 <button class="call-action-btn show-form-btn" aria-label="ارسال درخواست همکاری با کشورها">
                     ارسال درخواست همکاری
@@ -2754,8 +2754,8 @@
                 <p>کلیه آثار ادبی و علمی من به صورت رایگان در دسترس محرومین قرار می‌گیرد.</p>
                 <ul>
                     <li>۴ کتاب شعر منتشر شده</li>
-                    <li>۱۳ کتاب در حال اخذ مجوز</li>
-                    <li>۱۸ مقاله علمی رایگان</li>
+                    <li>10 کتاب داستان و مقاله ی تمدنی منتشر شده</li>
+                    <li>چندین مقاله علمی رایگان</li>
                 </ul>
             </div>
             
