@@ -11,6 +11,14 @@ const Brain = {
             const response = await fetch(this.memoryFile);
 
             const memory = await response.json();
+            const result = await ArticleAgent.scan(memory);
+
+document.getElementById("brain-status").innerHTML = `
+<b>مغز فعال شد.</b><br><br>
+مقاله‌های موجود در مخزن: ${result.scanned}<br>
+مقاله‌های جدید: ${result.processed}<br>
+ثبت‌شده در حافظه: ${Object.keys(memory.articles).length}
+`;
 for (const agent of agents){
 
     const result = await agent.scan(memory);
