@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "1.0",
+    version: "2.0",
 
     async scan(memory){
 
@@ -18,12 +18,10 @@ const ArticleAgent = {
 
             if(!memory.articles[article.title]){
 
-                memory.articles[article.title]={
-                    title:article.title,
-                    file:article.file,
-                    status:"waiting",
-                    capabilities:null
-                };
+                const knowledge =
+                    await Extractors.extract(article);
+
+                memory.articles[article.title] = knowledge;
 
                 processed++;
 
@@ -31,13 +29,16 @@ const ArticleAgent = {
 
         }
 
-        memory.statistics.totalArticles=scanned;
-        memory.statistics.processedArticles=
+        memory.statistics.totalArticles = scanned;
+        memory.statistics.processedArticles =
             Object.keys(memory.articles).length;
 
-        return{
+        return {
+
             scanned,
+
             processed
+
         };
 
     }
