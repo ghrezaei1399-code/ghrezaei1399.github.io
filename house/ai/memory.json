@@ -1,7 +1,20 @@
 {
-  "articles": [],
-  "books": [],
-  "posters": [],
-  "notes": [],
-  "version": "1.0"
+  "version": "1.0",
+
+  "articles": {},
+
+  "books": {},
+
+  "posters": {},
+
+  "notes": {},
+
+  "statistics": {
+
+    "totalArticles": 0,
+
+    "processedArticles": 0
+
+  }
+
 }
