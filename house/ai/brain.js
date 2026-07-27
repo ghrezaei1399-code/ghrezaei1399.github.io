@@ -1,3 +1,7 @@
+const agents = [
+    ArticleAgent
+];
+
 const Brain = {
 
     memoryFile: "ai/memory.json",
@@ -9,27 +13,27 @@ const Brain = {
         try {
 
             const response = await fetch(this.memoryFile);
-
             const memory = await response.json();
-            const result = await ArticleAgent.scan(memory);
 
-document.getElementById("brain-status").innerHTML = `
+            let scanned = 0;
+            let processed = 0;
+
+            for (const agent of agents) {
+
+                const result = await agent.scan(memory);
+
+                scanned += result.scanned;
+                processed += result.processed;
+
+            }
+
+            status.innerHTML = `
 <b>مغز فعال شد.</b><br><br>
-مقاله‌های موجود در مخزن: ${result.scanned}<br>
-مقاله‌های جدید: ${result.processed}<br>
+نسخه حافظه: ${memory.version}<br>
+مقاله‌های موجود در مخزن: ${scanned}<br>
+مقاله‌های جدید: ${processed}<br>
 ثبت‌شده در حافظه: ${Object.keys(memory.articles).length}
 `;
-for (const agent of agents){
-
-    const result = await agent.scan(memory);
-
-    console.log(agent.name, result);
-
-}
-            status.innerHTML =
-                "<b>مغز فعال شد.</b><br>" +
-                "نسخه حافظه: " + memory.version + "<br>" +
-                "تعداد مقاله‌ها: " + memory.articles.length;
 
             console.log(memory);
 
@@ -38,7 +42,7 @@ for (const agent of agents){
         catch (error) {
 
             status.innerHTML =
-                "<b>خطا در بارگذاری حافظه.</b>";
+                "<b>خطا در اجرای مغز.</b>";
 
             console.error(error);
 
@@ -47,9 +51,7 @@ for (const agent of agents){
     }
 
 };
-const agents = [
-    ArticleAgent
-];
+
 document.addEventListener("DOMContentLoaded", () => {
 
     Brain.start();
