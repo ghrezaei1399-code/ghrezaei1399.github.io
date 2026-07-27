@@ -1,12 +1,10 @@
-from pathlib import Path
+Article Reader Agent
 
-print("=== Article Reader Agent ===")
+وظیفه:
+1- فقط فایل‌های مقاله را پردازش می‌کند.
+2- کتاب، پوستر، داستان، یادداشت، فیلم و ... را نادیده می‌گیرد.
+3- خروجی فقط مربوط به همان مقاله است.
+4- هر مقاله خروجی‌های خودش را با همان نام تولید می‌کند.
 
-pdf_files = list(Path(".").glob("*.pdf"))
-
-if not pdf_files:
-    print("No PDF article found.")
-else:
-    print("Found article:")
-    for pdf in pdf_files:
-        print("-", pdf.name)
+این عامل فعلاً فقط مسئول «مقاله» است.
+"""
