@@ -1,17 +1,34 @@
-const SmartHouse = {
+const Brain = {
 
-    version: "0.1",
+    memoryFile: "ai/memory.json",
 
-    status: "ACTIVE",
+    async start() {
 
-    articles: [],
+        const status = document.getElementById("brain-status");
 
-    load() {
+        try {
 
-        console.log("================================");
-        console.log("Smart House Brain Started");
-        console.log("Version:", this.version);
-        console.log("================================");
+            const response = await fetch(this.memoryFile);
+
+            const memory = await response.json();
+
+            status.innerHTML =
+                "<b>مغز فعال شد.</b><br>" +
+                "نسخه حافظه: " + memory.version + "<br>" +
+                "تعداد مقاله‌ها: " + memory.articles.length;
+
+            console.log(memory);
+
+        }
+
+        catch (error) {
+
+            status.innerHTML =
+                "<b>خطا در بارگذاری حافظه.</b>";
+
+            console.error(error);
+
+        }
 
     }
 
@@ -19,6 +36,6 @@ const SmartHouse = {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    SmartHouse.load();
+    Brain.start();
 
 });
