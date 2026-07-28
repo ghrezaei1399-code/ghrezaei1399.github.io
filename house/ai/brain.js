@@ -12,8 +12,11 @@ const Brain = {
 
         try {
 
-            const response = await fetch(this.memoryFile);
-            const memory = await response.json();
+           const response = await fetch(this.memoryFile);
+const defaultMemory = await response.json();
+
+const memory =
+    await StorageManager.load(defaultMemory);
 
             let scanned = 0;
             let processed = 0;
@@ -40,7 +43,7 @@ const Brain = {
         }
 
         catch (error) {
-
+StorageManager.save(memory);
             status.innerHTML =
                 "<b>خطا در اجرای مغز.</b>";
 
