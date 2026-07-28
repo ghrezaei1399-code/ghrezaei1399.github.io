@@ -1,6 +1,6 @@
 const KnowledgeBuilder = {
 
-    version: "1.0",
+    version: "1.1",
 
     async build(article){
 
@@ -10,21 +10,35 @@ const KnowledgeBuilder = {
 
             title: article.title,
 
-            summary: "",
+            source: article.file,
 
-            sevenCapabilities: [
+            summary: null,
 
-                "", "", "", "", "", "", ""
-
-            ],
+            sevenCapabilities: [],
 
             keywords: [],
 
-            relations: [],
+            relations: {
 
-            created: new Date().toISOString(),
+                books: [],
 
-            status: "waiting"
+                articles: [],
+
+                posters: [],
+
+                rooms: []
+
+            },
+
+            ai: {
+
+                stage: 1,
+
+                state: "discovered",
+
+                lastUpdate: new Date().toISOString()
+
+            }
 
         };
 
