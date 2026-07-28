@@ -38,6 +38,8 @@ const KnowledgeGraph = {
 
         memory.statistics.knowledgeEdges =
             memory.relations.length;
+        memory.statistics.knowledgeNodes =
+    Object.keys(memory.articles).length;
 
     },
 
