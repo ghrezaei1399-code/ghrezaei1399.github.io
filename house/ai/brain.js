@@ -55,12 +55,7 @@ for (const agent of agents) {
 مقاله‌های موجود در مخزن: ${scanned}<br>
 
 مقاله‌های جدید: ${processed}<br>
-
-ثبت‌شده در حافظه: ${articles.length}<br>
-
-گره‌های دانش: ${memory.statistics.knowledgeNodes}<br>
-
-ارتباط‌ها: ${memory.statistics.knowledgeEdges}<br><br>
+ثبت‌شده در حافظه: ${articles.length}<br><br>
 روابط جدید ساخته‌شده: ${relationsCreated}
 <b>وضعیت پردازش:</b><br>
 
