@@ -4,7 +4,7 @@ const agents = [
 
 const Brain = {
 
-    memoryFile: "ai/memory.json",
+    memoryFile: "memory.json",
 
     async start() {
 
