@@ -6,17 +6,51 @@ const KnowledgeBuilder = {
 
         return {
 
-            id: article.title,
+            id: article.id,
 
-            title: article.title,
+            type: article.type,
+
+            language: article.language,
+
+            title: {
+
+                fa: article.title,
+
+                en: ""
+
+            },
 
             source: article.file,
 
-            summary: null,
+            summary: {
 
-            sevenCapabilities: [],
+                fa: "",
 
-            keywords: [],
+                en: ""
+
+            },
+
+            sevenCapabilities: {
+
+                fa: [],
+
+                en: []
+
+            },
+
+            keywords: {
+
+                fa: article.tags || [],
+
+                en: []
+
+            },
+
+            project: article.project,
+
+            domain: article.domain,
+
+            priority: article.priority,
 
             relations: {
 
@@ -26,7 +60,13 @@ const KnowledgeBuilder = {
 
                 posters: [],
 
-                rooms: []
+                rooms: [],
+
+                products: [],
+
+                people: [],
+
+                organizations: []
 
             },
 
@@ -36,7 +76,21 @@ const KnowledgeBuilder = {
 
                 state: "discovered",
 
-                lastUpdate: new Date().toISOString()
+                score: 0,
+
+                lastUpdate: new Date().toISOString(),
+
+                history: [
+
+                    {
+
+                        action: "registered",
+
+                        time: new Date().toISOString()
+
+                    }
+
+                ]
 
             }
 
