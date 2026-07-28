@@ -20,7 +20,7 @@ const StorageManager = {
 
         this.save(memory);
 
-        return memory;
+        return structuredClone(defaultMemory);
 
     },
 
