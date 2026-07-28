@@ -43,10 +43,7 @@ for (const agent of agents) {
 
 }
 
-            KnowledgeGraph.rebuild(memory);
-
-            StorageManager.save(memory);
-
+           
             const articles =
                 Object.values(memory.articles);
 
