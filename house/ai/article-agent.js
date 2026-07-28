@@ -5,7 +5,7 @@ const ArticleAgent = {
     version: "3.0",
 
     async scan(memory){
-
+console.log("ArticleAgent started");
         const response = await fetch("library.json");
 
         const library = await response.json();
