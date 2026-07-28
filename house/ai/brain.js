@@ -22,18 +22,30 @@ const Brain = {
             const memory =
                 await StorageManager.load(defaultMemory);
 
-            let scanned = 0;
-            let processed = 0;
+           let scanned = 0;
+let processed = 0;
+let relationsCreated = 0;
 
-            for (const agent of agents) {
+for (const agent of agents) {
 
-                const result =
-                    await agent.scan(memory);
+    const result =
+        await agent.scan(memory);
 
-                scanned += result.scanned;
-                processed += result.processed;
+    if(agent.name === "Article Reader"){
 
-            }
+        scanned = result.scanned;
+
+        processed = result.processed;
+
+    }
+
+    if(agent.name === "Relation Agent"){
+
+        relationsCreated = result.processed;
+
+    }
+
+}
 
             KnowledgeGraph.rebuild(memory);
 
@@ -56,7 +68,7 @@ const Brain = {
 گره‌های دانش: ${memory.statistics.knowledgeNodes}<br>
 
 ارتباط‌ها: ${memory.statistics.knowledgeEdges}<br><br>
-
+روابط جدید ساخته‌شده: ${relationsCreated}
 <b>وضعیت پردازش:</b><br>
 
 ${articles.map(a =>
