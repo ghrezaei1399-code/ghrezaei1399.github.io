@@ -30,12 +30,22 @@ const memory =
 
             }
 
-            status.innerHTML = `
+           const articles = Object.values(memory.articles);
+
+status.innerHTML = `
 <b>مغز فعال شد.</b><br><br>
 نسخه حافظه: ${memory.version}<br>
 مقاله‌های موجود در مخزن: ${scanned}<br>
 مقاله‌های جدید: ${processed}<br>
-ثبت‌شده در حافظه: ${Object.keys(memory.articles).length}
+ثبت‌شده در حافظه: ${articles.length}<br><br>
+
+<b>وضعیت پردازش:</b><br>
+
+${articles.map(a =>
+`📄 ${a.title}<br>
+مرحله: ${a.ai.state}<br>
+آخرین بروزرسانی: ${a.ai.lastUpdate}<br><br>`
+).join("")}
 `;
 
             console.log(memory);
