@@ -19,7 +19,7 @@ const ArticleAgent = {
             if(!memory.articles[article.title]){
 
                 const knowledge =
-                    await Extractors.extract(article);
+    await KnowledgeBuilder.build(article);
 
                 memory.articles[article.title] = knowledge;
 
