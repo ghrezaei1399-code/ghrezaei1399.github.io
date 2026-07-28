@@ -16,12 +16,12 @@ const ArticleAgent = {
 
             scanned++;
 
-            if(!memory.articles[article.title]){
+            if(!memory.articles[article.id]){
 
                 const knowledge =
     await KnowledgeBuilder.build(article);
 
-                memory.articles[article.title] = knowledge;
+                memory.articles[article.id] = knowledge;
 
                 processed++;
 
