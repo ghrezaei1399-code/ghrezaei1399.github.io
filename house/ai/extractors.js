@@ -1,36 +1,78 @@
 const Extractors = {
 
-    version: "1.0",
+    version: "2.0",
 
     async extract(article){
 
         return {
 
-            title: article.title,
+            id: article.id,
 
-            summary: "",
+            type: article.type,
 
-            capabilities: {
+            language: article.language,
 
-                capability1: "",
+            title: {
 
-                capability2: "",
+                fa: article.title,
 
-                capability3: "",
-
-                capability4: "",
-
-                capability5: "",
-
-                capability6: "",
-
-                capability7: ""
+                en: ""
 
             },
 
-            keywords: [],
+            summary: {
 
-            status: "waiting_ai"
+                fa: "",
+
+                en: ""
+
+            },
+
+            sevenCapabilities: {
+
+                fa: [],
+
+                en: []
+
+            },
+
+            keywords: {
+
+                fa: article.tags || [],
+
+                en: []
+
+            },
+
+            project: article.project,
+
+            domain: article.domain,
+
+            priority: article.priority,
+
+            relations: article.relations,
+
+            ai: {
+
+                stage: 1,
+
+                state: "registered",
+
+                score: 0,
+
+                history: [
+
+                    {
+
+                        action: "registered",
+
+                        time: new Date().toISOString()
+
+                    }
+
+                ]
+
+            }
 
         };
 
