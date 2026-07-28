@@ -12,48 +12,68 @@ const Brain = {
 
         try {
 
-           const response = await fetch(this.memoryFile);
-const defaultMemory = await response.json();
+            const response = await fetch(this.memoryFile);
 
-const memory =
-    await StorageManager.load(defaultMemory);
+            const defaultMemory = await response.json();
+
+            const memory =
+                await StorageManager.load(defaultMemory);
 
             let scanned = 0;
             let processed = 0;
 
             for (const agent of agents) {
 
-                const result = await agent.scan(memory);
+                const result =
+                    await agent.scan(memory);
 
                 scanned += result.scanned;
                 processed += result.processed;
 
             }
 
-           const articles = Object.values(memory.articles);
+            KnowledgeGraph.rebuild(memory);
 
-status.innerHTML = `
+            StorageManager.save(memory);
+
+            const articles =
+                Object.values(memory.articles);
+
+            status.innerHTML = `
 <b>مغز فعال شد.</b><br><br>
+
 نسخه حافظه: ${memory.version}<br>
+
 مقاله‌های موجود در مخزن: ${scanned}<br>
+
 مقاله‌های جدید: ${processed}<br>
-ثبت‌شده در حافظه: ${articles.length}<br><br>
+
+ثبت‌شده در حافظه: ${articles.length}<br>
+
+گره‌های دانش: ${memory.statistics.knowledgeNodes}<br>
+
+ارتباط‌ها: ${memory.statistics.knowledgeEdges}<br><br>
 
 <b>وضعیت پردازش:</b><br>
 
 ${articles.map(a =>
-`📄 ${a.title}<br>
+
+`📄 ${a.title.fa}<br>
+
 مرحله: ${a.ai.state}<br>
+
 آخرین بروزرسانی: ${a.ai.lastUpdate}<br><br>`
+
 ).join("")}
+
 `;
 
             console.log(memory);
 
         }
 
-        catch (error) {
-StorageManager.save(memory);
+        catch(error){
+
             status.innerHTML =
                 "<b>خطا در اجرای مغز.</b>";
 
@@ -65,8 +85,10 @@ StorageManager.save(memory);
 
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
 
-    Brain.start();
+    "DOMContentLoaded",
 
-});
+    () => Brain.start()
+
+);
