@@ -1,12 +1,6 @@
 const agents = [
-
-    MigrationAgent,
-
-    ArticleAgent,
-
-    RelationAgent
-
-];
+     ArticleAgent,
+  ];
 const Brain = {
 
     memoryFile: "memory.json",
