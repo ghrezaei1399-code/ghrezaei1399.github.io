@@ -2,7 +2,7 @@ const RelationAgent = {
 
     name: "Relation Agent",
 
-    version: "1.0",
+    version: "2.0",
 
     async scan(memory){
 
@@ -10,12 +10,18 @@ const RelationAgent = {
 
         let created = 0;
 
-        for(let i=0;i<ids.length;i++){
+        for(let i = 0; i < ids.length; i++){
 
-            for(let j=i+1;j<ids.length;j++){
+            for(let j = i + 1; j < ids.length; j++){
 
                 const a = memory.articles[ids[i]];
                 const b = memory.articles[ids[j]];
+
+                if(a.id === b.id){
+
+                    continue;
+
+                }
 
                 const common = [];
 
@@ -29,13 +35,23 @@ const RelationAgent = {
 
                 }
 
-                if(common.length>0){
+                if(common.length === 0){
+
+                    continue;
+
+                }
+
+                if(!a.relations.articles.includes(b.id)){
 
                     a.relations.articles.push(b.id);
 
-                    b.relations.articles.push(a.id);
-
                     created++;
+
+                }
+
+                if(!b.relations.articles.includes(a.id)){
+
+                    b.relations.articles.push(a.id);
 
                 }
 
