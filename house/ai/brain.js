@@ -1,5 +1,7 @@
 const agents = [
 
+    MigrationAgent,
+
     ArticleAgent,
 
     RelationAgent
