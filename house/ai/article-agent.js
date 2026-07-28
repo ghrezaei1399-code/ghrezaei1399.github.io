@@ -6,7 +6,7 @@ const ArticleAgent = {
 
     async scan(memory){
 
-        const response = await fetch("ai/library.json");
+        const response = await fetch("library.json");
         const library = await response.json();
 
         let scanned = 0;
