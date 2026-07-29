@@ -68,7 +68,11 @@ ${articles.map(a =>
 
 مرحله: ${a.ai.state}<br>
 
-آخرین بروزرسانی: ${a.ai.lastUpdate}<br><br>`
+آخرین بروزرسانی: ${a.ai.lastUpdate}<br>
+
+خلاصه: ${a.summary.fa || "ندارد"}<br>
+
+هفت قابلیت: ${(a.sevenCapabilities.fa || []).join("، ") || "ندارد"}<br><br>`
 
 ).join("")}
 
