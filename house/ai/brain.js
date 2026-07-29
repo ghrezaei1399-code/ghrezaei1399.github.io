@@ -1,7 +1,16 @@
 const agents = [
-     MigrationAgent,
-     ArticleAgent,
-  ];
+    await MigrationAgent.run(memory);
+
+const articleResult =
+    await ArticleAgent.scan(memory);
+
+const relationResult =
+    await RelationAgent.scan(memory);
+
+scanned = articleResult.scanned;
+processed = articleResult.processed;
+relationsCreated = relationResult.processed;
+        ];
 const Brain = {
 
     memoryFile: "memory.json",
