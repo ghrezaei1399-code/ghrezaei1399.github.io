@@ -85,5 +85,3 @@ const StorageManager = {
     }
 
 };
-
-};
