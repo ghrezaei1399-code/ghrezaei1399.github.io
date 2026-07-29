@@ -1,13 +1,8 @@
 const agents = [
-    await MigrationAgent.run(memory);
-
-const articleResult =
-    await ArticleAgent.scan(memory);
-
-const relationResult =
-    await RelationAgent.scan(memory);
-
-scanned = articleResult.scanned;
+    MigrationAgent,
+    ArticleAgent,
+    RelationAgent
+];
 processed = articleResult.processed;
 relationsCreated = relationResult.processed;
         ];
