@@ -2,25 +2,17 @@ const StorageManager = {
 
     key: "RTAI_MEMORY",
 
-    async load(defaultMemory) {
-
-        const local = localStorage.getItem(this.key);
-
-        if (!local) {
-
-            this.save(defaultMemory);
-
-            return defaultMemory;
-
-        }
-
-        let memory = JSON.parse(local);
-
-        memory = this.ensureStructure(memory);
-
-        this.save(memory);
-
-        return memory;
+   async load(defaultMemory) {
+    const local = localStorage.getItem(this.key);
+    if (!local) {
+        this.save(defaultMemory);
+        return defaultMemory;
+    }
+    let memory = JSON.parse(local);
+    memory = this.ensureStructure(memory);
+    this.save(memory);
+    return memory;
+},
 
     },
 
