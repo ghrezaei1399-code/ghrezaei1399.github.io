@@ -6,7 +6,7 @@ const agents = [
 
 const Brain = {
 
-    memoryFile: "memory.json",
+    memoryFile: "/ghrezaei1399.github.io/house/ai/memory.json",
 
     async start() {
 
