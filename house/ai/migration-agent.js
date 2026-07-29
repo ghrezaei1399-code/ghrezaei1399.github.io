@@ -4,7 +4,7 @@ const MigrationAgent = {
 
     version: "1.0",
 
-    async run(memory){
+    async scan(memory){
 
         let migrated = 0;
 
