@@ -3,9 +3,7 @@ const agents = [
     ArticleAgent,
     RelationAgent
 ];
-processed = articleResult.processed;
-relationsCreated = relationResult.processed;
-        ];
+
 const Brain = {
 
     memoryFile: "memory.json",
