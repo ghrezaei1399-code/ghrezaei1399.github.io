@@ -4,7 +4,7 @@ const StorageManager = {
 
     async load(defaultMemory) {
 
-        const local = localStorage.getItem(this.key);
+        const local = null;
 
         if (!local) {
 
