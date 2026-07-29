@@ -4,7 +4,7 @@ const StorageManager = {
 
     async load(defaultMemory) {
 
-        const local = null;
+        const local = localStorage.getItem(this.key);
 
         if (!local) {
 
@@ -20,7 +20,7 @@ const StorageManager = {
 
         this.save(memory);
 
-        return structuredClone(defaultMemory);
+        return memory;
 
     },
 
