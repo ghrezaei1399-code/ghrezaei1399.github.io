@@ -17,7 +17,8 @@ console.log("ArticleAgent started");
         for(const article of library.articles){
 
             scanned++;
-
+delete memory.articles[article.title];
+delete memory.articles[article.title?.fa];
             if(!memory.articles[article.id]){
 
                 memory.articles[article.id] =
@@ -42,7 +43,7 @@ console.log("ArticleAgent started");
 
                 node.ai.lastUpdate =
                     new Date().toISOString();
-
+node.id = article.id;
             }
 
             article.status = "indexed";
