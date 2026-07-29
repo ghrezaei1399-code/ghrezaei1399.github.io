@@ -17,7 +17,7 @@ const Brain = {
 
             const memory =
                 await StorageManager.load(defaultMemory);
-
+console.log(JSON.stringify(memory, null, 2));
            let scanned = 0;
 let processed = 0;
 let relationsCreated = 0;
