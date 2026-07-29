@@ -6,7 +6,7 @@ const agents = [
 
 const Brain = {
 
-    memoryFile: "/ghrezaei1399.github.io/memory.json",
+    memoryFile: "https://ghrezaei1399-code.github.io/memory.json",
 
     async start() {
 
