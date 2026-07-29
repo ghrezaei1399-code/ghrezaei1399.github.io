@@ -1,4 +1,5 @@
 const agents = [
+     MigrationAgent,
      ArticleAgent,
   ];
 const Brain = {
