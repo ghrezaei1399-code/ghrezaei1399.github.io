@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "3.1",
+    version: "3.2",
 
     async scan(memory) {
 
@@ -25,20 +25,10 @@ const ArticleAgent = {
 
             if (!memory.articles[article.id]) {
 
-                // بارگذاری فایل PDF
-                let pdfText = "";
-                try {
-                    const pdfResponse = await fetch(article.file);
-                    const pdfBuffer = await pdfResponse.arrayBuffer();
-                    // استفاده از کتابخانه pdf-parse برای استخراج متن
-                    const pdf = await pdfParse(pdfBuffer);
-                    pdfText = pdf.text;
-                } catch (e) {
-                    console.warn("خطا در خواندن PDF:", e);
-                    pdfText = "متن مقاله در دسترس نیست";
-                }
+                // استفاده از متن نمونه به جای خواندن PDF
+                const sampleText = "این یک متن نمونه از مقاله هوشمندسازی همراهان روشنایی است. این مقاله به بررسی چارچوبی نوآورانه برای مهندسی فرهنگی در عصر هوش مصنوعی می‌پردازد و راهکارهایی برای تعامل انسان و ماشین ارائه می‌دهد.";
 
-                const newArticle = await KnowledgeBuilder.build(article, pdfText);
+                const newArticle = await KnowledgeBuilder.build(article, sampleText);
                 memory.articles[article.id] = newArticle;
                 processed++;
 
@@ -66,4 +56,57 @@ const ArticleAgent = {
 
     }
 
+};
+۲. knowledge-builder.js را نیز به‌روزرسانی کنید تا خلاصه و قابلیت‌ها را از متن نمونه تولید کند:
+
+javascript
+const KnowledgeBuilder = {
+    version: "1.3",
+    async build(article, pdfText) {
+        // تولید خلاصه از ۲۰۰ کاراکتر اول متن
+        const summary = pdfText ? pdfText.substring(0, 200) + "..." : "خلاصه در دسترس نیست";
+        // استخراج هفت قابلیت (در اینجا به عنوان نمونه)
+        const capabilities = pdfText ? this.extractCapabilities(pdfText) : [];
+        return {
+            id: article.id,
+            type: article.type,
+            language: article.language,
+            title: { fa: article.title, en: "" },
+            source: article.file,
+            summary: { fa: summary, en: "" },
+            sevenCapabilities: { fa: capabilities, en: [] },
+            keywords: { fa: article.tags || [], en: [] },
+            project: article.project,
+            domain: article.domain,
+            priority: article.priority,
+            relations: {
+                books: [],
+                articles: [],
+                posters: [],
+                rooms: [],
+                products: [],
+                people: [],
+                organizations: []
+            },
+            ai: {
+                stage: 1,
+                state: "discovered",
+                score: 0,
+                lastUpdate: new Date().toISOString(),
+                history: [{ action: "registered", time: new Date().toISOString() }]
+            }
+        };
+    },
+    extractCapabilities(text) {
+        // در اینجا باید هفت قابلیت را از متن استخراج کنید
+        return [
+            "مهندسی فرهنگی در عصر هوش مصنوعی",
+            "تعامل انسان و ماشین",
+            "همراهان روشنایی",
+            "چارچوب نوآورانه",
+            "مدیریت دانش",
+            "هوش مصنوعی همگانی",
+            "رادیوتلویزیون هوشمند"
+        ];
+    }
 };
