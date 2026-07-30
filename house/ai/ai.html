@@ -4,36 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <title>آزمایشگاه هوش مصنوعی</title>
-    <style>
-        body {
-            font-family: tahoma;
-            margin: 40px;
-            background: #f5f5f5;
-        }
-        .box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,.15);
-        }
-        h1 {
-            color: #0b6fa4;
-        }
-        #brain-status {
-            margin-top: 20px;
-            padding: 15px;
-            background: #eef8ff;
-            font-size: 18px;
-            border-right: 5px solid #0b6fa4;
-        }
-        #articles-container, #statistics-container, #graph-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
+  <style>
+    body {
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+        background: linear-gradient(145deg, #f6f9fc 0%, #e9f1f8 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        direction: rtl;
+    }
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .header {
+        background: #0b6fa4;
+        color: white;
+        padding: 20px 30px;
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(11, 111, 164, 0.2);
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 300;
+    }
+    .header h1 span {
+        font-weight: 700;
+    }
+    .content {
+        background: white;
+        padding: 30px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+    .article-card {
+        background: #fafcff;
+        border: 1px solid #e3edf5;
+        border-radius: 16px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .article-card:hover {
+        border-color: #b8d4e8;
+        box-shadow: 0 6px 16px rgba(0, 80, 130, 0.08);
+        transform: translateY(-2px);
+    }
+    .article-card h3 {
+        color: #0b6fa4;
+        margin-top: 0;
+        font-size: 1.4rem;
+        border-bottom: 2px solid #eef5fa;
+        padding-bottom: 10px;
+    }
+    .article-card p {
+        margin: 10px 0;
+        line-height: 1.8;
+        color: #2c3e50;
+    }
+    .article-card .caps {
+        background: #ecf7ff;
+        padding: 10px 16px;
+        border-radius: 30px;
+        display: inline-block;
+        font-size: 0.9rem;
+        color: #0b6fa4;
+    }
+    .btn-group {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .btn {
+        background: #ecf3f9;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: #0b3f5c;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-weight: 500;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .btn:hover {
+        background: #d4e4f0;
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(11, 111, 164, 0.08);
+    }
+    .btn-primary {
+        background: #0b6fa4;
+        color: white;
+    }
+    .btn-primary:hover {
+        background: #085a86;
+    }
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 16px;
+        background: #f5faff;
+        padding: 20px;
+        border-radius: 16px;
+        margin: 30px 0 20px 0;
+        text-align: center;
+    }
+    .stat-item {
+        background: white;
+        padding: 10px 5px;
+        border-radius: 30px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.02);
+    }
+    .stat-item .number {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #0b6fa4;
+        display: block;
+    }
+    .stat-item .label {
+        font-size: 0.8rem;
+        color: #3a5e77;
+        margin-top: 2px;
+    }
+    #graph-container ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+    }
+    #graph-container li {
+        background: #f0f6fc;
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: #1d4b66;
+        border: 1px solid #dde9f3;
+    }
+    .test-badge {
+        background: #ffe6e6;
+        color: #a13030;
+        padding: 4px 18px;
+        border-radius: 30px;
+        font-size: 0.75rem;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    #brain-status {
+        background: #e2edf8;
+        padding: 15px 20px;
+        border-radius: 30px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        color: #003153;
+        border-right: 6px solid #0b6fa4;
+    }
+    @media (max-width: 600px) {
+        .header h1 { font-size: 1.3rem; }
+        .content { padding: 15px; }
+        .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
 </head>
 
 <body>
