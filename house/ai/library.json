@@ -2,47 +2,13 @@
   "articles": [
     {
       "id": "ART-0001",
-      "type": "article",
-      "language": "fa",
       "title": "مقاله و چکیده ی مقاله هوشمندسازی همراهان روشنایی",
-      "file": "/articles/مقاله-هوشمندسازی-همراهان-روشنایی.pdf",
-      "project": "رادیوتلویزیون هوشمند",
-      "domain": "هوش مصنوعی",
-      "priority": 1,
-      "tags": [
-        "هوش مصنوعی",
-        "رادیو",
-        "تلویزیون",
-        "مدیریت دانش",
-        "همراهان روشنایی"
-      ],
-      "relations": {
-        "books": [],
-        "articles": [],
-        "posters": [],
-        "rooms": []
-      }
+      "file": "/مقاله و چکیده ی مقاله هوشمندسازی همراهان روشنایی.pdf"
     },
     {
       "id": "ART-0002",
-      "type": "article",
-      "language": "fa",
       "title": "عنوان مقاله جدید",
-      "file": "/articles/مقاله-جدید.pdf",
-      "project": "پروژه جدید",
-      "domain": "حوزه جدید",
-      "priority": 2,
-      "tags": [
-        "برچسب۱",
-        "برچسب۲",
-        "برچسب۳"
-      ],
-      "relations": {
-        "books": [],
-        "articles": [],
-        "posters": [],
-        "rooms": []
-      }
+      "file": "/نام-فایل-جدید.pdf"
     }
   ]
 }
