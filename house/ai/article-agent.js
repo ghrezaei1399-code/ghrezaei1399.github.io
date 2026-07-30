@@ -23,16 +23,14 @@ const ArticleAgent = {
             delete memory.articles[article.title];
             delete memory.articles[article.title?.fa];
 
-            if (!memory.articles[article.id]) {
-
-                // استفاده از متن نمونه به جای خواندن PDF
-               const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
-
-                const newArticle = await KnowledgeBuilder.build(article, sampleText);
-                memory.articles[article.id] = newArticle;
-                processed++;
-
-            } else {
+           if (!memory.articles[article.id]) {
+    // استفاده از عنوان واقعی مقاله در متن نمونه
+    const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
+    const newArticle = await KnowledgeBuilder.build(article, sampleText);
+    memory.articles[article.id] = newArticle;
+    processed++;
+} 
+            else {
 
                 const node = memory.articles[article.id];
                 node.project = article.project;
