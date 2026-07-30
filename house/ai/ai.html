@@ -4,207 +4,220 @@
 <head>
     <meta charset="UTF-8">
     <title>آزمایشگاه هوش مصنوعی</title>
-  <style>
-    body {
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-        background: linear-gradient(145deg, #f6f9fc 0%, #e9f1f8 100%);
-        margin: 0;
-        padding: 20px;
-        min-height: 100vh;
-        direction: rtl;
-    }
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-    .header {
-        background: #0b6fa4;
-        color: white;
-        padding: 20px 30px;
-        border-radius: 20px 20px 0 0;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(11, 111, 164, 0.2);
-    }
-    .header h1 {
-        margin: 0;
-        font-size: 1.8rem;
-        font-weight: 300;
-    }
-    .header h1 span {
-        font-weight: 700;
-    }
-    .content {
-        background: white;
-        padding: 30px;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    }
-    .article-card {
-        background: #fafcff;
-        border: 1px solid #e3edf5;
-        border-radius: 16px;
-        padding: 20px 25px;
-        margin-bottom: 25px;
-        transition: all 0.2s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-    .article-card:hover {
-        border-color: #b8d4e8;
-        box-shadow: 0 6px 16px rgba(0, 80, 130, 0.08);
-        transform: translateY(-2px);
-    }
-    .article-card h3 {
-        color: #0b6fa4;
-        margin-top: 0;
-        font-size: 1.4rem;
-        border-bottom: 2px solid #eef5fa;
-        padding-bottom: 10px;
-    }
-    .article-card p {
-        margin: 10px 0;
-        line-height: 1.8;
-        color: #2c3e50;
-    }
-    .article-card .caps {
-        background: #ecf7ff;
-        padding: 10px 16px;
-        border-radius: 30px;
-        display: inline-block;
-        font-size: 0.9rem;
-        color: #0b6fa4;
-    }
-    .btn-group {
-        margin-top: 18px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .btn {
-        background: #ecf3f9;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        color: #0b3f5c;
-        cursor: pointer;
-        transition: all 0.15s;
-        font-weight: 500;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .btn:hover {
-        background: #d4e4f0;
-        transform: scale(1.02);
-        box-shadow: 0 4px 8px rgba(11, 111, 164, 0.08);
-    }
-    .btn-primary {
-        background: #0b6fa4;
-        color: white;
-    }
-    .btn-primary:hover {
-        background: #085a86;
-    }
-    .stat-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 16px;
-        background: #f5faff;
-        padding: 20px;
-        border-radius: 16px;
-        margin: 30px 0 20px 0;
-        text-align: center;
-    }
-    .stat-item {
-        background: white;
-        padding: 10px 5px;
-        border-radius: 30px;
-        box-shadow: 0 1px 6px rgba(0,0,0,0.02);
-    }
-    .stat-item .number {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #0b6fa4;
-        display: block;
-    }
-    .stat-item .label {
-        font-size: 0.8rem;
-        color: #3a5e77;
-        margin-top: 2px;
-    }
-    #graph-container ul {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 12px;
-    }
-    #graph-container li {
-        background: #f0f6fc;
-        padding: 6px 16px;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        color: #1d4b66;
-        border: 1px solid #dde9f3;
-    }
-    .test-badge {
-        background: #ffe6e6;
-        color: #a13030;
-        padding: 4px 18px;
-        border-radius: 30px;
-        font-size: 0.75rem;
-        display: inline-block;
-        margin-bottom: 10px;
-    }
-    #brain-status {
-        background: #e2edf8;
-        padding: 15px 20px;
-        border-radius: 30px;
-        margin-bottom: 25px;
-        font-size: 0.95rem;
-        color: #003153;
-        border-right: 6px solid #0b6fa4;
-    }
-    @media (max-width: 600px) {
-        .header h1 { font-size: 1.3rem; }
-        .content { padding: 15px; }
-        .stat-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-</style>
+    <style>
+        body {
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+            background: linear-gradient(145deg, #f6f9fc 0%, #e9f1f8 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            background: #0b6fa4;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(11, 111, 164, 0.2);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+        .header h1 span {
+            font-weight: 700;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+        .article-card {
+            background: #fafcff;
+            border: 1px solid #e3edf5;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .article-card:hover {
+            border-color: #b8d4e8;
+            box-shadow: 0 6px 16px rgba(0, 80, 130, 0.08);
+            transform: translateY(-2px);
+        }
+        .article-card h3 {
+            color: #0b6fa4;
+            margin-top: 0;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #eef5fa;
+            padding-bottom: 10px;
+        }
+        .article-card p {
+            margin: 10px 0;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+        .article-card .caps {
+            background: #ecf7ff;
+            padding: 10px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #0b6fa4;
+        }
+        .btn-group {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn {
+            background: #ecf3f9;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #0b3f5c;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .btn:hover {
+            background: #d4e4f0;
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(11, 111, 164, 0.08);
+        }
+        .btn-primary {
+            background: #0b6fa4;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #085a86;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            background: #f5faff;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 30px 0 20px 0;
+            text-align: center;
+        }
+        .stat-item {
+            background: white;
+            padding: 10px 5px;
+            border-radius: 30px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.02);
+        }
+        .stat-item .number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b6fa4;
+            display: block;
+        }
+        .stat-item .label {
+            font-size: 0.8rem;
+            color: #3a5e77;
+            margin-top: 2px;
+        }
+        #graph-container ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+        #graph-container li {
+            background: #f0f6fc;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #1d4b66;
+            border: 1px solid #dde9f3;
+        }
+        #brain-status {
+            background: #e2edf8;
+            padding: 15px 20px;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #003153;
+            border-right: 6px solid #0b6fa4;
+        }
+        .technical-info {
+            margin-top: 40px;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #dce6ef;
+            font-size: 0.85rem;
+            color: #2c4a66;
+        }
+        .technical-info summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #0b6fa4;
+        }
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.3rem; }
+            .content { padding: 15px; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h2 style="color:red;text-align:center;">TEST 2026</h2>
-
-    <div class="box">
-        <h1>آزمایشگاه رادیوتلویزیون هوشمند</h1>
-        <p>این صفحه مستقل از سایت اصلی است.</p>
-        <div id="brain-status">در حال راه‌اندازی...</div>
+<div class="container">
+    <div class="header">
+        <h1>آزمایشگاه <span>رادیوتلویزیون هوشمند</span></h1>
+        <p style="margin:5px 0 0;opacity:0.8;">این صفحه مستقل از سایت اصلی است.</p>
     </div>
 
-    <div id="articles-container"></div>
-    <div id="statistics-container"></div>
-    <div id="graph-container"></div>
+    <div class="content">
+        <div id="brain-status">در حال راه‌اندازی...</div>
 
-    <!-- کتابخانه‌های خارجی -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
+        <div id="articles-container"></div>
+        <div id="statistics-container"></div>
+        <div id="graph-container"></div>
 
-    <!-- فایل‌های اصلی (به ترتیب وابستگی) -->
-    <script src="./storage.js"></script>
-    <script src="./self-healing.js"></script>
-    <script src="./ui-display.js"></script>
-    <script src="./handler.js"></script>
-    <script src="./knowledge-builder.js"></script>
-    <script src="./article-agent.js"></script>
-    <script src="./graph.js"></script>
-    <script src="./relation-agent.js"></script>
-    <script src="./migration-agent.js"></script>
-    <script src="./brain.js"></script>
+        <!-- بخش اطلاعات فنی (جمع‌شونده) -->
+        <details class="technical-info">
+            <summary>وضعیت فنی (برای عیب‌یابی)</summary>
+            <div id="technical-details"></div>
+        </details>
+    </div>
+</div>
 
-    <script>
-        console.log("AI PAGE LOADED");
-        console.log(window.location.href);
-    </script>
+<!-- کتابخانه‌های خارجی -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
+
+<!-- فایل‌های اصلی -->
+<script src="./storage.js"></script>
+<script src="./self-healing.js"></script>
+<script src="./ui-display.js"></script>
+<script src="./handler.js"></script>
+<script src="./knowledge-builder.js"></script>
+<script src="./article-agent.js"></script>
+<script src="./graph.js"></script>
+<script src="./relation-agent.js"></script>
+<script src="./migration-agent.js"></script>
+<script src="./brain.js"></script>
+
+<script>
+    console.log("AI PAGE LOADED");
+    console.log(window.location.href);
+</script>
 
 </body>
-
 </html>
