@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "3.6",
+    version: "3.7",
 
     async scan(memory) {
 
@@ -26,9 +26,12 @@ const ArticleAgent = {
             if (!memory.articles[article.id]) {
 
                 // خواندن متن واقعی از فایل PDF
-                let pdfText = "";
+                 let pdfText = "";
                 try {
                     const pdfResponse = await fetch(article.file);
+                    if (!pdfResponse.ok) {
+                        throw new Error(`HTTP error! status: ${pdfResponse.status}`);
+                    }
                     const pdfBuffer = await pdfResponse.arrayBuffer();
                     const pdf = await pdfParse(pdfBuffer);
                     pdfText = pdf.text;
