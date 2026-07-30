@@ -26,7 +26,7 @@ const ArticleAgent = {
             if (!memory.articles[article.id]) {
 
                 // استفاده از متن نمونه به جای خواندن PDF
-                const sampleText = "این یک متن نمونه از مقاله هوشمندسازی همراهان روشنایی است. این مقاله به بررسی چارچوبی نوآورانه برای مهندسی فرهنگی در عصر هوش مصنوعی می‌پردازد و راهکارهایی برای تعامل انسان و ماشین ارائه می‌دهد. هوش مصنوعی همراهان روشنایی به عنوان یک چارچوب نوین برای مدیریت دانش و فرهنگ در عصر دیجیتال معرفی شده است.";
+               const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
 
                 const newArticle = await KnowledgeBuilder.build(article, sampleText);
                 memory.articles[article.id] = newArticle;
