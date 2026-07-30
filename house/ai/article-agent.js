@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "3.7",
+    version: "3.8",
 
     async scan(memory) {
 
@@ -25,22 +25,9 @@ const ArticleAgent = {
 
             if (!memory.articles[article.id]) {
 
-                // خواندن متن واقعی از فایل PDF
-                 let pdfText = "";
-                try {
-                    const pdfResponse = await fetch(article.file);
-                    if (!pdfResponse.ok) {
-                        throw new Error(`HTTP error! status: ${pdfResponse.status}`);
-                    }
-                    const pdfBuffer = await pdfResponse.arrayBuffer();
-                    const pdf = await pdfParse(pdfBuffer);
-                    pdfText = pdf.text;
-                } catch (e) {
-                    console.warn("خطا در خواندن PDF:", e);
-                    pdfText = "متن مقاله در دسترس نیست";
-                }
-
-                const newArticle = await KnowledgeBuilder.build(article, pdfText);
+                // استفاده از متن نمونه برای تست
+                const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
+                const newArticle = await KnowledgeBuilder.build(article, sampleText);
                 memory.articles[article.id] = newArticle;
                 processed++;
 
