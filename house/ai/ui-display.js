@@ -65,7 +65,7 @@ submitPurchase(articleId) {
     alert('✅ درخواست خرید شما ثبت شد. ادمین با شما تماس خواهد گرفت.');
     document.querySelector('div[style*="fixed"]')?.remove();
 }
-   smartComment(articleId) {
+  smartComment(articleId) {
     const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید. هوش مصنوعی به شما پاسخ خواهد داد.`);
     if (comment) {
         const response = `🤖 پاسخ هوشمند: از نظر شما متشکریم. بر اساس تحلیل گراف دانش، این موضوع با مفاهیم "هوش مصنوعی انسان‌محور" و "مهندسی فرهنگی" مرتبط است.`;
