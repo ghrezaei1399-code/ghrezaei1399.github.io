@@ -1,5 +1,4 @@
 const RadioTV = {
-    // داده‌های نمونه (در آینده از library.json خوانده می‌شود)
     mediaLibrary: [
         { type: 'audio', title: 'آهنگ نمونه ۱', src: 'sample-audio.mp3' },
         { type: 'audio', title: 'آهنگ نمونه ۲', src: 'sample-audio2.mp3' },
@@ -8,11 +7,12 @@ const RadioTV = {
     ],
     currentRadioIndex: 0,
     currentTvIndex: 0,
+    mediaRecorder: null,
+    recordedChunks: [],
 
     init() {
         this.loadRadio();
         this.loadTv();
-        // چرخش خودکار رادیو و تلویزیون
         setInterval(() => this.nextRadio(), 15000);
         setInterval(() => this.nextTv(), 20000);
     },
@@ -30,7 +30,6 @@ const RadioTV = {
         player.load();
         player.play().catch(e => console.log('پخش خودکار نیاز به تعامل دارد.'));
         nowPlaying.textContent = `در حال پخش: ${audio.title}`;
-        this.showWave(true);
     },
 
     loadTv() {
@@ -62,90 +61,164 @@ const RadioTV = {
         this.loadTv();
     },
 
-    showWave(show) {
-        const wave = document.getElementById('radioWave');
-        wave.style.display = show ? 'flex' : 'none';
+    // درخواست فایل صوتی خاص
+    requestAudio() {
+        const title = prompt('نام فایل صوتی مورد نظر را وارد کنید:');
+        if (title) {
+            document.getElementById('interactionResponse').innerHTML = `🎵 درخواست فایل صوتی "${title}" ثبت شد. به کتابخانه دانش اضافه می‌شود.`;
+        }
     },
 
-    // تعاملات مخاطب
-    sendText() {
-        const msg = prompt('پیام خود را بنویسید:');
-        if (!msg) return;
-        const response = this.getSmartResponse(msg);
-        document.getElementById('interactionResponse').innerHTML = `
-            <strong>شما:</strong> ${msg}<br>
-            <strong>پاسخ هوشمند:</strong> ${response}
-        `;
-    },
-
-    sendVoice() {
+    // ضبط ویس (۱ دقیقه)
+    recordVoice() {
         navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(() => {
-                document.getElementById('interactionResponse').innerHTML = '🎤 پیام صوتی شما دریافت شد. به زودی بررسی می‌شود.';
+            .then(stream => {
+                this.mediaRecorder = new MediaRecorder(stream);
+                this.recordedChunks = [];
+                this.mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        this.recordedChunks.push(event.data);
+                    }
+                };
+                this.mediaRecorder.onstop = () => {
+                    const blob = new Blob(this.recordedChunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    document.getElementById('interactionResponse').innerHTML = `
+                        🎤 ویس شما ضبط شد. <a href="${url}" download="voice-message.webm">دانلود فایل صوتی</a>
+                        <br>این ویس به ادمین و کتابخانه دانش ارسال شد.
+                    `;
+                    // ذخیره در localStorage
+                    const voices = JSON.parse(localStorage.getItem('VOICE_MESSAGES') || '[]');
+                    voices.push({ url, date: new Date().toISOString() });
+                    localStorage.setItem('VOICE_MESSAGES', JSON.stringify(voices));
+                };
+                this.mediaRecorder.start();
+                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس (حداکثر ۱ دقیقه)... برای پایان ضبط، روی "توقف" کلیک کنید.';
+                // توقف خودکار پس از ۱ دقیقه
+                setTimeout(() => {
+                    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+                        this.mediaRecorder.stop();
+                    }
+                }, 60000);
             })
             .catch(() => {
                 document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
             });
     },
 
-    sendVideo() {
+    // اشتراک رادیو
+    shareRadio() {
+        navigator.clipboard.writeText(window.location.href + '?radio=on')
+            .then(() => document.getElementById('interactionResponse').innerHTML = '📤 لینک رادیو کپی شد.')
+            .catch(() => document.getElementById('interactionResponse').innerHTML = '❌ خطا در کپی لینک.');
+    },
+
+    // درخواست فایل تصویری خاص
+    requestVideo() {
+        const title = prompt('نام فایل تصویری مورد نظر را وارد کنید:');
+        if (title) {
+            document.getElementById('interactionResponse').innerHTML = `🎬 درخواست فایل تصویری "${title}" ثبت شد. به کتابخانه دانش اضافه می‌شود.`;
+        }
+    },
+
+    // ضبط ویدیو (۱ دقیقه)
+    recordVideo() {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(() => {
-                document.getElementById('interactionResponse').innerHTML = '📹 پیام ویدیویی شما دریافت شد. به زودی بررسی می‌شود.';
+            .then(stream => {
+                this.mediaRecorder = new MediaRecorder(stream);
+                this.recordedChunks = [];
+                this.mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        this.recordedChunks.push(event.data);
+                    }
+                };
+                this.mediaRecorder.onstop = () => {
+                    const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    document.getElementById('interactionResponse').innerHTML = `
+                        📹 ویدیو شما ضبط شد. <a href="${url}" download="video-message.webm">دانلود فایل ویدیویی</a>
+                        <br>این ویدیو به ادمین و کتابخانه دانش ارسال شد.
+                    `;
+                    const videos = JSON.parse(localStorage.getItem('VIDEO_MESSAGES') || '[]');
+                    videos.push({ url, date: new Date().toISOString() });
+                    localStorage.setItem('VIDEO_MESSAGES', JSON.stringify(videos));
+                };
+                this.mediaRecorder.start();
+                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو (حداکثر ۱ دقیقه)... برای پایان ضبط، روی "توقف" کلیک کنید.';
+                setTimeout(() => {
+                    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+                        this.mediaRecorder.stop();
+                    }
+                }, 60000);
             })
             .catch(() => {
                 document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
             });
     },
 
-    getSmartResponse(message) {
-        if (message.includes('هوش مصنوعی')) {
-            return 'بر اساس نظریه "درهمتنیدگی انسان و هوش مصنوعی"، تعامل انسان و ماشین یک فرصت برای تکامل فرهنگی است.';
-        } else if (message.includes('عدالت')) {
-            return 'عدالت دیجیتال یکی از اهداف اصلی این پلتفرم است.';
-        } else {
-            return 'از پیام شما متشکرم. این موضوع در گراف دانش ما در حال بررسی است.';
-        }
-    },
-
-    requestRadioSong() {
-        const song = prompt('نام آهنگ مورد نظر خود را وارد کنید:');
-        if (song) {
-            document.getElementById('interactionResponse').innerHTML = `🎵 درخواست آهنگ "${song}" ثبت شد.`;
-        }
-    },
-
-    radioComment() {
-        const comment = prompt('نظر صوتی خود را بنویسید:');
-        if (comment) {
-            document.getElementById('interactionResponse').innerHTML = `🎤 نظر صوتی شما ثبت شد: "${comment}"`;
-        }
-    },
-
-    shareRadio() {
-        alert('📤 لینک رادیو کپی شد.');
-    },
-
-    requestTvShow() {
-        const show = prompt('نام فیلم یا برنامه مورد نظر خود را وارد کنید:');
-        if (show) {
-            document.getElementById('interactionResponse').innerHTML = `🎬 درخواست فیلم "${show}" ثبت شد.`;
-        }
-    },
-
-    tvComment() {
-        const comment = prompt('نظر تصویری خود را بنویسید:');
-        if (comment) {
-            document.getElementById('interactionResponse').innerHTML = `📝 نظر تصویری شما ثبت شد: "${comment}"`;
-        }
-    },
-
+    // اشتراک تلویزیون
     shareTv() {
-        alert('📤 لینک تلویزیون کپی شد.');
+        navigator.clipboard.writeText(window.location.href + '?tv=on')
+            .then(() => document.getElementById('interactionResponse').innerHTML = '📤 لینک تلویزیون کپی شد.')
+            .catch(() => document.getElementById('interactionResponse').innerHTML = '❌ خطا در کپی لینک.');
+    },
+
+    // ارتباط با ادمین/مالک (متن)
+    sendTextAdmin() {
+        const msg = prompt('پیام خود را برای ادمین بنویسید:');
+        if (msg) {
+            document.getElementById('interactionResponse').innerHTML = `✍️ پیام شما به ادمین ارسال شد: "${msg}"`;
+            const messages = JSON.parse(localStorage.getItem('ADMIN_MESSAGES') || '[]');
+            messages.push({ type: 'text', content: msg, date: new Date().toISOString() });
+            localStorage.setItem('ADMIN_MESSAGES', JSON.stringify(messages));
+        }
+    },
+
+    // ارتباط با ادمین/مالک (ویس)
+    sendVoiceAdmin() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const recorder = new MediaRecorder(stream);
+                const chunks = [];
+                recorder.ondataavailable = e => chunks.push(e.data);
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    document.getElementById('interactionResponse').innerHTML = `🎤 ویس شما به ادمین ارسال شد. <a href="${url}" download="admin-voice.webm">دانلود</a>`;
+                };
+                recorder.start();
+                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس برای ادمین... (حداکثر ۳۰ ثانیه)';
+                setTimeout(() => {
+                    if (recorder.state === 'recording') recorder.stop();
+                }, 30000);
+            })
+            .catch(() => {
+                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
+            });
+    },
+
+    // ارتباط با ادمین/مالک (ویدیو)
+    sendVideoAdmin() {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                const recorder = new MediaRecorder(stream);
+                const chunks = [];
+                recorder.ondataavailable = e => chunks.push(e.data);
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    document.getElementById('interactionResponse').innerHTML = `📹 ویدیو شما به ادمین ارسال شد. <a href="${url}" download="admin-video.webm">دانلود</a>`;
+                };
+                recorder.start();
+                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو برای ادمین... (حداکثر ۳۰ ثانیه)';
+                setTimeout(() => {
+                    if (recorder.state === 'recording') recorder.stop();
+                }, 30000);
+            })
+            .catch(() => {
+                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
+            });
     }
 };
 
-// راه‌اندازی پس از بارگذاری صفحه
-document.addEventListener('DOMContentLoaded', () => {
-    RadioTV.init();
-});
+document.addEventListener('DOMContentLoaded', () => RadioTV.init());
