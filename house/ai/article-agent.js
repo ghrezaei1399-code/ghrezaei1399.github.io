@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "3.3",
+    version: "3.4",
 
     async scan(memory) {
 
@@ -20,32 +20,20 @@ const ArticleAgent = {
 
             scanned++;
 
-            // حذف کلیدهای قدیمی بر اساس عنوان
             delete memory.articles[article.title];
             delete memory.articles[article.title?.fa];
 
             if (!memory.articles[article.id]) {
 
-                // بارگذاری فایل PDF و استخراج متن
-                let pdfText = "";
-                try {
-                    const pdfResponse = await fetch(article.file);
-                    const pdfBuffer = await pdfResponse.arrayBuffer();
-                    const pdf = await pdfParse(pdfBuffer);
-                    pdfText = pdf.text;
-                } catch (e) {
-                    console.warn("خطا در خواندن PDF:", e);
-                    pdfText = "متن مقاله در دسترس نیست";
-                }
+                // استفاده از متن نمونه به جای خواندن PDF
+                const sampleText = "این یک متن نمونه از مقاله هوشمندسازی همراهان روشنایی است. این مقاله به بررسی چارچوبی نوآورانه برای مهندسی فرهنگی در عصر هوش مصنوعی می‌پردازد و راهکارهایی برای تعامل انسان و ماشین ارائه می‌دهد. هوش مصنوعی همراهان روشنایی به عنوان یک چارچوب نوین برای مدیریت دانش و فرهنگ در عصر دیجیتال معرفی شده است.";
 
-                // ساخت شیء دانش با استفاده از متن استخراج‌شده
-                const newArticle = await KnowledgeBuilder.build(article, pdfText);
+                const newArticle = await KnowledgeBuilder.build(article, sampleText);
                 memory.articles[article.id] = newArticle;
                 processed++;
 
             } else {
 
-                // به‌روزرسانی مقاله موجود
                 const node = memory.articles[article.id];
                 node.project = article.project;
                 node.domain = article.domain;
