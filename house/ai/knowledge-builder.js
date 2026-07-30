@@ -1,8 +1,17 @@
 const KnowledgeBuilder = {
-    version: "2.0",
+    version: "2.1",
     async build(article, pdfText) {
-        const summary = pdfText && pdfText.length > 20 ? pdfText.substring(0, 200) + "..." : "خلاصه در دسترس نیست";
-        const capabilities = pdfText && pdfText.length > 20 ? this.extractCapabilities(pdfText) : [];
+        // تولید خلاصه از ۲۰۰ کلمه اول متن
+        let summary = "خلاصه در دسترس نیست";
+        let capabilities = [];
+        if (pdfText && pdfText.length > 50) {
+            // استخراج ۲۰۰ کلمه اول به عنوان خلاصه
+            const words = pdfText.split(/\s+/);
+            summary = words.slice(0, 200).join(" ") + "...";
+            
+            // استخراج هفت قابلیت بر اساس کلمات کلیدی
+            capabilities = this.extractCapabilities(pdfText);
+        }
         return {
             id: article.id,
             type: article.type,
@@ -26,7 +35,7 @@ const KnowledgeBuilder = {
             },
             ai: {
                 stage: 1,
-                state: "اولیه", // مقدار اولیه
+                state: "اولیه",
                 score: 0,
                 lastUpdate: new Date().toISOString(),
                 history: [{ action: "registered", time: new Date().toISOString() }]
@@ -34,18 +43,21 @@ const KnowledgeBuilder = {
         };
     },
     extractCapabilities(text) {
-        return [
-            "مهندسی فرهنگی در عصر هوش مصنوعی",
-            "تعامل انسان و ماشین",
-            "همراهان روشنایی",
-            "چارچوب نوآورانه",
-            "مدیریت دانش",
-            "هوش مصنوعی همگانی",
-            "رادیوتلویزیون هوشمند"
+        // استخراج هفت قابلیت بر اساس کلمات کلیدی موجود در متن
+        const keywords = [
+            "هوش مصنوعی", "مهندسی فرهنگی", "تحول سازمانی", "عدالت دیجیتال",
+            "همراهان روشنایی", "مدیریت دانش", "رادیوتلویزیون هوشمند",
+            "نظریه‌پردازی", "عمل‌گرا", "سکوت حیرانی", "ارزش‌ها",
+            "فرهنگ", "دانش", "تعامل", "ماشین", "انسان"
         ];
+        const found = keywords.filter(kw => text.includes(kw));
+        // اگر کمتر از ۷ قابلیت پیدا شد، با موارد پیش‌فرض تکمیل کن
+        while (found.length < 7) {
+            found.push("قابلیت استخراج‌شده");
+        }
+        return found.slice(0, 7);
     },
     updateState(memory) {
-        // به‌روزرسانی مرحله بر اساس روابط
         for (const id in memory.articles) {
             const article = memory.articles[id];
             const relations = article.relations || {};
@@ -62,10 +74,6 @@ const KnowledgeBuilder = {
             if (relations.posters && relations.posters.length > 0) {
                 hasRelation = true;
                 relationTypes.push("پوستر");
-            }
-            if (relations.rooms && relations.rooms.length > 0) {
-                hasRelation = true;
-                relationTypes.push("اتاق");
             }
             if (hasRelation) {
                 article.ai.state = `پیوند با ${relationTypes.join("، ")}`;
