@@ -68,3 +68,31 @@ const FileHandler = {
         }
     }
 };
+// اضافه به handler.js
+const ExternalSearch = {
+    async searchAllSources(query, memory) {
+        let results = [];
+        // جستجو در حافظه داخلی
+        for (const id in memory.articles) {
+            const article = memory.articles[id];
+            if (article.title.fa.includes(query) || article.summary.fa.includes(query)) {
+                results.push({ source: 'داخلی', type: 'مقاله', title: article.title.fa, id: article.id });
+            }
+        }
+        // جستجو در منابع خارجی (از external-sources.json)
+        try {
+            const response = await fetch('external-sources.json');
+            const sources = await response.json();
+            for (const source of sources.sources) {
+                // در اینجا باید درخواست به API یا فایل منبع خارجی ارسال شود
+                // برای نمونه، فقط یک نتیجه ساختگی اضافه می‌کنیم
+                if (source.name === 'انتشارات فرضی') {
+                    results.push({ source: 'انتشارات فرضی', type: 'کتاب', title: 'نمونه کتاب از انتشارات', id: 'EXT-001' });
+                }
+            }
+        } catch (e) {
+            console.warn('خطا در بارگذاری منابع خارجی:', e);
+        }
+        return results;
+    }
+};
