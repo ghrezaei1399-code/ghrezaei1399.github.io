@@ -30,39 +30,62 @@ const UIDisplay = {
         }
     },
     requestPurchase(articleId) {
-        const message = prompt(`لطفاً درخواست خرید خود را برای مقاله/کتاب با شناسه ${articleId} وارد کنید. ادمین با شما تماس خواهد گرفت.`);
-        if (message) {
-            // ذخیره در localStorage
-            const requests = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
-            requests.push({ articleId, message, date: new Date().toISOString() });
-            localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(requests));
-            alert('✅ درخواست شما ثبت شد. ادمین به زودی با شما تماس می‌گیرد.');
-        }
-    },
-    smartComment(articleId) {
-        const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید. هوش مصنوعی به شما پاسخ خواهد داد.`);
-        if (comment) {
-            // پاسخ هوشمند (نمونه)
-            const response = `🤖 پاسخ هوشمند: از نظر شما متشکریم. بر اساس تحلیل گراف دانش، این موضوع با مفاهیم "هوش مصنوعی انسان‌محور" و "مهندسی فرهنگی" مرتبط است.`;
-            alert(`💬 نظر شما ثبت شد.\n\n${response}`);
-            // ذخیره تعامل
-            const interactions = JSON.parse(localStorage.getItem('SMART_INTERACTIONS') || '[]');
-            interactions.push({ articleId, comment, response, date: new Date().toISOString() });
-            localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
-        }
-    },
+    const form = document.createElement('div');
+    form.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:1000; width:90%; max-width:500px; direction:rtl;';
+    form.innerHTML = `
+        <h3 style="margin-top:0;">📩 فرم درخواست خرید</h3>
+        <label>نام و نام خانوادگی: <input type="text" id="fullName" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <label>آدرس (شهر، خیابان، پلاک): <input type="text" id="address" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <label>کد پستی: <input type="text" id="postalCode" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <label>تعداد: <input type="number" id="quantity" value="1" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <label>قیمت هر نسخه الکترونیکی (تومان): <input type="number" id="priceDigital" value="0" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <label>قیمت هر نسخه فیزیکی (تومان): <input type="number" id="pricePhysical" value="0" style="width:100%; padding:8px; margin:5px 0 10px; border:1px solid #ccc; border-radius:8px;"></label>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button onclick="UIDisplay.submitPurchase('${articleId}')" style="background:#1a6a8a; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">ثبت درخواست</button>
+            <button onclick="this.closest('div').remove()" style="background:#eee; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">انصراف</button>
+        </div>
+    `;
+    document.body.appendChild(form);
+},
+submitPurchase(articleId) {
+    const name = document.getElementById('fullName').value;
+    const address = document.getElementById('address').value;
+    const postalCode = document.getElementById('postalCode').value;
+    const quantity = document.getElementById('quantity').value;
+    const priceDigital = document.getElementById('priceDigital').value;
+    const pricePhysical = document.getElementById('pricePhysical').value;
+    if (!name || !address || !postalCode) {
+        alert('❌ لطفاً همه فیلدهای ضروری (نام، آدرس، کد پستی) را پر کنید.');
+        return;
+    }
+    const purchaseData = { articleId, name, address, postalCode, quantity, priceDigital, pricePhysical, date: new Date().toISOString() };
+    const purchases = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
+    purchases.push(purchaseData);
+    localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(purchases));
+    alert('✅ درخواست خرید شما ثبت شد. ادمین با شما تماس خواهد گرفت.');
+    document.querySelector('div[style*="fixed"]')?.remove();
+}
+   smartComment(articleId) {
+    const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید. هوش مصنوعی به شما پاسخ خواهد داد.`);
+    if (comment) {
+        const response = `🤖 پاسخ هوشمند: از نظر شما متشکریم. بر اساس تحلیل گراف دانش، این موضوع با مفاهیم "هوش مصنوعی انسان‌محور" و "مهندسی فرهنگی" مرتبط است.`;
+        alert(`💬 نظر شما ثبت شد.\n\n${response}`);
+        const interactions = JSON.parse(localStorage.getItem('SMART_INTERACTIONS') || '[]');
+        interactions.push({ articleId, comment, response, date: new Date().toISOString() });
+        localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
+    }
+}
     solveProblem(articleId) {
-        const problem = prompt(`مشکل خود را درباره مقاله/کتاب با شناسه ${articleId} شرح دهید. هوش مصنوعی راه‌حل ارائه می‌دهد.`);
-        if (problem) {
-            // جستجوی راه‌حل در گراف و منابع خارجی (نمونه)
-            const solution = `🔍 راه‌حل پیشنهادی: بر اساس جستجو در پایگاه‌های داده، مشکل شما ممکن است با مطالعه "طرح درهمتنیدگی انسان و هوش مصنوعی" مرتبط باشد. همچنین در انتشارات فرضی، کتابی با موضوع مشابه موجود است.`;
-            alert(`🔧 راه‌حل مشکل:\n\n${solution}`);
-            // ذخیره مشکل
-            const issues = JSON.parse(localStorage.getItem('SOLVED_ISSUES') || '[]');
-            issues.push({ articleId, problem, solution, date: new Date().toISOString() });
-            localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
-        }
-    },
+    const problem = prompt(`مشکل خود را درباره مقاله/کتاب با شناسه ${articleId} شرح دهید. هوش مصنوعی راه‌حل ارائه می‌دهد.`);
+    if (problem) {
+        // جستجوی راه‌حل در گراف و منابع خارجی (نمونه)
+        const solution = `🔍 راه‌حل پیشنهادی: بر اساس جستجو در پایگاه‌های داده، مشکل شما ممکن است با مطالعه "طرح درهمتنیدگی انسان و هوش مصنوعی" (شناسه: ART-001) یا کتاب "آوای دل" (شناسه: BK-002) مرتبط باشد. برای دسترسی به این منابع، به بخش "مقالات" یا "کتاب‌ها" در سایت اصلی مراجعه کنید.`;
+        alert(`🔧 راه‌حل مشکل:\n\n${solution}`);
+        const issues = JSON.parse(localStorage.getItem('SOLVED_ISSUES') || '[]');
+        issues.push({ articleId, problem, solution, date: new Date().toISOString() });
+        localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
+    }
+}
     // سایر توابع مانند renderStatistics و renderGraph به همان شکل باقی می‌مانند
     renderStatistics(statistics) {
         const container = document.getElementById('statistics-container');
