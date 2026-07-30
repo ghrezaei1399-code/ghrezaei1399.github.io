@@ -8,6 +8,7 @@ const Brain = {
     memoryFile: "memory.json",
     async start() {
         const status = document.getElementById("brain-status");
+        const technical = document.getElementById("technical-details");
         try {
             await SelfHealing.run();
             const response = await fetch(this.memoryFile);
@@ -27,24 +28,32 @@ const Brain = {
                 }
             }
 
-            // به‌روزرسانی مرحله
             if (KnowledgeBuilder.updateState) {
                 KnowledgeBuilder.updateState(memory);
             }
 
+            // نمایش اطلاعات فنی در بخش technical
+            if (technical) {
+                technical.innerHTML = `
+                    <p><strong>وضعیت:</strong> مغز فعال شد.</p>
+                    <p><strong>نسخه حافظه:</strong> ${memory.version}</p>
+                    <p><strong>مقاله‌های موجود در مخزن:</strong> ${scanned}</p>
+                    <p><strong>مقاله‌های جدید:</strong> ${processed}</p>
+                    <p><strong>ثبت‌شده در حافظه:</strong> ${Object.keys(memory.articles).length}</p>
+                    <p><strong>روابط جدید ساخته‌شده:</strong> ${relationsCreated}</p>
+                `;
+            }
+
+            // نمایش پیام ساده برای مخاطب
+            status.innerHTML = `✅ سیستم آماده است. ${Object.keys(memory.articles).length} مقاله پردازش شد.`;
+
             UIDisplay.renderAll(memory);
-            const articles = Object.values(memory.articles);
-            status.innerHTML = `
-                <b>مغز فعال شد.</b><br><br>
-                نسخه حافظه: ${memory.version}<br>
-                مقاله‌های موجود در مخزن: ${scanned}<br>
-                مقاله‌های جدید: ${processed}<br>
-                ثبت‌شده در حافظه: ${articles.length}<br><br>
-                روابط جدید ساخته‌شده: ${relationsCreated}
-            `;
             console.log(memory);
         } catch (error) {
-            status.innerHTML = "<b>خطا در اجرای مغز.</b>";
+            status.innerHTML = "❌ خطا در اجرای مغز.";
+            if (technical) {
+                technical.innerHTML = `<p style="color:red;">خطا: ${error.message}</p>`;
+            }
             console.error(error);
         }
     }
