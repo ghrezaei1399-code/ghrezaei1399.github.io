@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>آزمایشگاه هوش مصنوعی</title>
+    <title>رادیوتلویزیون هوشمند دکتر رضائی</title>
     <style>
         body {
             font-family: 'Vazir', 'Tahoma', sans-serif;
@@ -173,18 +173,220 @@
             .content { padding: 15px; }
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
         }
-    </style>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazir&display=swap');
+    body {
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+        background: linear-gradient(145deg, #f0f7fe 0%, #ffffff 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        direction: rtl;
+        color: #1a2b3c;
+    }
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(2px);
+        border-radius: 30px;
+        box-shadow: 0 15px 40px rgba(0, 40, 80, 0.12);
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    .header {
+        background: linear-gradient(135deg, #0b3d5c 0%, #1a6a8a 50%, #2a8ab0 100%);
+        color: white;
+        padding: 25px 35px;
+        text-align: center;
+        border-bottom: 4px solid #f7c948;
+        position: relative;
+        overflow: hidden;
+    }
+    .header::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 30% 40%, rgba(255,215,0,0.08) 0%, transparent 70%);
+        animation: shimmer 8s infinite linear;
+        pointer-events: none;
+    }
+    @keyframes shimmer {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 300;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .header h1 span {
+        font-weight: 700;
+        color: #f7c948;
+    }
+    .header p {
+        position: relative;
+        z-index: 1;
+        margin: 6px 0 0;
+    }
+    .header a {
+        color: #f7c948;
+        text-decoration: none;
+    }
+    .content {
+        padding: 30px 35px;
+    }
+    .article-card {
+        background: white;
+        border: 1px solid #e3edf5;
+        border-radius: 20px;
+        padding: 22px 28px;
+        margin-bottom: 25px;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        border-right: 6px solid #1a6a8a;
+    }
+    .article-card:hover {
+        border-color: #b8d4e8;
+        box-shadow: 0 8px 25px rgba(26, 106, 138, 0.10);
+        transform: translateY(-3px);
+    }
+    .article-card h3 {
+        color: #0b3d5c;
+        margin-top: 0;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #eef5fa;
+        padding-bottom: 10px;
+    }
+    .btn {
+        background: #ecf3f9;
+        border: none;
+        padding: 8px 22px;
+        border-radius: 40px;
+        font-size: 0.9rem;
+        color: #0b3f5c;
+        cursor: pointer;
+        transition: 0.15s;
+        font-weight: 500;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+    .btn:hover {
+        background: #d4e4f0;
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(26, 106, 138, 0.10);
+    }
+    .btn-primary {
+        background: #1a6a8a;
+        color: white;
+    }
+    .btn-primary:hover {
+        background: #0b4f6a;
+    }
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 16px;
+        background: #f5faff;
+        padding: 22px;
+        border-radius: 20px;
+        margin: 30px 0 20px 0;
+        text-align: center;
+        border: 1px solid #e3edf5;
+    }
+    .stat-item .number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a6a8a;
+        display: block;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    #graph-container ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+    }
+    #graph-container li {
+        background: #f0f6fc;
+        padding: 6px 18px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        color: #1d4b66;
+        border: 1px solid #dde9f3;
+    }
+    #brain-status {
+        background: #e2edf8;
+        padding: 12px 20px;
+        border-radius: 40px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+        color: #003153;
+        border-right: 6px solid #f7c948;
+    }
+    .technical-info {
+        margin-top: 40px;
+        padding: 15px 22px;
+        background: #fafcfe;
+        border-radius: 20px;
+        border: 1px solid #dce6ef;
+        font-size: 0.85rem;
+        color: #2c4a66;
+    }
+    .technical-info summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #1a6a8a;
+    }
+    @media (max-width: 600px) {
+        .header h1 { font-size: 1.4rem; }
+        .content { padding: 15px; }
+        .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
+    
 </head>
 
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>آزمایشگاه <span>رادیوتلویزیون هوشمند</span></h1>
-        <p style="margin:5px 0 0;opacity:0.8;">این صفحه مستقل از سایت اصلی است.</p>
-    </div>
+        <h1>رادیوتلویزیون هوشمند <span>دکتر غلامرضا رضائی</span></h1>
+    <p style="margin:5px 0 0;opacity:0.9;">معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی انسان‌محور</p>
+    <p style="margin:5px 0 0;opacity:0.7; font-size:0.9rem;">📧 ghrezaei1399@gmail.com | 🔗 <a href="https://www.linkedin.com/in/rezaei-researcher" style="color:white;text-decoration:underline;">LinkedIn</a></p>
+</div>
 
     <div class="content">
+       <!-- بخش نمایشگر و پخش‌کننده -->
+<div style="display:flex; flex-wrap:wrap; gap:20px; margin:30px 0; padding:20px; background:#f0f7fe; border-radius:20px; border:1px solid #dce6ef;">
+    <div style="flex:2; min-width:250px;">
+        <h4 style="color:#0b3d5c; margin-top:0;">📺 نمایشگر محتوا</h4>
+        <div id="media-display" style="background:#dce6ef; height:150px; border-radius:16px; display:flex; align-items:center; justify-content:center; color:#3a5e77; border:2px dashed #b0c8da;">
+            تصویر یا ویدئو در اینجا نمایش داده می‌شود
+        </div>
+    </div>
+    <div style="flex:1; min-width:180px;">
+        <h4 style="color:#0b3d5c; margin-top:0;">🎧 پخش‌کننده</h4>
+        <div style="background:white; padding:15px; border-radius:16px; border:1px solid #dce6ef;">
+            <p style="margin:0 0 8px; font-size:0.9rem;">پخش نمونه صدا</p>
+            <audio controls style="width:100%;">
+                <source src="#" type="audio/mpeg">
+                مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
+            </audio>
+            <p style="margin:12px 0 0; font-size:0.8rem; color:#3a5e77;">📹 پخش ویدئوی نمونه</p>
+            <video controls style="width:100%; max-height:120px; border-radius:8px;">
+                <source src="#" type="video/mp4">
+                مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
+            </video>
+        </div>
+    </div>
+</div> 
         <div id="brain-status">در حال راه‌اندازی...</div>
 
         <div id="articles-container"></div>
