@@ -123,3 +123,42 @@ const UIDisplay = {
         this.renderGraph(memory.relations || []);
     }
 };
+// اضافه به UIDisplay برای پخش خودکار و چرخه محتوا
+const PlayerManager = {
+    startAutoPlay() {
+        const player = document.getElementById('mainPlayer');
+        if (player) {
+            // در آینده، اینجا می‌توان لینک مدیا را از حافظه خواند
+            player.src = "sample-video.mp4"; // مسیر نمونه
+            player.play().catch(e => console.log('پخش خودکار نیاز به تعامل کاربر دارد.'));
+        }
+        this.startRotation();
+    },
+    startRotation() {
+        const container = document.getElementById('rotationContent');
+        if (!container) return;
+        const items = [
+            { title: 'مقاله: هوشمندسازی همراهان روشنایی', desc: 'چارچوبی برای مهندسی فرهنگی' },
+            { title: 'کتاب: آوای دل', desc: 'مجموعه اشعار عاشقانه' },
+            { title: 'پوستر: همایش بیداری دیجیتال', desc: 'فراخوان همکاری جهانی' }
+        ];
+        let index = 0;
+        setInterval(() => {
+            const item = items[index % items.length];
+            container.innerHTML = `
+                <div style="background:white; padding:15px; border-radius:12px; border-right:4px solid #f7c948;">
+                    <strong>${item.title}</strong>
+                    <p style="margin:5px 0 0; color:#3a5e77;">${item.desc}</p>
+                </div>
+            `;
+            document.getElementById('nowPlayingTitle').textContent = item.title;
+            document.getElementById('nowPlayingDesc').textContent = item.desc;
+            index++;
+        }, 8000); // هر ۸ ثانیه تغییر
+    }
+};
+
+// فراخوانی در زمان بارگذاری صفحه
+document.addEventListener('DOMContentLoaded', () => {
+    PlayerManager.startAutoPlay();
+});
