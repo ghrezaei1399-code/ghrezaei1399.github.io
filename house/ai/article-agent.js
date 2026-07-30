@@ -2,7 +2,7 @@ const ArticleAgent = {
 
     name: "Article Reader",
 
-    version: "3.4",
+    version: "3.5",
 
     async scan(memory) {
 
@@ -23,14 +23,24 @@ const ArticleAgent = {
             delete memory.articles[article.title];
             delete memory.articles[article.title?.fa];
 
-           if (!memory.articles[article.id]) {
-    // استفاده از عنوان واقعی مقاله در متن نمونه
-    const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
-    const newArticle = await KnowledgeBuilder.build(article, sampleText);
-    memory.articles[article.id] = newArticle;
-    processed++;
-} 
-            else {
+            if (!memory.articles[article.id]) {
+
+                let pdfText = "";
+                try {
+                    const pdfResponse = await fetch(article.file);
+                    const pdfBuffer = await pdfResponse.arrayBuffer();
+                    const pdf = await pdfParse(pdfBuffer);
+                    pdfText = pdf.text;
+                } catch (e) {
+                    console.warn("خطا در خواندن PDF:", e);
+                    pdfText = "متن مقاله در دسترس نیست";
+                }
+
+                const newArticle = await KnowledgeBuilder.build(article, pdfText);
+                memory.articles[article.id] = newArticle;
+                processed++;
+
+            } else {
 
                 const node = memory.articles[article.id];
                 node.project = article.project;
