@@ -1,1 +1,14 @@
-
+{
+  "sources": [
+    {
+      "name": "انتشارات فرضی",
+      "type": "library",
+      "path": "https://example.com/books.json"
+    },
+    {
+      "name": "شرکت قطعات الکترونیک",
+      "type": "api",
+      "endpoint": "https://api.example.com/products"
+    }
+  ]
+}
