@@ -29,6 +29,7 @@ const UIDisplay = {
             container.appendChild(div);
         }
     },
+
     requestPurchase(articleId) {
         const name = prompt('نام و نام خانوادگی خود را وارد کنید:');
         if (!name) return;
@@ -38,16 +39,12 @@ const UIDisplay = {
         if (!postalCode) return;
         const quantity = prompt('تعداد مورد نظر را وارد کنید:', '1');
         if (!quantity) return;
-        const priceDigital = prompt('قیمت هر نسخه الکترونیکی (تومان) را وارد کنید:', '0');
-        const pricePhysical = prompt('قیمت هر نسخه فیزیکی (تومان) را وارد کنید:', '0');
         const purchaseData = {
             articleId,
             name,
             address,
             postalCode,
             quantity,
-            priceDigital,
-            pricePhysical,
             date: new Date().toISOString()
         };
         const purchases = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
@@ -55,6 +52,7 @@ const UIDisplay = {
         localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(purchases));
         alert('✅ درخواست خرید شما ثبت شد. ادمین با شما تماس خواهد گرفت.');
     },
+
     smartComment(articleId) {
         const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید:`);
         if (!comment) return;
@@ -64,6 +62,7 @@ const UIDisplay = {
         interactions.push({ articleId, comment, response, date: new Date().toISOString() });
         localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
     },
+
     solveProblem(articleId) {
         const problem = prompt(`مشکل خود را درباره مقاله/کتاب با شناسه ${articleId} شرح دهید:`);
         if (!problem) return;
@@ -73,6 +72,70 @@ const UIDisplay = {
         issues.push({ articleId, problem, solution, date: new Date().toISOString() });
         localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
     },
+
+    // توابع تعامل با رادیو/تلویزیون
+    sendTextInteraction() {
+        const message = prompt('پیام خود را بنویسید:');
+        if (!message) return;
+        const interaction = {
+            type: 'text',
+            message: message,
+            time: new Date().toISOString(),
+            source: 'radio-tv'
+        };
+        this.saveInteraction(interaction);
+        const response = this.getSmartResponse(message);
+        alert(`🤖 پاسخ هوشمند:\n${response}`);
+    },
+
+    startVoiceRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                alert('🎤 ضبط ویس شروع شد. (برای پایان ضبط، این پیام را ببندید.)');
+                const interaction = {
+                    type: 'voice',
+                    message: 'پیام صوتی دریافت شد.',
+                    time: new Date().toISOString(),
+                    source: 'radio-tv'
+                };
+                this.saveInteraction(interaction);
+                alert('✅ پیام صوتی شما دریافت شد. به زودی بررسی می‌شود.');
+            })
+            .catch(err => alert('❌ دسترسی به میکروفون امکان‌پذیر نیست.'));
+    },
+
+    startVideoRecording() {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                alert('📹 ضبط ویدیو شروع شد. (برای پایان ضبط، این پیام را ببندید.)');
+                const interaction = {
+                    type: 'video',
+                    message: 'پیام ویدیویی دریافت شد.',
+                    time: new Date().toISOString(),
+                    source: 'radio-tv'
+                };
+                this.saveInteraction(interaction);
+                alert('✅ پیام ویدیویی شما دریافت شد. به زودی بررسی می‌شود.');
+            })
+            .catch(err => alert('❌ دسترسی به دوربین امکان‌پذیر نیست.'));
+    },
+
+    saveInteraction(interaction) {
+        const interactions = JSON.parse(localStorage.getItem('RADIO_TV_INTERACTIONS') || '[]');
+        interactions.push(interaction);
+        localStorage.setItem('RADIO_TV_INTERACTIONS', JSON.stringify(interactions));
+    },
+
+    getSmartResponse(message) {
+        if (message.includes('هوش مصنوعی')) {
+            return 'بر اساس نظریه "درهمتنیدگی انسان و هوش مصنوعی"، تعامل انسان و ماشین یک فرصت برای تکامل فرهنگی است.';
+        } else if (message.includes('عدالت')) {
+            return 'عدالت دیجیتال یکی از اهداف اصلی این پلتفرم است. لطفاً مقالات "عدالت دیجیتال" را مطالعه کنید.';
+        } else {
+            return 'از پیام شما متشکرم. این موضوع در گراف دانش ما در حال بررسی است. به زودی پاسخ کامل‌تری ارائه می‌شود.';
+        }
+    },
+
     renderStatistics(statistics) {
         const container = document.getElementById('statistics-container');
         if (!container) return;
@@ -85,6 +148,7 @@ const UIDisplay = {
             </div>
         `;
     },
+
     renderGraph(relations) {
         const container = document.getElementById('graph-container');
         if (!container) return;
@@ -110,6 +174,7 @@ const UIDisplay = {
         });
         container.appendChild(list);
     },
+
     renderAll(memory) {
         if (!memory) {
             console.warn('حافظه خالی است');
@@ -123,17 +188,18 @@ const UIDisplay = {
         this.renderGraph(memory.relations || []);
     }
 };
-// اضافه به UIDisplay برای پخش خودکار و چرخه محتوا
+
+// مدیریت پخش خودکار و چرخش محتوا
 const PlayerManager = {
     startAutoPlay() {
         const player = document.getElementById('mainPlayer');
         if (player) {
-            // در آینده، اینجا می‌توان لینک مدیا را از حافظه خواند
-            player.src = "sample-video.mp4"; // مسیر نمونه
+            player.src = "sample-video.mp4";
             player.play().catch(e => console.log('پخش خودکار نیاز به تعامل کاربر دارد.'));
         }
         this.startRotation();
     },
+
     startRotation() {
         const container = document.getElementById('rotationContent');
         if (!container) return;
@@ -154,11 +220,10 @@ const PlayerManager = {
             document.getElementById('nowPlayingTitle').textContent = item.title;
             document.getElementById('nowPlayingDesc').textContent = item.desc;
             index++;
-        }, 8000); // هر ۸ ثانیه تغییر
+        }, 8000);
     }
 };
 
-// فراخوانی در زمان بارگذاری صفحه
 document.addEventListener('DOMContentLoaded', () => {
     PlayerManager.startAutoPlay();
 });
