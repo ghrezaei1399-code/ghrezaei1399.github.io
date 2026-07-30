@@ -1,10 +1,16 @@
 const KnowledgeBuilder = {
-    version: "1.2",
+    version: "1.4",
     async build(article, pdfText) {
         // تولید خلاصه از ۲۰۰ کاراکتر اول متن
-        const summary = pdfText ? pdfText.substring(0, 200) + "..." : "خلاصه در دسترس نیست";
+        const summary = pdfText && pdfText.length > 20 
+            ? pdfText.substring(0, 200) + "..." 
+            : "خلاصه در دسترس نیست";
+        
         // استخراج هفت قابلیت (در اینجا به عنوان نمونه)
-        const capabilities = pdfText ? this.extractCapabilities(pdfText) : [];
+        const capabilities = pdfText && pdfText.length > 20 
+            ? this.extractCapabilities(pdfText) 
+            : [];
+
         return {
             id: article.id,
             type: article.type,
@@ -38,6 +44,14 @@ const KnowledgeBuilder = {
     extractCapabilities(text) {
         // در اینجا باید هفت قابلیت را از متن استخراج کنید
         // فعلاً یک نمونه موقت
-        return ["قابلیت ۱", "قابلیت ۲", "قابلیت ۳", "قابلیت ۴", "قابلیت ۵", "قابلیت ۶", "قابلیت ۷"];
+        return [
+            "مهندسی فرهنگی در عصر هوش مصنوعی",
+            "تعامل انسان و ماشین",
+            "همراهان روشنایی",
+            "چارچوب نوآورانه",
+            "مدیریت دانش",
+            "هوش مصنوعی همگانی",
+            "رادیوتلویزیون هوشمند"
+        ];
     }
 };
