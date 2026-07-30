@@ -32,7 +32,6 @@ const Brain = {
                 KnowledgeBuilder.updateState(memory);
             }
 
-            // نمایش اطلاعات فنی در بخش technical
             if (technical) {
                 technical.innerHTML = `
                     <p><strong>وضعیت:</strong> مغز فعال شد.</p>
@@ -44,9 +43,7 @@ const Brain = {
                 `;
             }
 
-            // نمایش پیام ساده برای مخاطب
             status.innerHTML = `✅ سیستم آماده است. ${Object.keys(memory.articles).length} مقاله پردازش شد.`;
-
             UIDisplay.renderAll(memory);
             console.log(memory);
         } catch (error) {
