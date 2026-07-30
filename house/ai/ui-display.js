@@ -1,10 +1,9 @@
 const UIDisplay = {
-    version: "2.0",
+    version: "3.0",
     renderArticles(articles) {
         const container = document.getElementById('articles-container');
         if (!container) return;
         container.innerHTML = '';
-        // حذف تکرار بر اساس id
         const uniqueArticles = {};
         for (const id in articles) {
             if (!uniqueArticles[articles[id].id]) {
@@ -20,24 +19,61 @@ const UIDisplay = {
                 <p><strong>خلاصه:</strong> ${article.summary.fa || 'ندارد'}</p>
                 <p><strong>هفت قابلیت:</strong> ${(article.sevenCapabilities.fa || []).join('، ') || 'ندارد'}</p>
                 <p><strong>مرحله:</strong> ${article.ai.state}</p>
-                <div>
-                    <button onclick="alert('درخواست مقاله کامل: ${article.id}')">درخواست مقاله کامل</button>
-                    <button onclick="alert('نظر خود را وارد کنید')">نظر دادن</button>
-                    <button onclick="alert('لینک کپی شد')">اشتراک‌گذاری</button>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('${article.id}')">📩 درخواست خرید</button>
+                    <button class="btn" onclick="UIDisplay.smartComment('${article.id}')">💬 نظر هوشمند</button>
+                    <button class="btn" onclick="UIDisplay.solveProblem('${article.id}')">🔧 حل مشکل</button>
                 </div>
                 <hr>
             `;
             container.appendChild(div);
         }
     },
+    requestPurchase(articleId) {
+        const message = prompt(`لطفاً درخواست خرید خود را برای مقاله/کتاب با شناسه ${articleId} وارد کنید. ادمین با شما تماس خواهد گرفت.`);
+        if (message) {
+            // ذخیره در localStorage
+            const requests = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
+            requests.push({ articleId, message, date: new Date().toISOString() });
+            localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(requests));
+            alert('✅ درخواست شما ثبت شد. ادمین به زودی با شما تماس می‌گیرد.');
+        }
+    },
+    smartComment(articleId) {
+        const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید. هوش مصنوعی به شما پاسخ خواهد داد.`);
+        if (comment) {
+            // پاسخ هوشمند (نمونه)
+            const response = `🤖 پاسخ هوشمند: از نظر شما متشکریم. بر اساس تحلیل گراف دانش، این موضوع با مفاهیم "هوش مصنوعی انسان‌محور" و "مهندسی فرهنگی" مرتبط است.`;
+            alert(`💬 نظر شما ثبت شد.\n\n${response}`);
+            // ذخیره تعامل
+            const interactions = JSON.parse(localStorage.getItem('SMART_INTERACTIONS') || '[]');
+            interactions.push({ articleId, comment, response, date: new Date().toISOString() });
+            localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
+        }
+    },
+    solveProblem(articleId) {
+        const problem = prompt(`مشکل خود را درباره مقاله/کتاب با شناسه ${articleId} شرح دهید. هوش مصنوعی راه‌حل ارائه می‌دهد.`);
+        if (problem) {
+            // جستجوی راه‌حل در گراف و منابع خارجی (نمونه)
+            const solution = `🔍 راه‌حل پیشنهادی: بر اساس جستجو در پایگاه‌های داده، مشکل شما ممکن است با مطالعه "طرح درهمتنیدگی انسان و هوش مصنوعی" مرتبط باشد. همچنین در انتشارات فرضی، کتابی با موضوع مشابه موجود است.`;
+            alert(`🔧 راه‌حل مشکل:\n\n${solution}`);
+            // ذخیره مشکل
+            const issues = JSON.parse(localStorage.getItem('SOLVED_ISSUES') || '[]');
+            issues.push({ articleId, problem, solution, date: new Date().toISOString() });
+            localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
+        }
+    },
+    // سایر توابع مانند renderStatistics و renderGraph به همان شکل باقی می‌مانند
     renderStatistics(statistics) {
         const container = document.getElementById('statistics-container');
         if (!container) return;
         container.innerHTML = `
-            <p>کل مقالات: ${statistics.totalArticles || 0}</p>
-            <p>مقالات پردازش‌شده: ${statistics.processedArticles || 0}</p>
-            <p>گره‌های دانش: ${statistics.knowledgeNodes || 0}</p>
-            <p>یال‌های دانش: ${statistics.knowledgeEdges || 0}</p>
+            <div class="stat-grid">
+                <div class="stat-item"><span class="number">${statistics.totalArticles || 0}</span><span class="label">کل مقالات</span></div>
+                <div class="stat-item"><span class="number">${statistics.processedArticles || 0}</span><span class="label">مقالات پردازش‌شده</span></div>
+                <div class="stat-item"><span class="number">${statistics.knowledgeNodes || 0}</span><span class="label">گره‌های دانش</span></div>
+                <div class="stat-item"><span class="number">${statistics.knowledgeEdges || 0}</span><span class="label">یال‌های دانش</span></div>
+            </div>
         `;
     },
     renderGraph(relations) {
@@ -45,10 +81,9 @@ const UIDisplay = {
         if (!container) return;
         container.innerHTML = '';
         if (!relations || relations.length === 0) {
-            container.innerHTML = '<p>هیچ رابطه‌ای ثبت نشده است.</p>';
+            container.innerHTML = '<p>🔹 هیچ رابطه‌ای ثبت نشده است.</p>';
             return;
         }
-        // حذف روابط تکراری
         const uniqueRelations = [];
         const seen = new Set();
         for (const rel of relations) {
@@ -61,7 +96,7 @@ const UIDisplay = {
         const list = document.createElement('ul');
         uniqueRelations.forEach(rel => {
             const li = document.createElement('li');
-            li.textContent = `${rel.from} → ${rel.to} (${rel.type}) - ${new Date(rel.created).toLocaleDateString('fa-IR')}`;
+            li.textContent = `${rel.from} → ${rel.to} (${rel.type})`;
             list.appendChild(li);
         });
         container.appendChild(list);
@@ -71,7 +106,6 @@ const UIDisplay = {
             console.warn('حافظه خالی است');
             return;
         }
-        // به‌روزرسانی مرحله قبل از نمایش
         if (KnowledgeBuilder.updateState) {
             KnowledgeBuilder.updateState(memory);
         }
