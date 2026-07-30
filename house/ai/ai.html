@@ -1,328 +1,142 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <title>رادیو تلویزیون هوشمند دکتر رضائی</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazir&display=swap');
-        body {
-            font-family: 'Vazir', 'Tahoma', sans-serif;
-            background: linear-gradient(145deg, #f0f7fe 0%, #ffffff 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            direction: rtl;
-            color: #1a2b3c;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(2px);
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0, 40, 80, 0.12);
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .header {
-            background: linear-gradient(135deg, #0b3d5c 0%, #1a6a8a 50%, #2a8ab0 100%);
-            color: white;
-            padding: 25px 35px;
-            text-align: center;
-            border-bottom: 4px solid #f7c948;
-            position: relative;
-            overflow: hidden;
-        }
-        .header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(255,215,0,0.08) 0%, transparent 70%);
-            animation: shimmer 8s infinite linear;
-            pointer-events: none;
-        }
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2rem;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        .header h1 span {
-            font-weight: 700;
-            color: #f7c948;
-        }
-        .header p {
-            position: relative;
-            z-index: 1;
-            margin: 6px 0 0;
-        }
-        .header a {
-            color: #f7c948;
-            text-decoration: none;
-        }
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid #f7c948;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            object-fit: cover;
-        }
-        .content {
-            padding: 30px 35px;
-        }
-        .player-container {
-            background: #0b3d5c;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            color: white;
+        /* استایل‌های قبلی با اضافه شدن بخش‌های رادیو و تلویزیون */
+        .radio-tv-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
+            gap: 25px;
+            margin: 25px 0;
         }
-        .player-container video, .player-container audio {
+        .radio-box, .tv-box {
             flex: 1;
-            min-width: 250px;
+            min-width: 300px;
+            background: #0b1f2c;
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            border: 2px solid #f7c948;
+        }
+        .radio-box h2, .tv-box h2 {
+            color: #f7c948;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .radio-player, .tv-player {
+            width: 100%;
             border-radius: 12px;
             background: #000;
+            margin: 10px 0;
         }
-        .now-playing {
-            flex: 1;
-            min-width: 200px;
+        .tv-player {
+            max-height: 300px;
         }
-        .now-playing h3 {
-            margin: 0 0 8px 0;
-            color: #f7c948;
+        .radio-player {
+            max-height: 60px;
         }
-        .interact-buttons {
+        .interact-radio-tv {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
             flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
         }
-        .interact-buttons button {
+        .interact-radio-tv button {
             background: #f7c948;
             border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #0b3d5c;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
-        .interact-buttons button:hover {
-            transform: scale(1.02);
+        .interact-radio-tv button:hover {
             background: #f5c542;
-            box-shadow: 0 4px 12px rgba(247, 201, 72, 0.2);
         }
-        .interact-buttons .record-btn {
-            background: #e74c3c;
-            color: white;
-        }
-        .interact-buttons .record-btn:hover {
-            background: #c0392b;
-        }
-        .rotation-section {
-            background: #f5faff;
-            padding: 15px;
-            border-radius: 16px;
-            margin: 20px 0;
-            border: 1px solid #dce6ef;
-            min-height: 100px;
-        }
-        .article-card {
-            background: white;
-            border: 1px solid #e3edf5;
-            border-radius: 20px;
-            padding: 22px 28px;
-            margin-bottom: 25px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-            border-right: 6px solid #1a6a8a;
-        }
-        .article-card:hover {
-            border-color: #b8d4e8;
-            box-shadow: 0 8px 25px rgba(26, 106, 138, 0.10);
-            transform: translateY(-3px);
-        }
-        .article-card h3 {
-            color: #0b3d5c;
-            margin-top: 0;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #eef5fa;
-            padding-bottom: 10px;
-        }
-        .btn {
-            background: #ecf3f9;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: #0b3f5c;
-            cursor: pointer;
-            transition: 0.15s;
-            font-weight: 500;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-        }
-        .btn:hover {
-            background: #d4e4f0;
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(26, 106, 138, 0.10);
-        }
-        .btn-primary {
-            background: #1a6a8a;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #0b4f6a;
-        }
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 16px;
-            background: #f5faff;
-            padding: 22px;
-            border-radius: 20px;
-            margin: 30px 0 20px 0;
-            text-align: center;
-            border: 1px solid #e3edf5;
-        }
-        .stat-item .number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a6a8a;
-            display: block;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
-        #graph-container ul {
-            list-style: none;
-            padding: 0;
+        .radio-wave {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-        }
-        #graph-container li {
-            background: #f0f6fc;
-            padding: 6px 18px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #1d4b66;
-            border: 1px solid #dde9f3;
-        }
-        #brain-status {
-            background: #e2edf8;
-            padding: 12px 20px;
-            border-radius: 40px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            color: #003153;
-            border-right: 6px solid #f7c948;
-        }
-        .technical-info {
-            margin-top: 40px;
-            padding: 15px 22px;
-            background: #fafcfe;
-            border-radius: 20px;
-            border: 1px solid #dce6ef;
-            font-size: 0.85rem;
-            color: #2c4a66;
-        }
-        .technical-info summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: #1a6a8a;
-        }
-        .contact-box {
-            margin: 30px 0 20px;
-            padding: 20px 25px;
-            background: linear-gradient(145deg, #f0f7fe, #ffffff);
-            border-radius: 20px;
-            border: 1px solid #dce6ef;
-            text-align: center;
-        }
-        .contact-box h3 {
-            color: #0b3d5c;
-            margin-top: 0;
-            border-bottom: 2px solid #f7c948;
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-        .contact-box .contact-info {
-            display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px 25px;
-            margin-top: 15px;
-            font-size: 0.95rem;
+            gap: 4px;
+            height: 30px;
+            margin: 5px 0;
         }
-        .contact-box .contact-info a {
-            color: #1a6a8a;
+        .wave-bar {
+            width: 4px;
+            background: #f7c948;
+            border-radius: 2px;
+            animation: wave 0.8s infinite alternate;
         }
-        @media (max-width: 600px) {
-            .header h1 { font-size: 1.4rem; }
-            .content { padding: 15px; }
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .profile-img { width: 70px; height: 70px; }
+        @keyframes wave {
+            0% { height: 5px; }
+            100% { height: 25px; }
         }
     </style>
 </head>
-
 <body>
 
 <div class="container">
     <div class="header">
-        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center;">
-            <img src="profile.jpg" alt="دکتر غلامرضا رضائی" class="profile-img" onerror="this.style.display='none'">
-            <div>
-                <h1>رادیو تلویزیون هوشمند <span>دکتر غلامرضا رضائی</span></h1>
-                <p style="margin:5px 0 0; opacity:0.9;">معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی انسان‌محور</p>
-            </div>
-        </div>
+        <!-- هدر با تصویر و عنوان -->
     </div>
-
     <div class="content">
         <div id="brain-status">در حال راه‌اندازی...</div>
 
-        <!-- پخش‌کننده خودکار و تعامل -->
-        <div class="player-container">
-            <video id="mainPlayer" controls autoplay muted style="max-height:300px;">
-                <source src="#" type="video/mp4">
-                مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
-            </video>
-            <div class="now-playing">
-                <h3>📡 در حال پخش</h3>
-                <p id="nowPlayingTitle">عنوان محتوا</p>
-                <p id="nowPlayingDesc">توضیحات کوتاه در اینجا نمایش داده می‌شود.</p>
-                <div class="interact-buttons">
-                    <button onclick="UIDisplay.sendTextInteraction()">✍️ ارسال متن</button>
-                    <button class="record-btn" onclick="UIDisplay.startVoiceRecording()">🎤 ارسال ویس</button>
-                    <button class="record-btn" onclick="UIDisplay.startVideoRecording()">📹 ارسال ویدیو</button>
+        <!-- بخش رادیو و تلویزیون -->
+        <div class="radio-tv-container">
+            <!-- رادیو -->
+            <div class="radio-box">
+                <h2>📻 رادیو هوشمند</h2>
+                <audio id="radioPlayer" class="radio-player" controls>
+                    <source src="#" type="audio/mpeg">
+                </audio>
+                <div class="radio-wave" id="radioWave">
+                    <div class="wave-bar" style="animation-delay:0s"></div>
+                    <div class="wave-bar" style="animation-delay:0.1s"></div>
+                    <div class="wave-bar" style="animation-delay:0.2s"></div>
+                    <div class="wave-bar" style="animation-delay:0.3s"></div>
+                    <div class="wave-bar" style="animation-delay:0.4s"></div>
+                    <div class="wave-bar" style="animation-delay:0.5s"></div>
+                </div>
+                <p id="radioNowPlaying">در حال پخش: قطع نشده</p>
+                <div class="interact-radio-tv">
+                    <button onclick="RadioTV.requestRadioSong()">🎵 درخواست آهنگ</button>
+                    <button onclick="RadioTV.radioComment()">🎤 نظر صوتی</button>
+                    <button onclick="RadioTV.shareRadio()">📤 اشتراک</button>
+                </div>
+            </div>
+
+            <!-- تلویزیون -->
+            <div class="tv-box">
+                <h2>📺 تلویزیون هوشمند</h2>
+                <video id="tvPlayer" class="tv-player" controls>
+                    <source src="#" type="video/mp4">
+                </video>
+                <p id="tvNowPlaying">در حال پخش: قطع نشده</p>
+                <div class="interact-radio-tv">
+                    <button onclick="RadioTV.requestTvShow()">🎬 درخواست فیلم</button>
+                    <button onclick="RadioTV.tvComment()">📝 نظر تصویری</button>
+                    <button onclick="RadioTV.shareTv()">📤 اشتراک</button>
                 </div>
             </div>
         </div>
 
-        <!-- بخش چرخش محتوا -->
-        <div class="rotation-section" id="rotationContainer">
-            <p style="color:#0b3d5c; font-weight:bold;">🔄 محتوای در حال چرخش</p>
-            <div id="rotationContent">در حال بارگذاری...</div>
+        <!-- بخش تعامل مخاطب (ارسال متن، ویس، ویدیو) -->
+        <div style="background:#f5faff; padding:20px; border-radius:20px; margin:20px 0; border:1px solid #dce6ef;">
+            <h3 style="color:#0b3d5c; margin-top:0;">💬 تعامل با رادیو/تلویزیون</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                <button onclick="RadioTV.sendText()" class="btn btn-primary">✍️ ارسال متن</button>
+                <button onclick="RadioTV.sendVoice()" class="btn btn-primary" style="background:#e67e22;">🎤 ارسال ویس</button>
+                <button onclick="RadioTV.sendVideo()" class="btn btn-primary" style="background:#c0392b;">📹 ارسال ویدیو</button>
+            </div>
+            <div id="interactionResponse" style="margin-top:15px; padding:10px; background:white; border-radius:12px; min-height:40px;"></div>
         </div>
 
+        <!-- سایر بخش‌های قبلی (مقالات، آمار، گراف) -->
         <div id="articles-container"></div>
         <div id="statistics-container"></div>
         <div id="graph-container"></div>
@@ -332,24 +146,20 @@
             <h3>📬 ارتباط با دکتر رضائی</h3>
             <div class="contact-info">
                 <span>📧 <strong>ایمیل:</strong> ghrezaei1399@gmail.com</span>
-                <span>📧 <strong>جیمیل:</strong> ghrezaei1399@gmail.com</span>
                 <span>🔗 <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank">linkedin.com/in/rezaei-researcher</a></span>
-                <span>📚 <strong>انجمن مقالات:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank">سایت اصلی</a></span>
+                <span>📚 <strong>سایت اصلی:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank">مشاهده</a></span>
             </div>
         </div>
 
-        <!-- بخش اطلاعات فنی -->
+        <!-- بخش فنی -->
         <details class="technical-info">
-            <summary>وضعیت فنی (برای عیب‌یابی)</summary>
+            <summary>وضعیت فنی</summary>
             <div id="technical-details"></div>
         </details>
     </div>
 </div>
 
-<!-- کتابخانه‌های خارجی -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
-
-<!-- فایل‌های اصلی -->
 <script src="./storage.js"></script>
 <script src="./self-healing.js"></script>
 <script src="./ui-display.js"></script>
@@ -360,11 +170,10 @@
 <script src="./relation-agent.js"></script>
 <script src="./migration-agent.js"></script>
 <script src="./brain.js"></script>
-
+<script src="./radio-tv.js"></script>
 <script>
     console.log("AI PAGE LOADED");
     console.log(window.location.href);
 </script>
-
 </body>
 </html>
