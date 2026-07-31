@@ -46,7 +46,7 @@ const SmartProcessor = {
 
     async readPDF(filePath) {
         try {
-            const response = await fetch(filePath);
+            const response = await fetch('/ghrezaei1399.github.io' + filePath);
             if (!response.ok) return null;
             const arrayBuffer = await response.arrayBuffer();
             if (typeof pdfParse === 'undefined') {
