@@ -1,9 +1,9 @@
 const RadioTV = {
     mediaLibrary: [
-        { type: 'audio', title: 'آهنگ نمونه ۱', src: 'sample-audio.mp3' },
-        { type: 'audio', title: 'آهنگ نمونه ۲', src: 'sample-audio2.mp3' },
-        { type: 'video', title: 'ویدیو نمونه ۱', src: 'sample-video.mp4' },
-        { type: 'video', title: 'ویدیو نمونه ۲', src: 'sample-video2.mp4' }
+        { type: 'audio', title: 'آهنگ نمونه ۱', src: 'audio1.mp3.mp3' },
+        { type: 'audio', title: 'آهنگ نمونه ۲', src: 'audio2.mp3.mp3' },
+        { type: 'video', title: 'ویدیو نمونه ۱', src: 'video1.mp4.mp4' },
+        { type: 'video', title: 'ویدیو نمونه ۲', src: 'video2.mp4.mp4' }
     ],
     currentRadioIndex: 0,
     currentTvIndex: 0,
@@ -61,7 +61,6 @@ const RadioTV = {
         this.loadTv();
     },
 
-    // درخواست فایل صوتی خاص
     requestAudio() {
         const title = prompt('نام فایل صوتی مورد نظر را وارد کنید:');
         if (title) {
@@ -69,7 +68,6 @@ const RadioTV = {
         }
     },
 
-    // ضبط ویس (۱ دقیقه)
     recordVoice() {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
@@ -87,14 +85,12 @@ const RadioTV = {
                         🎤 ویس شما ضبط شد. <a href="${url}" download="voice-message.webm">دانلود فایل صوتی</a>
                         <br>این ویس به ادمین و کتابخانه دانش ارسال شد.
                     `;
-                    // ذخیره در localStorage
                     const voices = JSON.parse(localStorage.getItem('VOICE_MESSAGES') || '[]');
                     voices.push({ url, date: new Date().toISOString() });
                     localStorage.setItem('VOICE_MESSAGES', JSON.stringify(voices));
                 };
                 this.mediaRecorder.start();
                 document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس (حداکثر ۱ دقیقه)... برای پایان ضبط، روی "توقف" کلیک کنید.';
-                // توقف خودکار پس از ۱ دقیقه
                 setTimeout(() => {
                     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
                         this.mediaRecorder.stop();
@@ -106,14 +102,12 @@ const RadioTV = {
             });
     },
 
-    // اشتراک رادیو
     shareRadio() {
         navigator.clipboard.writeText(window.location.href + '?radio=on')
             .then(() => document.getElementById('interactionResponse').innerHTML = '📤 لینک رادیو کپی شد.')
             .catch(() => document.getElementById('interactionResponse').innerHTML = '❌ خطا در کپی لینک.');
     },
 
-    // درخواست فایل تصویری خاص
     requestVideo() {
         const title = prompt('نام فایل تصویری مورد نظر را وارد کنید:');
         if (title) {
@@ -121,7 +115,6 @@ const RadioTV = {
         }
     },
 
-    // ضبط ویدیو (۱ دقیقه)
     recordVideo() {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(stream => {
@@ -156,14 +149,12 @@ const RadioTV = {
             });
     },
 
-    // اشتراک تلویزیون
     shareTv() {
         navigator.clipboard.writeText(window.location.href + '?tv=on')
             .then(() => document.getElementById('interactionResponse').innerHTML = '📤 لینک تلویزیون کپی شد.')
             .catch(() => document.getElementById('interactionResponse').innerHTML = '❌ خطا در کپی لینک.');
     },
 
-    // ارتباط با ادمین/مالک (متن)
     sendTextAdmin() {
         const msg = prompt('پیام خود را برای ادمین بنویسید:');
         if (msg) {
@@ -174,7 +165,6 @@ const RadioTV = {
         }
     },
 
-    // ارتباط با ادمین/مالک (ویس)
     sendVoiceAdmin() {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
@@ -197,7 +187,6 @@ const RadioTV = {
             });
     },
 
-    // ارتباط با ادمین/مالک (ویدیو)
     sendVideoAdmin() {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(stream => {
