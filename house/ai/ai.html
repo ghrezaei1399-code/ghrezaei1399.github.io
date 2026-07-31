@@ -361,7 +361,7 @@
                 <audio id="radioPlayer" class="radio-player" controls>
                     <source src="#" type="audio/mpeg">
                 </audio>
-                <div id="radioList"></div> <!-- لیست رادیو -->
+                <div id="radioList"></div>
                 <div class="radio-wave" id="radioWave">
                     <div class="wave-bar" style="animation-delay:0s"></div>
                     <div class="wave-bar" style="animation-delay:0.1s"></div>
@@ -387,7 +387,7 @@
                 <video id="tvPlayer" class="tv-player" controls>
                     <source src="#" type="video/mp4">
                 </video>
-                <div id="tvList"></div> <!-- لیست تلویزیون -->
+                <div id="tvList"></div>
                 <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
                 <div class="interact-radio-tv">
                     <button onclick="RadioTV.requestVideo()">🎬 درخواست فایل تصویری خاص</button>
@@ -400,8 +400,13 @@
             </div>
         </div>
 
-        <!-- بخش تعامل با ادمین/مالک -->
-        <div class="interaction-section">
+        <!-- مقالات و آمار -->
+        <div id="articles-container"></div>
+        <div id="statistics-container"></div>
+        <div id="graph-container"></div>
+
+        <!-- بخش تعامل با ادمین (جابجا شد به پایین و قبل از باکس تماس) -->
+        <div class="interaction-section" id="admin-section">
             <h3>📩 ارتباط با ادمین / مالک</h3>
             <div class="btn-group">
                 <button onclick="RadioTV.sendTextAdmin()">✍️ ارسال متن</button>
@@ -409,12 +414,10 @@
                 <button onclick="RadioTV.sendVideoAdmin()">📹 ارسال ویدیو</button>
             </div>
             <div id="interactionResponse">پاسخ شما در اینجا نمایش داده می‌شود.</div>
+            <p style="font-size:0.85rem; color:#555; margin-top:10px;">
+                ✅ در صورت صلاحدید و با ابزار مناسب با شما تماس خواهیم گرفت.
+            </p>
         </div>
-
-        <!-- مقالات و آمار -->
-        <div id="articles-container"></div>
-        <div id="statistics-container"></div>
-        <div id="graph-container"></div>
 
         <!-- باکس تماس -->
         <div class="contact-box">
