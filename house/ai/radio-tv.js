@@ -1,20 +1,19 @@
 const RadioTV = {
     mediaLibrary: [
-        { type: 'audio', title: 'آهنگ نمونه ۱', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-        { type: 'audio', title: 'آهنگ نمونه ۲', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-        { type: 'video', title: 'ویدیو نمونه ۱', src: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-        { type: 'video', title: 'ویدیو نمونه ۲', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
+        { type: 'audio', title: 'آهنگ نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/audio1.mp3.mp3' },
+        { type: 'audio', title: 'آهنگ نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/audio2.mp3.mp3' },
+        { type: 'video', title: 'ویدیو نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/video1.mp4.mp4' },
+        { type: 'video', title: 'ویدیو نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/video2.mp4.mp4' }
     ],
     currentRadioIndex: 0,
     currentTvIndex: 0,
-    mediaRecorder: null,
-    recordedChunks: [],
 
     init() {
         this.loadRadio();
         this.loadTv();
-        setInterval(() => this.nextRadio(), 15000);
-        setInterval(() => this.nextTv(), 20000);
+        // تنظیم چرخه فقط پس از پایان پخش
+        this.setupRadioCycle();
+        this.setupTvCycle();
     },
 
     loadRadio() {
@@ -28,11 +27,8 @@ const RadioTV = {
         const audio = audios[this.currentRadioIndex % audios.length];
         player.src = audio.src;
         player.load();
-        player.play().catch(e => {
-            console.log('پخش خودکار نیاز به تعامل دارد:', e);
-            nowPlaying.textContent = 'برای پخش، روی دکمه پخش کلیک کنید';
-        });
-        nowPlaying.textContent = `در حال پخش: ${audio.title}`;
+        // پخش خودکار غیرفعال شد
+        nowPlaying.textContent = `آماده پخش: ${audio.title} (برای پخش کلیک کنید)`;
     },
 
     loadTv() {
@@ -46,25 +42,28 @@ const RadioTV = {
         const video = videos[this.currentTvIndex % videos.length];
         player.src = video.src;
         player.load();
-        player.play().catch(e => {
-            console.log('پخش خودکار نیاز به تعامل دارد:', e);
-            nowPlaying.textContent = 'برای پخش، روی دکمه پخش کلیک کنید';
+        // پخش خودکار غیرفعال شد
+        nowPlaying.textContent = `آماده پخش: ${video.title} (برای پخش کلیک کنید)`;
+    },
+
+    setupRadioCycle() {
+        const player = document.getElementById('radioPlayer');
+        player.addEventListener('ended', () => {
+            const audios = this.mediaLibrary.filter(m => m.type === 'audio');
+            if (audios.length === 0) return;
+            this.currentRadioIndex = (this.currentRadioIndex + 1) % audios.length;
+            this.loadRadio();
         });
-        nowPlaying.textContent = `در حال پخش: ${video.title}`;
     },
 
-    nextRadio() {
-        const audios = this.mediaLibrary.filter(m => m.type === 'audio');
-        if (audios.length === 0) return;
-        this.currentRadioIndex = (this.currentRadioIndex + 1) % audios.length;
-        this.loadRadio();
-    },
-
-    nextTv() {
-        const videos = this.mediaLibrary.filter(m => m.type === 'video');
-        if (videos.length === 0) return;
-        this.currentTvIndex = (this.currentTvIndex + 1) % videos.length;
-        this.loadTv();
+    setupTvCycle() {
+        const player = document.getElementById('tvPlayer');
+        player.addEventListener('ended', () => {
+            const videos = this.mediaLibrary.filter(m => m.type === 'video');
+            if (videos.length === 0) return;
+            this.currentTvIndex = (this.currentTvIndex + 1) % videos.length;
+            this.loadTv();
+        });
     },
 
     requestAudio() {
