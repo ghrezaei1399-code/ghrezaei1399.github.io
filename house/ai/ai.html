@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رادیو تلویزیون هوشمند دکتر رضائی</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazir&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;700;900&display=swap');
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +14,7 @@
         }
         body {
             font-family: 'Vazir', 'Tahoma', sans-serif;
-            background: linear-gradient(135deg, #e0f0ff, #f5f9ff);
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
             min-height: 100vh;
             padding: 20px;
             direction: rtl;
@@ -24,12 +23,12 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             border-radius: 40px;
-            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
         .header {
             background: linear-gradient(135deg, #0b3d5c, #1a6a8a, #2a8ab0);
@@ -92,30 +91,30 @@
         .radio-box, .tv-box {
             flex: 1;
             min-width: 320px;
-            background: linear-gradient(145deg, #0b1f2c, #142e3f);
+            background: linear-gradient(145deg, #ffecd2 0%, #fcb69f 100%);
             border-radius: 24px;
             padding: 25px;
-            color: white;
+            color: #1a2b3c;
             border: 2px solid #f7c948;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .radio-box:hover, .tv-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         .radio-box h2, .tv-box h2 {
-            color: #f7c948;
+            color: #0b3d5c;
             margin-top: 0;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
         .radio-player, .tv-player {
             width: 100%;
             border-radius: 12px;
-            background: #000;
+            background: #fff;
             margin: 10px 0;
         }
         .tv-player {
@@ -316,16 +315,18 @@
         }
         .contact-box {
             margin: 30px 0 20px;
-            padding: 20px 25px;
-            background: linear-gradient(145deg, #f0f7fe, #ffffff);
-            border-radius: 20px;
-            border: 1px solid #dce6ef;
+            padding: 25px 30px;
+            background: linear-gradient(145deg, #ffecd2, #fcb69f);
+            border-radius: 30px;
+            border: 2px solid #f7c948;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
         .contact-box h3 {
             color: #0b3d5c;
             margin-top: 0;
-            border-bottom: 2px solid #f7c948;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #f7c948;
             display: inline-block;
             padding-bottom: 8px;
         }
@@ -333,12 +334,20 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px 25px;
-            margin-top: 15px;
-            font-size: 0.95rem;
+            gap: 20px 30px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .contact-box .contact-info span {
+            background: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .contact-box .contact-info a {
             color: #1a6a8a;
+            text-decoration: none;
+            font-weight: 500;
         }
         @media (max-width: 600px) {
             .header h1 { font-size: 1.4rem; }
@@ -347,7 +356,6 @@
             .profile-img { width: 70px; height: 70px; }
             .radio-box, .tv-box { min-width: 260px; }
         }
-        /* اضافه کردن انیمیشن برای کارت‌ها */
         .fade-in {
             animation: fadeIn 0.6s ease-in-out;
         }
@@ -355,6 +363,9 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+        /* نمادهای قدیمی رادیو و تلویزیون با آیکون های فونت‌آوسم */
+        .old-radio-icon { color: #8B4513; }
+        .old-tv-icon { color: #4A4A4A; }
     </style>
 </head>
 <body>
@@ -381,7 +392,7 @@
         <div class="radio-tv-container">
             <!-- رادیو -->
             <div class="radio-box fade-in">
-                <h2><i class="fas fa-radio" style="color:#f7c948;"></i> رادیو هوشمند</h2>
+                <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
                 <audio id="radioPlayer" class="radio-player" controls>
                     <source src="#" type="audio/mpeg">
                 </audio>
@@ -400,14 +411,14 @@
                     <button class="record-btn" onclick="RadioTV.sendVoice()"><i class="fas fa-microphone"></i> ارسال ویس</button>
                     <button onclick="RadioTV.share('رادیو')"><i class="fas fa-share-alt"></i> اشتراک</button>
                 </div>
-                <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
                     💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
                 </p>
             </div>
 
             <!-- تلویزیون -->
             <div class="tv-box fade-in">
-                <h2><i class="fas fa-tv" style="color:#f7c948;"></i> تلویزیون هوشمند</h2>
+                <h2><i class="fas fa-tv old-tv-icon"></i> تلویزیون هوشمند</h2>
                 <video id="tvPlayer" class="tv-player" controls>
                     <source src="#" type="video/mp4">
                 </video>
@@ -418,7 +429,7 @@
                     <button class="record-btn" onclick="RadioTV.sendVideo()"><i class="fas fa-camera"></i> ارسال ویدئو</button>
                     <button onclick="RadioTV.share('تلویزیون')"><i class="fas fa-share-alt"></i> اشتراک</button>
                 </div>
-                <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
                     💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
                 </p>
             </div>
@@ -443,13 +454,13 @@
             </p>
         </div>
 
-        <!-- باکس تماس -->
+        <!-- باکس تماس دکتر رضائی -->
         <div class="contact-box fade-in">
             <h3>📬 ارتباط با دکتر رضائی</h3>
             <div class="contact-info">
-                <span><i class="fas fa-envelope"></i> <strong>ایمیل:</strong> ghrezaei1399@gmail.com</span>
-                <span><i class="fab fa-linkedin"></i> <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank">linkedin.com/in/rezaei-researcher</a></span>
-                <span><i class="fas fa-globe"></i> <strong>سایت اصلی:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank">مشاهده</a></span>
+                <span><i class="fas fa-envelope" style="color:#1a6a8a;"></i> <strong>ایمیل:</strong> ghrezaei1399@gmail.com</span>
+                <span><i class="fab fa-linkedin" style="color:#0a66c2;"></i> <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank">linkedin.com/in/rezaei-researcher</a></span>
+                <span><i class="fas fa-globe" style="color:#2a8ab0;"></i> <strong>سایت اصلی:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank">مشاهده</a></span>
             </div>
         </div>
 
