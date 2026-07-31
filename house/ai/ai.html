@@ -357,37 +357,46 @@
         <div class="radio-tv-container">
             <!-- رادیو -->
             <div class="radio-box">
-             <div id="tvList"></div>   
                 <h2>📻 رادیو هوشمند</h2>
                 <audio id="radioPlayer" class="radio-player" controls>
                     <source src="#" type="audio/mpeg">
                 </audio>
-                  <div id="radioList"></div>  <!-- این خط اضافه می‌شود -->
-                <div id="radioList"></div>
-    <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-    ...
-</div>
+                <div id="radioList"></div> <!-- لیست رادیو -->
+                <div class="radio-wave" id="radioWave">
+                    <div class="wave-bar" style="animation-delay:0s"></div>
+                    <div class="wave-bar" style="animation-delay:0.1s"></div>
+                    <div class="wave-bar" style="animation-delay:0.2s"></div>
+                    <div class="wave-bar" style="animation-delay:0.3s"></div>
+                    <div class="wave-bar" style="animation-delay:0.4s"></div>
+                    <div class="wave-bar" style="animation-delay:0.5s"></div>
+                </div>
                 <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
                 <div class="interact-radio-tv">
                     <button onclick="RadioTV.requestAudio()">🎵 درخواست فایل صوتی خاص</button>
-                    <button class="record-btn" onclick="RadioTV.recordVoice()">🎤 ضبط ویس (۱ دقیقه)</button>
-                    <button onclick="RadioTV.shareRadio()">📤 اشتراک</button>
+                    <button class="record-btn" onclick="RadioTV.sendVoice()">🎤 ارسال ویس</button>
+                    <button onclick="RadioTV.share('رادیو')">📤 اشتراک</button>
                 </div>
+                <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
+                </p>
             </div>
 
             <!-- تلویزیون -->
             <div class="tv-box">
-              <div id="tvList"></div>  
                 <h2>📺 تلویزیون هوشمند</h2>
                 <video id="tvPlayer" class="tv-player" controls>
                     <source src="#" type="video/mp4">
                 </video>
-                </video>
-    <div id="tvList"></div>  <!-- این خط اضافه می‌شود -->
-      <div id="tvList"></div>          
-    <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-    ...
-</div>>
+                <div id="tvList"></div> <!-- لیست تلویزیون -->
+                <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+                <div class="interact-radio-tv">
+                    <button onclick="RadioTV.requestVideo()">🎬 درخواست فایل تصویری خاص</button>
+                    <button class="record-btn" onclick="RadioTV.sendVideo()">📹 ارسال ویدئو</button>
+                    <button onclick="RadioTV.share('تلویزیون')">📤 اشتراک</button>
+                </div>
+                <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
+                </p>
             </div>
         </div>
 
@@ -424,22 +433,22 @@
         </details>
     </div>
 </div>
- <script src="./pdf-parse/pdf-parse.min.js"></script>   
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
 <script src="./storage.js"></script>
 <script src="./self-healing.js"></script>
- <script src="./extractors.js"></script>
-  <script src="./knowledge-builder.js"></script>
-  <script src="./article-agent.js"></script>
-     <script src="./hooshi1.js"></script>
-    <script src="./graph.js"></script>
-    <script src="./relation-agent.js"></script>
+<script src="./extractors.js"></script>
+<script src="./knowledge-builder.js"></script>
+<script src="./article-agent.js"></script>
+<script src="./hooshi1.js"></script>
+<script src="./graph.js"></script>
+<script src="./relation-agent.js"></script>
 <script src="./migration-agent.js"></script>
-    <script src="./brain.js"></script>
+<script src="./brain.js"></script>
 <script src="./ui-display.js"></script>
-    <script src="./handler.js"></script>
-  <script src="./intelligent-agent.js"></script> 
-        <script src="./radio-tv.js"></script>
+<script src="./handler.js"></script>
+<script src="./intelligent-agent.js"></script>
+<script src="./radio-tv.js"></script>
 <script>
     console.log("AI PAGE LOADED");
     console.log(window.location.href);
@@ -474,6 +483,5 @@
     }
 })();
 </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
-  </body>
+</body>
 </html>
