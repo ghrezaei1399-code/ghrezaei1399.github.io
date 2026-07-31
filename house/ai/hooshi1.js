@@ -50,14 +50,10 @@ const SmartProcessor = {
         return `/${cleanPath}`;
     },
 
-    async readPDF(filePath) {
-        try {
-            console.log('در حال خواندن:', filePath);
-            const response = await fetch(filePath);
-            if (!response.ok) {
-                console.warn('فایل پیدا نشد:', filePath);
-                return null;
-            }
+    // جایگزین کردن readPDF با PDFReader.read
+async readPDF(filePath) {
+    return await PDFReader.read(filePath);
+}
             const arrayBuffer = await response.arrayBuffer();
             if (typeof pdfParse === 'undefined') {
                 console.warn('pdfParse در دسترس نیست');
