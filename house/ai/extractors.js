@@ -1,33 +1,15 @@
-const KnowledgeBuilder = {
-    version: "2.2",
-    async build(article, summary, capabilities) {
+const Extractors = {
+    version: "1.0",
+    extract(article) {
+        // استخراج داده‌ها از مقاله
         return {
-            id: article.id,
-            type: article.type,
-            language: article.language,
-            title: { fa: article.title, en: "" },
-            source: article.file,
-            summary: { fa: summary || "خلاصه در دسترس نیست", en: "" },
-            sevenCapabilities: { fa: capabilities || [], en: [] },
-            keywords: { fa: article.tags || [], en: [] },
-            project: article.project,
-            domain: article.domain,
-            priority: article.priority,
-            relations: {
-                books: [],
-                articles: [],
-                posters: [],
-                rooms: [],
-                products: [],
-                people: [],
-                organizations: []
+            summary: {
+                fa: `خلاصه مقاله ${article.title}`,
+                en: ""
             },
-            ai: {
-                stage: 1,
-                state: "اولیه",
-                score: 0,
-                lastUpdate: new Date().toISOString(),
-                history: [{ action: "registered", time: new Date().toISOString() }]
+            sevenCapabilities: {
+                fa: article.tags || [],
+                en: []
             }
         };
     }
