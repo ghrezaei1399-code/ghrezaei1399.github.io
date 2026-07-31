@@ -68,7 +68,7 @@ const RadioTV = {
     populateRadioList() {
         const container = document.getElementById('radioList');
         if (!container) return;
-        container.innerHTML = '<h4>لیست پخش رادیو</h4><ul>';
+        container.innerHTML = '<h4>📻 لیست پخش رادیو</h4><ul>';
         const audios = this.mediaLibrary.filter(m => m.type === 'audio');
         audios.forEach((item, index) => {
             container.innerHTML += `<li><button onclick="RadioTV.playRadio(${index})">${item.title}</button></li>`;
@@ -79,7 +79,7 @@ const RadioTV = {
     populateTvList() {
         const container = document.getElementById('tvList');
         if (!container) return;
-        container.innerHTML = '<h4>لیست کانال‌های تلویزیون</h4><ul>';
+        container.innerHTML = '<h4>📺 لیست کانال‌های تلویزیون</h4><ul>';
         const videos = this.mediaLibrary.filter(m => m.type === 'video');
         videos.forEach((item, index) => {
             container.innerHTML += `<li><button onclick="RadioTV.playTv(${index})">${item.title}</button></li>`;
@@ -100,10 +100,44 @@ const RadioTV = {
     },
 
     // =============================================
-    // ماژول‌های اصلاح‌شده برای مخاطب
+    // سه ماژول اصلی (درخواست، ارسال، اشتراک)
     // =============================================
 
-    // ارسال ویس (به جای ضبط ویس)
+    // ۱. درخواست فایل صوتی/تصویری خاص
+    requestAudio() {
+        const title = prompt('نام فایل صوتی مورد نظر را وارد کنید:');
+        if (title) {
+            const audios = this.mediaLibrary.filter(m => m.type === 'audio');
+            const exists = audios.some(a => a.title === title);
+            if (exists) {
+                document.getElementById('interactionResponse').innerHTML = `🎵 فایل "${title}" در لیست پخش موجود است.`;
+            } else {
+                document.getElementById('interactionResponse').innerHTML = `🎵 درخواست فایل "${title}" به ادمین ارسال شد.`;
+                // ذخیره درخواست در localStorage
+                const requests = JSON.parse(localStorage.getItem('AUDIO_REQUESTS') || '[]');
+                requests.push({ title, date: new Date().toISOString(), status: 'pending' });
+                localStorage.setItem('AUDIO_REQUESTS', JSON.stringify(requests));
+            }
+        }
+    },
+
+    requestVideo() {
+        const title = prompt('نام فایل تصویری مورد نظر را وارد کنید:');
+        if (title) {
+            const videos = this.mediaLibrary.filter(m => m.type === 'video');
+            const exists = videos.some(v => v.title === title);
+            if (exists) {
+                document.getElementById('interactionResponse').innerHTML = `🎬 فایل "${title}" در لیست کانال‌ها موجود است.`;
+            } else {
+                document.getElementById('interactionResponse').innerHTML = `🎬 درخواست فایل "${title}" به ادمین ارسال شد.`;
+                const requests = JSON.parse(localStorage.getItem('VIDEO_REQUESTS') || '[]');
+                requests.push({ title, date: new Date().toISOString(), status: 'pending' });
+                localStorage.setItem('VIDEO_REQUESTS', JSON.stringify(requests));
+            }
+        }
+    },
+
+    // ۲. ارسال ویس/ویدئو (به جای ضبط)
     sendVoice() {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
@@ -113,7 +147,6 @@ const RadioTV = {
                 recorder.onstop = () => {
                     const blob = new Blob(chunks, { type: 'audio/webm' });
                     const url = URL.createObjectURL(blob);
-                    // ذخیره در localStorage برای ادمین
                     const voices = JSON.parse(localStorage.getItem('VOICE_MESSAGES') || '[]');
                     voices.push({ url, date: new Date().toISOString(), status: 'new' });
                     localStorage.setItem('VOICE_MESSAGES', JSON.stringify(voices));
@@ -133,7 +166,6 @@ const RadioTV = {
             });
     },
 
-    // ارسال ویدئو (به جای ضبط ویدئو)
     sendVideo() {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(stream => {
@@ -143,7 +175,6 @@ const RadioTV = {
                 recorder.onstop = () => {
                     const blob = new Blob(chunks, { type: 'video/webm' });
                     const url = URL.createObjectURL(blob);
-                    // ذخیره در localStorage برای ادمین
                     const videos = JSON.parse(localStorage.getItem('VIDEO_MESSAGES') || '[]');
                     videos.push({ url, date: new Date().toISOString(), status: 'new' });
                     localStorage.setItem('VIDEO_MESSAGES', JSON.stringify(videos));
@@ -163,14 +194,13 @@ const RadioTV = {
             });
     },
 
-    // اشتراک‌گذاری با انتخاب پلتفرم و مخاطب
+    // ۳. اشتراک‌گذاری با انتخاب پلتفرم و مخاطب
     share(contentType) {
         const platform = prompt('لطفاً پلتفرم مورد نظر را وارد کنید (مثلاً واتساپ، تلگرام، ایمیل):');
         if (!platform) return;
         const recipient = prompt('لطفاً مخاطب (شخص یا گروه) را مشخص کنید:');
         if (!recipient) return;
         const message = `🔗 اشتراک‌گذاری ${contentType} از رادیو تلویزیون هوشمند دکتر رضائی\nپلتفرم: ${platform}\nمخاطب: ${recipient}\nزمان: ${new Date().toLocaleString()}`;
-        // ذخیره در localStorage
         const shares = JSON.parse(localStorage.getItem('SHARES') || '[]');
         shares.push({ contentType, platform, recipient, message, date: new Date().toISOString() });
         localStorage.setItem('SHARES', JSON.stringify(shares));
@@ -181,7 +211,6 @@ const RadioTV = {
             <br>برای تکمیل اشتراک، لینک را کپی کنید:
             <br><input type="text" value="${window.location.href}" readonly style="width:100%; padding:8px; margin-top:8px;">
         `;
-        // کپی خودکار لینک
         navigator.clipboard.writeText(window.location.href).catch(() => {});
     }
 };
