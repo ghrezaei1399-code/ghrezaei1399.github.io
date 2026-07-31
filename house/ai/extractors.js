@@ -1,25 +1,22 @@
 const Extractors = {
-    version: "2.2",
-    extract(article) {
-        // استفاده از عنوان و برچسب‌ها به عنوان متن جایگزین
-        const fullText = `عنوان: ${article.title}. برچسب‌ها: ${article.tags.join('، ')}.`;
-        // ۱. خلاصه‌برداری
-        const summary = this.generateSummary(fullText);
-        // ۲. استخراج هفت قابلیت
-        const capabilities = this.extractCapabilities(fullText);
+    version: "2.4",
+    extract(article, fullText) {
+        const text = fullText || `${article.title}. ${article.tags.join('، ')}`;
+        const summary = this.generateSummary(text);
+        const capabilities = this.extractCapabilities(text);
         return {
             summary: { fa: summary, en: "" },
             sevenCapabilities: { fa: capabilities, en: [] }
         };
     },
     generateSummary(text) {
-        // استفاده از کل متن به عنوان خلاصه (موقت)
-        return text.length > 200 ? text.substring(0, 200) + "..." : text;
+        const sentences = text.split(/[.!؟]/).filter(s => s.trim().length > 10);
+        return sentences.slice(0, 3).join('. ') || 'خلاصه در دسترس نیست';
     },
     extractCapabilities(text) {
-        // استخراج کلمات کلیدی از برچسب‌ها
-        const words = text.split(/[،،\s]+/);
-        const uniqueWords = [...new Set(words)];
-        return uniqueWords.filter(w => w.length > 3).slice(0, 7);
+        const keywords = ["هوش مصنوعی", "مهندسی فرهنگی", "تحول", "عدالت", "دانش", "رادیو", "تلویزیون", "نظریه", "عمل‌گرا", "ارزش"];
+        const found = keywords.filter(kw => text.includes(kw));
+        while (found.length < 7) found.push(`قابلیت ${found.length + 1}`);
+        return found.slice(0, 7);
     }
 };
