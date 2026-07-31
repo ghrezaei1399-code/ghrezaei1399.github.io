@@ -1,21 +1,17 @@
-// hooshi1.js - پردازش هوشمند مقالات
+// hooshi1.js - پردازش هوشمند مقالات (نسخه اصلاح‌شده)
 const SmartProcessor = {
     version: "1.0",
 
-    // تابع اصلی برای پردازش یک مقاله
     async processArticle(article, memory) {
-        // ۱. خواندن متن کامل از PDF
         let fullText = await this.readPDF(article.file);
         if (!fullText) {
             fullText = `${article.title}. ${article.tags.join('، ')}`;
         }
 
-        // ۲. استخراج خلاصه و قابلیت‌ها
         const summary = this.generateSummary(fullText);
         const capabilities = this.extractCapabilities(fullText);
 
-        // ۳. ایجاد شیء دانش جدید
-        const newArticle = {
+        return {
             id: article.id,
             type: article.type,
             language: article.language,
@@ -44,11 +40,8 @@ const SmartProcessor = {
                 history: [{ action: "registered", time: new Date().toISOString() }]
             }
         };
-
-        return newArticle;
     },
 
-    // خواندن فایل PDF
     async readPDF(filePath) {
         try {
             const response = await fetch(filePath);
@@ -62,13 +55,11 @@ const SmartProcessor = {
         }
     },
 
-    // تولید خلاصه
     generateSummary(text) {
         const sentences = text.split(/[.!؟]/).filter(s => s.trim().length > 10);
         return sentences.slice(0, 3).join('. ') || 'خلاصه در دسترس نیست';
     },
 
-    // استخراج هفت قابلیت
     extractCapabilities(text) {
         const keywords = [
             "هوش مصنوعی", "مهندسی فرهنگی", "تحول", "عدالت", "دانش",
@@ -82,7 +73,6 @@ const SmartProcessor = {
         return found.slice(0, 7);
     },
 
-    // ایجاد روابط بین مقالات
     buildRelations(memory) {
         const ids = Object.keys(memory.articles);
         let created = 0;
@@ -94,7 +84,6 @@ const SmartProcessor = {
                 const b = memory.articles[ids[j]];
                 if (a.id === b.id) continue;
 
-                // بررسی برچسب‌های مشترک
                 const common = [];
                 if (a.keywords?.fa && b.keywords?.fa) {
                     for (const tag of a.keywords.fa) {
@@ -121,7 +110,6 @@ const SmartProcessor = {
             }
         }
 
-        // به‌روزرسانی مرحله مقالات
         for (const id in memory.articles) {
             const article = memory.articles[id];
             if (article.relations?.articles?.length > 0) {
@@ -131,7 +119,6 @@ const SmartProcessor = {
             }
         }
 
-        // به‌روزرسانی آمار
         memory.statistics.knowledgeEdges = relationSet.size;
         memory.statistics.knowledgeNodes = Object.keys(memory.articles).length;
 
@@ -140,13 +127,16 @@ const SmartProcessor = {
 };
 
 // =============================================
-// اتصال به سیستم اصلی
+// بهبود عملکرد ArticleAgent بدون بازنویسی
 // =============================================
 
-// اصلاح `article-agent.js` برای استفاده از SmartProcessor
-const OriginalScan = ArticleAgent.scan;
+// ذخیره نسخه اصلی scan
+const originalScan = ArticleAgent.scan;
+
+// بازنویسی scan برای استفاده از SmartProcessor
 ArticleAgent.scan = async function(memory) {
-    console.log("ArticleAgent started (with SmartProcessor)");
+    console.log("ArticleAgent started with SmartProcessor");
+
     const response = await fetch("library.json");
     const library = await response.json();
     let scanned = 0, processed = 0;
