@@ -1,10 +1,12 @@
 const RadioTV = {
     mediaLibrary: [
-        { type: 'audio', title: 'آهنگ نمونه ۱', src: 'audio1.mp3.mp3' },
-        { type: 'audio', title: 'آهنگ نمونه ۲', src: 'audio2.mp3.mp3' },
-        { type: 'video', title: 'ویدیو نمونه ۱', src: 'video1.mp4.mp4' },
-        { type: 'video', title: 'ویدیو نمونه ۲', src: 'video2.mp4.mp4' }
+        { type: 'audio', title: 'آهنگ نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/audio1.mp3.mp3' },
+        { type: 'audio', title: 'آهنگ نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/audio2.mp3.mp3' },
+        { type: 'video', title: 'ویدیو نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/video1.mp4.mp4' },
+        { type: 'video', title: 'ویدیو نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/video2.mp4.mp4' }
     ],
+    // ... بقیه کد بدون تغییر
+};
     currentRadioIndex: 0,
     currentTvIndex: 0,
     mediaRecorder: null,
