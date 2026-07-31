@@ -1,11 +1,14 @@
-// hooshi1.js - پردازش هوشمند مقالات (نسخه اصلاح‌شده)
+// hooshi1.js - پردازش هوشمند مقالات (نسخه پایدار)
 const SmartProcessor = {
-    version: "1.0",
+    version: "1.1",
 
     async processArticle(article, memory) {
+        // تلاش برای خواندن PDF
         let fullText = await this.readPDF(article.file);
-        if (!fullText) {
-            fullText = `${article.title}. ${article.tags.join('، ')}`;
+        
+        // اگر PDF خوانده نشد، از عنوان و برچسب‌ها استفاده کن
+        if (!fullText || fullText.length < 50) {
+            fullText = `${article.title}. ${article.tags.join('، ')}.`;
         }
 
         const summary = this.generateSummary(fullText);
@@ -47,6 +50,11 @@ const SmartProcessor = {
             const response = await fetch(filePath);
             if (!response.ok) return null;
             const arrayBuffer = await response.arrayBuffer();
+            // بررسی وجود pdfParse
+            if (typeof pdfParse === 'undefined') {
+                console.warn('pdfParse در دسترس نیست');
+                return null;
+            }
             const pdf = await pdfParse(arrayBuffer);
             return pdf.text;
         } catch (e) {
@@ -56,8 +64,10 @@ const SmartProcessor = {
     },
 
     generateSummary(text) {
+        // اگر متن کوتاه است، خود آن را برگردان
+        if (text.length < 100) return text;
         const sentences = text.split(/[.!؟]/).filter(s => s.trim().length > 10);
-        return sentences.slice(0, 3).join('. ') || 'خلاصه در دسترس نیست';
+        return sentences.slice(0, 3).join('. ') || text.substring(0, 200) + '...';
     },
 
     extractCapabilities(text) {
@@ -67,6 +77,11 @@ const SmartProcessor = {
             "همراهان روشنایی", "مدیریت دانش", "سکوت حیرانی"
         ];
         const found = keywords.filter(kw => text.includes(kw));
+        // اگر چیزی پیدا نشد، از کلمات موجود در متن استفاده کن
+        if (found.length === 0) {
+            const words = text.split(/[\s،,]+/).filter(w => w.length > 4);
+            return words.slice(0, 7);
+        }
         while (found.length < 7) {
             found.push(`قابلیت ${found.length + 1}`);
         }
@@ -126,14 +141,8 @@ const SmartProcessor = {
     }
 };
 
-// =============================================
-// بهبود عملکرد ArticleAgent بدون بازنویسی
-// =============================================
-
-// ذخیره نسخه اصلی scan
+// بهبود ArticleAgent
 const originalScan = ArticleAgent.scan;
-
-// بازنویسی scan برای استفاده از SmartProcessor
 ArticleAgent.scan = async function(memory) {
     console.log("ArticleAgent started with SmartProcessor");
 
@@ -150,7 +159,6 @@ ArticleAgent.scan = async function(memory) {
         }
     }
 
-    // ایجاد روابط
     SmartProcessor.buildRelations(memory);
 
     memory.statistics.totalArticles = scanned;
