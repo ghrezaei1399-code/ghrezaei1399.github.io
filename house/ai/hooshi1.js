@@ -1,21 +1,25 @@
-// hooshi1.js - نسخه نهایی با خواندن صحیح PDF
+// hooshi1.js - پردازش هوشمند مقالات با الگوریتم‌های استخراج
 const SmartProcessor = {
-    version: "2.0",
+    version: "2.1",
 
+    // ---------------------------------------------------------
+    // ۱. پردازش اصلی مقاله
+    // ---------------------------------------------------------
     async processArticle(article, memory) {
-        // ۱. خواندن متن از PDF با روش درست
         let fullText = await this.readPDF(article.file);
-        
-        // ۲. اگر PDF خوانده نشد، از داده‌های جایگزین استفاده کن
         if (!fullText || fullText.length < 20) {
             fullText = `${article.title}. ${article.tags.join('، ')}`;
         }
 
-        // ۳. استخراج خلاصه و قابلیت‌ها
-        const summary = this.generateSummary(fullText);
-        const capabilities = this.extractCapabilities(fullText);
+        // استخراج خلاصه با الگوریتم
+        const summary = this.extractSummary(fullText);
+        
+        // استخراج کلیدواژه‌ها با الگوریتم
+        const keywords = this.extractKeywords(fullText);
+        
+        // استخراج هفت قابلیت با الگوریتم
+        const capabilities = this.extractCapabilities(fullText, keywords);
 
-        // ۴. ساخت شیء دانش
         return {
             id: article.id,
             type: article.type,
@@ -24,7 +28,7 @@ const SmartProcessor = {
             source: article.file,
             summary: { fa: summary, en: "" },
             sevenCapabilities: { fa: capabilities, en: [] },
-            keywords: { fa: article.tags || [], en: [] },
+            keywords: { fa: keywords, en: [] },
             project: article.project,
             domain: article.domain,
             priority: article.priority,
@@ -47,134 +51,222 @@ const SmartProcessor = {
         };
     },
 
-    // =============================================
-    // روش درست خواندن PDF (همان روش آزمایش موفق)
-    // =============================================
+    // ---------------------------------------------------------
+    // ۲. خواندن PDF (همان روش موفق)
+    // ---------------------------------------------------------
     async readPDF(filePath) {
         try {
-            // ۱. دریافت فایل از سرور
             const response = await fetch(filePath);
-            if (!response.ok) {
-                console.warn(`فایل پیدا نشد: ${filePath}`);
-                return null;
-            }
-
-            // ۲. تبدیل به ArrayBuffer
+            if (!response.ok) return null;
             const arrayBuffer = await response.arrayBuffer();
-
-            // ۳. بررسی وجود pdfParse
             if (typeof pdfParse === 'undefined') {
                 console.warn('pdfParse در دسترس نیست');
                 return null;
             }
-
-            // ۴. پردازش با pdfParse
             const pdf = await pdfParse(arrayBuffer);
-            
-            // ۵. استخراج متن
             let text = pdf.text || '';
-            
-            // ۶. اگر متن خالی بود، از روش جایگزین استفاده کن
-            if (text.length < 10) {
-                // گاهی pdfParse متن را در صفحات جداگانه می‌دهد
-                if (pdf.pages && pdf.pages.length > 0) {
-                    text = pdf.pages.map(p => p.text || '').join('\n');
-                }
+            if (text.length < 10 && pdf.pages) {
+                text = pdf.pages.map(p => p.text || '').join('\n');
             }
-
             return text;
-        } catch (error) {
-            console.warn('خطا در خواندن PDF:', error);
+        } catch (e) {
+            console.warn('خطا در خواندن PDF:', e);
             return null;
         }
     },
 
-    // =============================================
-    // استخراج خلاصه و قابلیت‌ها (بهبودیافته)
-    // =============================================
-    generateSummary(text) {
+    // ---------------------------------------------------------
+    // ۳. الگوریتم استخراج خلاصه (بدون کلمات کلیدی از پیش تعیین‌شده)
+    // ---------------------------------------------------------
+    extractSummary(text) {
         if (!text || text.length < 20) return 'خلاصه در دسترس نیست';
-        
-        // حذف کاراکترهای اضافی
-        const cleanText = text.replace(/\s+/g, ' ').trim();
-        
-        // پیدا کردن جملات کامل
-        const sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-        
-        // انتخاب ۲-۳ جمله اول به عنوان خلاصه
-        const summarySentences = sentences.slice(0, 3).map(s => s.trim());
-        let summary = summarySentences.join(' ');
-        
-        // اگر خلاصه خیلی بلند بود، برش بزن
-        if (summary.length > 300) {
-            summary = summary.substring(0, 300) + '...';
-        }
-        
-        return summary || 'خلاصه در دسترس نیست';
-    },
 
-    extractCapabilities(text) {
-        if (!text || text.length < 10) return ['قابلیت ۱', 'قابلیت ۲', 'قابلیت ۳', 'قابلیت ۴', 'قابلیت ۵', 'قابلیت ۶', 'قابلیت ۷'];
-        
-        const cleanText = text.replace(/\s+/g, ' ').trim();
-        
-        // کلمات کلیدی برای جستجو
-        const keywordList = [
-            { word: "هوش مصنوعی", weight: 5 },
-            { word: "مهندسی فرهنگی", weight: 4 },
-            { word: "تحول", weight: 3 },
-            { word: "عدالت دیجیتال", weight: 4 },
-            { word: "دانش", weight: 3 },
-            { word: "رادیو", weight: 3 },
-            { word: "تلویزیون", weight: 3 },
-            { word: "نظریه", weight: 4 },
-            { word: "عمل‌گرا", weight: 4 },
-            { word: "ارزش", weight: 3 },
-            { word: "همراهان روشنایی", weight: 5 },
-            { word: "مدیریت دانش", weight: 4 },
-            { word: "سکوت حیرانی", weight: 4 },
-            { word: "حکمرانی", weight: 3 },
-            { word: "اخلاق", weight: 3 },
-            { word: "فرهنگ", weight: 3 },
-            { word: "تعامل", weight: 3 },
-            { word: "ماشین", weight: 2 }
-        ];
+        // ۱. تقسیم متن به پاراگراف‌ها
+        const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 20);
+        if (paragraphs.length === 0) return text.substring(0, 200) + '...';
 
-        // پیدا کردن کلمات کلیدی در متن
-        const found = [];
-        for (const item of keywordList) {
-            if (cleanText.includes(item.word)) {
-                found.push(item.word);
+        // ۲. امتیازدهی به پاراگراف‌ها بر اساس:
+        // - طول پاراگراف (نه خیلی کوتاه، نه خیلی بلند)
+        // - تعداد جملات کامل
+        // - وجود کلمات کلیدی ساختاری (مقدمه، نتیجه‌گیری، یافته‌ها)
+        const scored = paragraphs.map(p => {
+            let score = 0;
+            const sentences = p.match(/[^.!?]+[.!?]+/g) || [];
+            
+            // امتیاز برای تعداد جملات مناسب (بین ۲ تا ۵)
+            if (sentences.length >= 2 && sentences.length <= 5) score += 3;
+            else if (sentences.length > 1) score += 1;
+            
+            // امتیاز برای طول مناسب (بین ۵۰ تا ۳۰۰ کاراکتر)
+            if (p.length >= 50 && p.length <= 300) score += 3;
+            else if (p.length > 30) score += 1;
+            
+            // امتیاز برای کلمات ساختاری
+            const structuralWords = ['مقدمه', 'نتیجه', 'یافته', 'هدف', 'چکیده', 'خلاصه', 'در این مقاله', 'پژوهش'];
+            for (const word of structuralWords) {
+                if (p.includes(word)) score += 2;
+            }
+            
+            // امتیاز برای جملات کامل
+            if (sentences.length > 0) score += sentences.length;
+            
+            return { text: p, score, sentences };
+        });
+
+        // ۳. انتخاب بهترین پاراگراف‌ها (۲ تا ۳ پاراگراف)
+        scored.sort((a, b) => b.score - a.score);
+        const top = scored.slice(0, 3);
+        
+        // ۴. ترکیب جملات منتخب
+        let summary = '';
+        for (const item of top) {
+            const sentences = item.sentences;
+            if (sentences.length > 0) {
+                // از هر پاراگراف، ۲ جمله اول را بردار
+                const selected = sentences.slice(0, 2).map(s => s.trim());
+                summary += selected.join(' ') + ' ';
             }
         }
 
-        // اگر چیزی پیدا نشد، از کلمات پرتکرار استفاده کن
-        if (found.length === 0) {
-            const words = cleanText.split(/[\s،,.;:]+/).filter(w => w.length > 3);
-            const wordCount = {};
+        // ۵. اگر خلاصه خالی بود، از کل متن استفاده کن
+        if (summary.length < 20) {
+            summary = text.replace(/\s+/g, ' ').substring(0, 300) + '...';
+        }
+
+        // ۶. محدود کردن طول خلاصه
+        if (summary.length > 400) {
+            summary = summary.substring(0, 400) + '...';
+        }
+
+        return summary.trim();
+    },
+
+    // ---------------------------------------------------------
+    // ۴. الگوریتم استخراج کلیدواژه‌ها (بدون کلمات از پیش تعیین‌شده)
+    // ---------------------------------------------------------
+    extractKeywords(text) {
+        if (!text || text.length < 20) return [];
+
+        // ۱. پاکسازی متن
+        const clean = text.replace(/[،؛:,.؟!()""]/g, ' ').replace(/\s+/g, ' ').trim();
+        
+        // ۲. تقسیم به کلمات
+        const words = clean.split(' ').filter(w => w.length > 2);
+        if (words.length === 0) return [];
+
+        // ۳. شمارش تکرار کلمات
+        const frequency = {};
+        for (const w of words) {
+            frequency[w] = (frequency[w] || 0) + 1;
+        }
+
+        // ۴. حذف کلمات تکراری و بی‌معنی
+        const stopWords = ['و', 'از', 'به', 'برای', 'با', 'در', 'این', 'آن', 'که', 'را', 'های', 'های', 'عنوان', 'هم'];
+        const sorted = Object.keys(frequency)
+            .filter(w => !stopWords.includes(w) && w.length > 2)
+            .sort((a, b) => frequency[b] - frequency[a]);
+
+        // ۵. انتخاب ۵ تا ۷ کلمه کلیدی
+        const keywords = sorted.slice(0, 7);
+        
+        // ۶. اگر کلمات کافی نیست، از کلمات پرتکرارتر استفاده کن
+        if (keywords.length < 3) {
+            const allWords = Object.keys(frequency).filter(w => w.length > 2);
+            allWords.sort((a, b) => frequency[b] - frequency[a]);
+            return allWords.slice(0, 7);
+        }
+
+        return keywords;
+    },
+
+    // ---------------------------------------------------------
+    // ۵. الگوریتم استخراج هفت قابلیت (بر اساس ساختار متن)
+    // ---------------------------------------------------------
+    extractCapabilities(text, keywords) {
+        if (!text || text.length < 20) return ['قابلیت ۱', 'قابلیت ۲', 'قابلیت ۳', 'قابلیت ۴', 'قابلیت ۵', 'قابلیت ۶', 'قابلیت ۷'];
+
+        // ۱. پیدا کردن بخش‌های ساختاری
+        const sections = this.findSections(text);
+        
+        // ۲. استخراج قابلیت‌ها از بخش‌ها
+        const capabilities = [];
+        
+        // ۲-۱. از بخش‌های ساختاری
+        const sectionKeywords = {
+            'هدف': ['هدف', 'پرسش', 'مسئله'],
+            'روش': ['روش', 'رویکرد', 'چارچوب', 'مدل'],
+            'یافته': ['یافته', 'نتیجه', 'دستاورد'],
+            'نوآوری': ['نوآوری', 'ابتکار', 'ارائه', 'معرفی'],
+            'کاربرد': ['کاربرد', 'استفاده', 'پیاده‌سازی'],
+            'پیامد': ['پیامد', 'تأثیر', 'اثر'],
+            'چشم‌انداز': ['چشم‌انداز', 'آینده', 'راه‌کار', 'پیشنهاد']
+        };
+
+        for (const [cap, words] of Object.entries(sectionKeywords)) {
             for (const w of words) {
-                wordCount[w] = (wordCount[w] || 0) + 1;
-            }
-            const sorted = Object.keys(wordCount).sort((a, b) => wordCount[b] - wordCount[a]);
-            for (const w of sorted.slice(0, 10)) {
-                if (w.length > 3 && !found.includes(w)) {
-                    found.push(w);
+                if (text.includes(w)) {
+                    // پیدا کردن جمله حاوی کلمه
+                    const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+                    for (const sentence of sentences) {
+                        if (sentence.includes(w)) {
+                            const clean = sentence.trim().replace(/\s+/g, ' ');
+                            if (clean.length > 10 && !capabilities.includes(clean)) {
+                                capabilities.push(clean);
+                                break;
+                            }
+                        }
+                    }
+                    if (capabilities.length >= 7) break;
                 }
-                if (found.length >= 7) break;
+            }
+            if (capabilities.length >= 7) break;
+        }
+
+        // ۳. اگر کمتر از ۷ قابلیت پیدا شد، از کلیدواژه‌ها استفاده کن
+        while (capabilities.length < 7) {
+            const idx = capabilities.length;
+            if (keywords && keywords[idx]) {
+                capabilities.push(`قابلیت ${idx+1}: ${keywords[idx]}`);
+            } else {
+                capabilities.push(`قابلیت ${idx+1}`);
             }
         }
 
-        // تکمیل تا ۷ قابلیت
-        while (found.length < 7) {
-            found.push(`قابلیت ${found.length + 1}`);
-        }
-
-        return found.slice(0, 7);
+        return capabilities.slice(0, 7);
     },
 
-    // =============================================
-    // ایجاد روابط بین مقالات (بهبودیافته)
-    // =============================================
+    // ---------------------------------------------------------
+    // ۶. پیدا کردن بخش‌های ساختاری متن
+    // ---------------------------------------------------------
+    findSections(text) {
+        const lines = text.split('\n');
+        const sections = [];
+        let currentSection = '';
+
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed) continue;
+
+            // تشخیص عنوان بخش (اعداد، کلمات کلیدی)
+            if (trimmed.match(/^[\d]+[\.\-\–]?\s*[^\d]/) || 
+                trimmed.match(/^[آ-ی]+[\s\-–]+/) ||
+                trimmed.length < 50) {
+                if (currentSection) {
+                    sections.push(currentSection);
+                }
+                currentSection = trimmed;
+            } else {
+                currentSection += ' ' + trimmed;
+            }
+        }
+        if (currentSection) sections.push(currentSection);
+
+        return sections;
+    },
+
+    // ---------------------------------------------------------
+    // ۷. الگوریتم ایجاد روابط (بر اساس شباهت محتوایی)
+    // ---------------------------------------------------------
     buildRelations(memory) {
         const ids = Object.keys(memory.articles);
         let created = 0;
@@ -186,46 +278,28 @@ const SmartProcessor = {
                 const b = memory.articles[ids[j]];
                 if (a.id === b.id) continue;
 
-                // بررسی برچسب‌های مشترک
-                const common = [];
-                if (a.keywords?.fa && b.keywords?.fa) {
-                    for (const tag of a.keywords.fa) {
-                        if (b.keywords.fa.some(t => t.toLowerCase() === tag.toLowerCase())) {
-                            common.push(tag);
+                // محاسبه شباهت بر اساس کلیدواژه‌ها و خلاصه
+                const similarity = this.calculateSimilarity(a, b);
+
+                // اگر شباهت بیشتر از حد آستانه بود، رابطه ایجاد کن
+                if (similarity > 0.3) {
+                    const key1 = `${a.id}|${b.id}`;
+                    const key2 = `${b.id}|${a.id}`;
+                    if (!relationSet.has(key1) && !relationSet.has(key2)) {
+                        relationSet.add(key1);
+                        if (!a.relations.articles.includes(b.id)) {
+                            a.relations.articles.push(b.id);
+                            created++;
                         }
-                    }
-                }
-
-                // بررسی کلمات مشترک در خلاصه
-                if (common.length < 2 && a.summary?.fa && b.summary?.fa) {
-                    const summaryWords = a.summary.fa.split(/[\s،,.;:]+/).filter(w => w.length > 3);
-                    const bSummaryWords = b.summary.fa.split(/[\s،,.;:]+/).filter(w => w.length > 3);
-                    for (const word of summaryWords) {
-                        if (bSummaryWords.some(w => w.toLowerCase() === word.toLowerCase()) && !common.includes(word)) {
-                            common.push(word);
-                            if (common.length >= 3) break;
+                        if (!b.relations.articles.includes(a.id)) {
+                            b.relations.articles.push(a.id);
                         }
-                    }
-                }
-
-                if (common.length === 0) continue;
-
-                const key1 = `${a.id}|${b.id}`;
-                const key2 = `${b.id}|${a.id}`;
-                if (!relationSet.has(key1) && !relationSet.has(key2)) {
-                    relationSet.add(key1);
-                    if (!a.relations.articles.includes(b.id)) {
-                        a.relations.articles.push(b.id);
-                        created++;
-                    }
-                    if (!b.relations.articles.includes(a.id)) {
-                        b.relations.articles.push(a.id);
                     }
                 }
             }
         }
 
-        // به‌روزرسانی مرحله مقالات
+        // به‌روزرسانی مرحله
         for (const id in memory.articles) {
             const article = memory.articles[id];
             if (article.relations?.articles?.length > 0) {
@@ -239,15 +313,45 @@ const SmartProcessor = {
         memory.statistics.knowledgeNodes = Object.keys(memory.articles).length;
 
         return { created };
+    },
+
+    // ---------------------------------------------------------
+    // ۸. محاسبه شباهت بین دو مقاله
+    // ---------------------------------------------------------
+    calculateSimilarity(a, b) {
+        // ۱. شباهت بر اساس کلیدواژه‌ها
+        let keywordScore = 0;
+        if (a.keywords?.fa && b.keywords?.fa) {
+            const common = a.keywords.fa.filter(k => 
+                b.keywords.fa.some(w => w.toLowerCase() === k.toLowerCase())
+            );
+            keywordScore = common.length / Math.max(a.keywords.fa.length, b.keywords.fa.length);
+        }
+
+        // ۲. شباهت بر اساس خلاصه (کلمات مشترک)
+        let summaryScore = 0;
+        if (a.summary?.fa && b.summary?.fa) {
+            const wordsA = a.summary.fa.split(/[\s،,.;:]+/).filter(w => w.length > 3);
+            const wordsB = b.summary.fa.split(/[\s،,.;:]+/).filter(w => w.length > 3);
+            if (wordsA.length > 0 && wordsB.length > 0) {
+                const common = wordsA.filter(w => 
+                    wordsB.some(w2 => w2.toLowerCase() === w.toLowerCase())
+                );
+                summaryScore = common.length / Math.max(wordsA.length, wordsB.length);
+            }
+        }
+
+        // ۳. نمره نهایی
+        return (keywordScore * 0.6) + (summaryScore * 0.4);
     }
 };
 
 // =============================================
-// بهبود ArticleAgent برای استفاده از SmartProcessor
+// بهبود ArticleAgent
 // =============================================
 const originalScan = ArticleAgent.scan;
 ArticleAgent.scan = async function(memory) {
-    console.log("ArticleAgent started with SmartProcessor v2.0");
+    console.log("ArticleAgent started with SmartProcessor v2.1 (Algorithmic Extraction)");
 
     const response = await fetch("library.json");
     const library = await response.json();
@@ -262,7 +366,6 @@ ArticleAgent.scan = async function(memory) {
         }
     }
 
-    // ایجاد روابط
     SmartProcessor.buildRelations(memory);
 
     memory.statistics.totalArticles = scanned;
