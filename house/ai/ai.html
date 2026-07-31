@@ -357,18 +357,15 @@
         <div class="radio-tv-container">
             <!-- رادیو -->
             <div class="radio-box">
+             <div id="tvList"></div>   
                 <h2>📻 رادیو هوشمند</h2>
                 <audio id="radioPlayer" class="radio-player" controls>
                     <source src="#" type="audio/mpeg">
                 </audio>
-                <div class="radio-wave" id="radioWave">
-                    <div class="wave-bar" style="animation-delay:0s"></div>
-                    <div class="wave-bar" style="animation-delay:0.1s"></div>
-                    <div class="wave-bar" style="animation-delay:0.2s"></div>
-                    <div class="wave-bar" style="animation-delay:0.3s"></div>
-                    <div class="wave-bar" style="animation-delay:0.4s"></div>
-                    <div class="wave-bar" style="animation-delay:0.5s"></div>
-                </div>
+                  <div id="radioList"></div>  <!-- این خط اضافه می‌شود -->
+    <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+    ...
+</div>
                 <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
                 <div class="interact-radio-tv">
                     <button onclick="RadioTV.requestAudio()">🎵 درخواست فایل صوتی خاص</button>
@@ -379,16 +376,16 @@
 
             <!-- تلویزیون -->
             <div class="tv-box">
+              <div id="tvList"></div>  
                 <h2>📺 تلویزیون هوشمند</h2>
                 <video id="tvPlayer" class="tv-player" controls>
                     <source src="#" type="video/mp4">
                 </video>
-                <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-                <div class="interact-radio-tv">
-                    <button onclick="RadioTV.requestVideo()">🎬 درخواست فایل تصویری خاص</button>
-                    <button class="record-btn" onclick="RadioTV.recordVideo()">📹 ضبط ویدیو (۱ دقیقه)</button>
-                    <button onclick="RadioTV.shareTv()">📤 اشتراک</button>
-                </div>
+                </video>
+    <div id="tvList"></div>  <!-- این خط اضافه می‌شود -->
+    <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+    ...
+</div>>
             </div>
         </div>
 
