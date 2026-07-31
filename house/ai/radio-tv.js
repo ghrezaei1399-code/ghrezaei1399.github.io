@@ -1,9 +1,9 @@
 const RadioTV = {
-    mediaLibrary: [
-    { type: 'audio', title: 'آهنگ نمونه ۱', src: 'audio1.mp3.mp3' },
-    { type: 'audio', title: 'آهنگ نمونه ۲', src: 'audio2.mp3.mp3' },
-    { type: 'video', title: 'ویدیو نمونه ۱', src: 'video1.mp4.mp4' },
-    { type: 'video', title: 'ویدیو نمونه ۲', src: 'video2.mp4.mp4' }
+   mediaLibrary: [
+    { type: 'audio', title: 'آهنگ نمونه ۱', src: '/ghrezaei1399.github.io/audio1.mp3.mp3' },
+    { type: 'audio', title: 'آهنگ نمونه ۲', src: '/ghrezaei1399.github.io/audio2.mp3.mp3' },
+    { type: 'video', title: 'ویدیو نمونه ۱', src: '/ghrezaei1399.github.io/video1.mp4.mp4' },
+    { type: 'video', title: 'ویدیو نمونه ۲', src: '/ghrezaei1399.github.io/video2.mp4.mp4' }
 ],
     // ... بقیه کد بدون تغییر
 };
