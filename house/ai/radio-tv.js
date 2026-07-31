@@ -1,12 +1,10 @@
 const RadioTV = {
-   mediaLibrary: [
-    { type: 'audio', title: 'آهنگ نمونه ۱', src: '/ghrezaei1399.github.io/audio1.mp3.mp3' },
-    { type: 'audio', title: 'آهنگ نمونه ۲', src: '/ghrezaei1399.github.io/audio2.mp3.mp3' },
-    { type: 'video', title: 'ویدیو نمونه ۱', src: '/ghrezaei1399.github.io/video1.mp4.mp4' },
-    { type: 'video', title: 'ویدیو نمونه ۲', src: '/ghrezaei1399.github.io/video2.mp4.mp4' }
-],
-    // ... بقیه کد بدون تغییر
-};
+    mediaLibrary: [
+        { type: 'audio', title: 'آهنگ نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/audio1.mp3.mp3' },
+        { type: 'audio', title: 'آهنگ نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/audio2.mp3.mp3' },
+        { type: 'video', title: 'ویدیو نمونه ۱', src: '/ghrezaei1399.github.io/house/ai/video1.mp4.mp4' },
+        { type: 'video', title: 'ویدیو نمونه ۲', src: '/ghrezaei1399.github.io/house/ai/video2.mp4.mp4' }
+    ],
     currentRadioIndex: 0,
     currentTvIndex: 0,
     mediaRecorder: null,
@@ -30,7 +28,10 @@ const RadioTV = {
         const audio = audios[this.currentRadioIndex % audios.length];
         player.src = audio.src;
         player.load();
-        player.play().catch(e => console.log('پخش خودکار نیاز به تعامل دارد.'));
+        player.play().catch(e => {
+            console.log('پخش خودکار نیاز به تعامل دارد:', e);
+            nowPlaying.textContent = 'برای پخش، روی دکمه پخش کلیک کنید';
+        });
         nowPlaying.textContent = `در حال پخش: ${audio.title}`;
     },
 
@@ -45,7 +46,10 @@ const RadioTV = {
         const video = videos[this.currentTvIndex % videos.length];
         player.src = video.src;
         player.load();
-        player.play().catch(e => console.log('پخش خودکار نیاز به تعامل دارد.'));
+        player.play().catch(e => {
+            console.log('پخش خودکار نیاز به تعامل دارد:', e);
+            nowPlaying.textContent = 'برای پخش، روی دکمه پخش کلیک کنید';
+        });
         nowPlaying.textContent = `در حال پخش: ${video.title}`;
     },
 
@@ -66,7 +70,7 @@ const RadioTV = {
     requestAudio() {
         const title = prompt('نام فایل صوتی مورد نظر را وارد کنید:');
         if (title) {
-            document.getElementById('interactionResponse').innerHTML = `🎵 درخواست فایل صوتی "${title}" ثبت شد. به کتابخانه دانش اضافه می‌شود.`;
+            document.getElementById('interactionResponse').innerHTML = `🎵 درخواست فایل صوتی "${title}" ثبت شد.`;
         }
     },
 
@@ -84,15 +88,14 @@ const RadioTV = {
                     const blob = new Blob(this.recordedChunks, { type: 'audio/webm' });
                     const url = URL.createObjectURL(blob);
                     document.getElementById('interactionResponse').innerHTML = `
-                        🎤 ویس شما ضبط شد. <a href="${url}" download="voice-message.webm">دانلود فایل صوتی</a>
-                        <br>این ویس به ادمین و کتابخانه دانش ارسال شد.
+                        🎤 ویس شما ضبط شد. <a href="${url}" download="voice-message.webm">دانلود</a>
                     `;
                     const voices = JSON.parse(localStorage.getItem('VOICE_MESSAGES') || '[]');
                     voices.push({ url, date: new Date().toISOString() });
                     localStorage.setItem('VOICE_MESSAGES', JSON.stringify(voices));
                 };
                 this.mediaRecorder.start();
-                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس (حداکثر ۱ دقیقه)... برای پایان ضبط، روی "توقف" کلیک کنید.';
+                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس (حداکثر ۱ دقیقه)...';
                 setTimeout(() => {
                     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
                         this.mediaRecorder.stop();
@@ -113,7 +116,7 @@ const RadioTV = {
     requestVideo() {
         const title = prompt('نام فایل تصویری مورد نظر را وارد کنید:');
         if (title) {
-            document.getElementById('interactionResponse').innerHTML = `🎬 درخواست فایل تصویری "${title}" ثبت شد. به کتابخانه دانش اضافه می‌شود.`;
+            document.getElementById('interactionResponse').innerHTML = `🎬 درخواست فایل تصویری "${title}" ثبت شد.`;
         }
     },
 
@@ -131,15 +134,14 @@ const RadioTV = {
                     const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
                     const url = URL.createObjectURL(blob);
                     document.getElementById('interactionResponse').innerHTML = `
-                        📹 ویدیو شما ضبط شد. <a href="${url}" download="video-message.webm">دانلود فایل ویدیویی</a>
-                        <br>این ویدیو به ادمین و کتابخانه دانش ارسال شد.
+                        📹 ویدیو شما ضبط شد. <a href="${url}" download="video-message.webm">دانلود</a>
                     `;
                     const videos = JSON.parse(localStorage.getItem('VIDEO_MESSAGES') || '[]');
                     videos.push({ url, date: new Date().toISOString() });
                     localStorage.setItem('VIDEO_MESSAGES', JSON.stringify(videos));
                 };
                 this.mediaRecorder.start();
-                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو (حداکثر ۱ دقیقه)... برای پایان ضبط، روی "توقف" کلیک کنید.';
+                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو (حداکثر ۱ دقیقه)...';
                 setTimeout(() => {
                     if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
                         this.mediaRecorder.stop();
