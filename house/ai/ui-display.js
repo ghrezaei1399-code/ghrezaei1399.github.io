@@ -30,49 +30,36 @@ const UIDisplay = {
         }
     },
 
-    requestPurchase(articleId) {
-        const name = prompt('نام و نام خانوادگی خود را وارد کنید:');
-        if (!name) return;
-        const address = prompt('آدرس کامل (شهر، خیابان، پلاک) را وارد کنید:');
-        if (!address) return;
-        const postalCode = prompt('کد پستی را وارد کنید:');
-        if (!postalCode) return;
-        const quantity = prompt('تعداد مورد نظر را وارد کنید:', '1');
-        if (!quantity) return;
-        const purchaseData = {
-            articleId,
-            name,
-            address,
-            postalCode,
-            quantity,
-            date: new Date().toISOString()
-        };
-        const purchases = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
-        purchases.push(purchaseData);
-        localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(purchases));
-        alert('✅ درخواست خرید شما ثبت شد. ادمین با شما تماس خواهد گرفت.');
-    },
+    // در توابع requestPurchase, smartComment, solveProblem جایگزین کنید:
+requestPurchase(articleId) {
+    const name = prompt('نام و نام خانوادگی:');
+    if (!name) return;
+    const address = prompt('آدرس کامل:');
+    if (!address) return;
+    const postalCode = prompt('کد پستی:');
+    if (!postalCode) return;
+    const quantity = prompt('تعداد:', '1');
+    if (!quantity) return;
+    const data = { articleId, name, address, postalCode, quantity };
+    const result = await IntelligentAgent.processRequest('purchase', data, window.memory);
+    alert(result.message);
+},
 
-    smartComment(articleId) {
-        const comment = prompt(`نظر خود را درباره مقاله/کتاب با شناسه ${articleId} بنویسید:`);
-        if (!comment) return;
-        const response = `🤖 پاسخ هوشمند: از نظر شما متشکریم. این موضوع با مفاهیم "هوش مصنوعی انسان‌محور" و "مهندسی فرهنگی" مرتبط است.`;
-        alert(`💬 نظر شما ثبت شد.\n\n${response}`);
-        const interactions = JSON.parse(localStorage.getItem('SMART_INTERACTIONS') || '[]');
-        interactions.push({ articleId, comment, response, date: new Date().toISOString() });
-        localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
-    },
+smartComment(articleId) {
+    const comment = prompt('نظر خود را بنویسید:');
+    if (!comment) return;
+    const data = { articleId, comment };
+    const result = await IntelligentAgent.processRequest('comment', data, window.memory);
+    alert(result.message);
+},
 
-    solveProblem(articleId) {
-        const problem = prompt(`مشکل خود را درباره مقاله/کتاب با شناسه ${articleId} شرح دهید:`);
-        if (!problem) return;
-        const solution = `🔍 راه‌حل پیشنهادی: مشکل شما ممکن است با مطالعه "طرح درهمتنیدگی انسان و هوش مصنوعی" (شناسه: ART-001) یا کتاب "آوای دل" (شناسه: BK-002) مرتبط باشد. به بخش "مقالات" یا "کتاب‌ها" در سایت اصلی مراجعه کنید.`;
-        alert(`🔧 راه‌حل مشکل:\n\n${solution}`);
-        const issues = JSON.parse(localStorage.getItem('SOLVED_ISSUES') || '[]');
-        issues.push({ articleId, problem, solution, date: new Date().toISOString() });
-        localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
-    },
-
+solveProblem(articleId) {
+    const problem = prompt('مشکل خود را شرح دهید:');
+    if (!problem) return;
+    const data = { articleId, problem };
+    const result = await IntelligentAgent.processRequest('problem', data, window.memory);
+    alert(result.message);
+}
     // توابع تعامل با رادیو/تلویزیون
     sendTextInteraction() {
         const message = prompt('پیام خود را بنویسید:');
