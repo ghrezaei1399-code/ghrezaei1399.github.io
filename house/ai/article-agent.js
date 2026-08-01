@@ -1,3 +1,4 @@
+// article-agent.js - نسخه ساده بدون وابستگی اضافی
 const ArticleAgent = {
     name: "Article Reader",
     version: "4.6",
