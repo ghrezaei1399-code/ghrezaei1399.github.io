@@ -9,8 +9,12 @@ const ArticleAgent = {
         for (const article of library.articles) {
             scanned++;
             if (!memory.articles[article.id]) {
-                // استفاده از Extractors با داده‌های موجود
-                const extracted = await Extractors.extract(article);
+                // استفاده از متن نمونه برای نمایش مقالات
+                const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
+                const extracted = {
+                    summary: { fa: sampleText, en: "" },
+                    sevenCapabilities: { fa: article.tags || [], en: [] }
+                };
                 const newArticle = await KnowledgeBuilder.build(article, extracted);
                 memory.articles[article.id] = newArticle;
                 processed++;
