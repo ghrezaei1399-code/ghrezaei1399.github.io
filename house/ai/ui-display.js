@@ -1,25 +1,44 @@
-// ui-display.js - نسخه کامل و اصلاح‌شده
+// ui-display.js - نسخه نهایی و پایدار
 const UIDisplay = {
-    version: "3.1",
+    version: "3.2",
+    
     renderArticles(articles) {
         const container = document.getElementById('articles-container');
         if (!container) return;
         container.innerHTML = '';
+        
+        // حذف مقالات تکراری
+        const uniqueArticles = {};
         for (const id in articles) {
             const article = articles[id];
+            if (!uniqueArticles[article.id]) {
+                uniqueArticles[article.id] = article;
+            }
+        }
+
+        for (const id in uniqueArticles) {
+            const article = uniqueArticles[id];
             const div = document.createElement('div');
             div.className = 'article-card';
+            
+            // استخراج اطلاعات با مدیریت خطا
+            const title = article.title?.fa || article.title || 'بدون عنوان';
+            const author = article.author || 'نامشخص';
+            const year = article.year || 'نامشخص';
+            const summary = article.summary?.fa || article.summary || 'خلاصه در دسترس نیست';
+            const keywords = article.keywords?.fa || article.keywords || [];
+            const keywordsText = Array.isArray(keywords) ? keywords.join('، ') : 'ندارد';
+            
             div.innerHTML = `
-                <h3>📄 ${article.title}</h3>
-                <p><strong>نویسنده:</strong> ${article.author || 'نامشخص'}</p>
-                <p><strong>سال:</strong> ${article.year || 'نامشخص'}</p>
-                <p><strong>خلاصه:</strong> ${article.summary?.fa || 'ندارد'}</p>
-                <p><strong>کلیدواژه‌ها:</strong> ${(article.keywords?.fa || []).join('، ') || 'ندارد'}</p>
+                <h3>📄 ${title}</h3>
+                <p><strong>نویسنده:</strong> ${author}</p>
+                <p><strong>سال:</strong> ${year}</p>
+                <p><strong>خلاصه:</strong> ${summary}</p>
+                <p><strong>کلیدواژه‌ها:</strong> ${keywordsText}</p>
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('article', '${id}')">📩 درخواست خرید</button>
-                    <button class="btn" onclick="UIDisplay.submitComment('article', '${id}')">💬 نظر</button>
+                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('article', '${article.id}')">📩 درخواست خرید</button>
+                    <button class="btn" onclick="UIDisplay.submitComment('article', '${article.id}')">💬 نظر</button>
                 </div>
-                <hr>
             `;
             container.appendChild(div);
         }
@@ -29,22 +48,22 @@ const UIDisplay = {
         const container = document.getElementById('books-container');
         if (!container) return;
         container.innerHTML = '';
+        
         for (const id in books) {
             const book = books[id];
             const div = document.createElement('div');
             div.className = 'item-card book-card';
             div.innerHTML = `
-                <h3>📚 ${book.title}</h3>
+                <h3>📚 ${book.title || 'بدون عنوان'}</h3>
                 <p><strong>نویسنده:</strong> ${book.author || 'نامشخص'}</p>
                 <p><strong>ناشر:</strong> ${book.publisher || 'نامشخص'}</p>
                 <p><strong>سال انتشار:</strong> ${book.year || 'نامشخص'}</p>
-                <p><strong>خلاصه:</strong> ${book.description || 'ندارد'}</p>
+                <p><strong>خلاصه:</strong> ${book.description || book.summary || 'ندارد'}</p>
                 <p><strong>قیمت:</strong> ${book.price || 'تماس بگیرید'}</p>
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('book', '${id}')">📩 درخواست خرید</button>
                     <button class="btn" onclick="UIDisplay.submitComment('book', '${id}')">💬 نظر</button>
                 </div>
-                <hr>
             `;
             container.appendChild(div);
         }
@@ -54,12 +73,13 @@ const UIDisplay = {
         const container = document.getElementById('posters-container');
         if (!container) return;
         container.innerHTML = '';
+        
         for (const id in posters) {
             const poster = posters[id];
             const div = document.createElement('div');
             div.className = 'item-card poster-card';
             div.innerHTML = `
-                <h3>🖼️ ${poster.title}</h3>
+                <h3>🖼️ ${poster.title || 'بدون عنوان'}</h3>
                 <p><strong>نویسنده:</strong> ${poster.author || 'نامشخص'}</p>
                 <p><strong>سال:</strong> ${poster.year || 'نامشخص'}</p>
                 <p><strong>رویداد:</strong> ${poster.event || 'نامشخص'}</p>
@@ -69,7 +89,6 @@ const UIDisplay = {
                     <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('poster', '${id}')">📩 درخواست خرید</button>
                     <button class="btn" onclick="UIDisplay.submitComment('poster', '${id}')">💬 نظر</button>
                 </div>
-                <hr>
             `;
             container.appendChild(div);
         }
@@ -84,6 +103,7 @@ const UIDisplay = {
         if (!phone) return;
         const quantity = prompt('تعداد:', '1');
         if (!quantity) return;
+        
         const data = { type, id, name, address, phone, quantity, date: new Date().toISOString() };
         const key = `${type.toUpperCase()}_PURCHASES`;
         const purchases = JSON.parse(localStorage.getItem(key) || '[]');
@@ -95,6 +115,7 @@ const UIDisplay = {
     submitComment(type, id) {
         const comment = prompt('نظر خود را بنویسید:');
         if (!comment) return;
+        
         const data = { type, id, comment, date: new Date().toISOString() };
         const key = `${type.toUpperCase()}_COMMENTS`;
         const comments = JSON.parse(localStorage.getItem(key) || '[]');
@@ -120,10 +141,12 @@ const UIDisplay = {
         const container = document.getElementById('graph-container');
         if (!container) return;
         container.innerHTML = '';
+        
         if (!relations || relations.length === 0) {
             container.innerHTML = '<p style="color:#1a6a8a; font-weight:400;">🔹 منتظر ارتباطات موثر با شما هستیم.</p>';
             return;
         }
+        
         const uniqueRelations = [];
         const seen = new Set();
         for (const rel of relations) {
@@ -133,6 +156,7 @@ const UIDisplay = {
                 uniqueRelations.push(rel);
             }
         }
+        
         const list = document.createElement('ul');
         uniqueRelations.forEach(rel => {
             const li = document.createElement('li');
@@ -147,9 +171,11 @@ const UIDisplay = {
             console.warn('حافظه خالی است');
             return;
         }
+        
         if (KnowledgeBuilder.updateState) {
             KnowledgeBuilder.updateState(memory);
         }
+        
         this.renderArticles(memory.articles || {});
         this.renderBooks(memory.books || {});
         this.renderPosters(memory.posters || {});
