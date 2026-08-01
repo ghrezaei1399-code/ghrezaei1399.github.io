@@ -1,543 +1,672 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-      <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رادیو تلویزیون هوشمند دکتر رضائی</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <style>...</style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>آزمایشگاه هوشمند دکتر رضائی</title>
+    
+    <!-- بارگذاری pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // تنظیم worker برای پردازش در مرورگر
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        console.log('✅ PDF.js loaded successfully');
+    </script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;700;900&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Vazir', 'Tahoma', sans-serif;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            font-family: 'IRANSans', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
-            direction: rtl;
-            color: #1a2b3c;
         }
+        
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
+        
         .header {
-            background: linear-gradient(135deg, #0b3d5c, #1a6a8a, #2a8ab0);
-            color: white;
-            padding: 30px 35px;
             text-align: center;
-            border-bottom: 4px solid #f7c948;
-            position: relative;
-            overflow: hidden;
+            padding: 20px 0;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: 30px;
         }
-        .header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(255,215,0,0.08) 0%, transparent 70%);
-            animation: shimmer 8s infinite linear;
-            pointer-events: none;
-        }
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        
         .header h1 {
-            font-size: 2rem;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            color: #2d3748;
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
-        .header h1 span {
-            font-weight: 700;
-            color: #f7c948;
-        }
+        
         .header p {
-            position: relative;
-            z-index: 1;
-            margin: 6px 0 0;
-            opacity: 0.9;
+            color: #718096;
+            font-size: 1.1em;
         }
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid #f7c948;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            object-fit: cover;
-        }
-        .content {
-            padding: 30px 35px;
-        }
-        .radio-tv-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin: 25px 0;
-        }
-        .radio-box, .tv-box {
-            flex: 1;
-            min-width: 320px;
-            background: linear-gradient(145deg, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 24px;
-            padding: 25px;
-            color: #1a2b3c;
-            border: 2px solid #f7c948;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .radio-box:hover, .tv-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-        .radio-box h2, .tv-box h2 {
-            color: #0b3d5c;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-        }
-        .radio-player, .tv-player {
-            width: 100%;
-            border-radius: 12px;
-            background: #fff;
-            margin: 10px 0;
-        }
-        .tv-player {
-            max-height: 300px;
-        }
-        .radio-player {
-            max-height: 60px;
-        }
-        .radio-wave {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            height: 35px;
-            margin: 10px 0;
-        }
-        .wave-bar {
-            width: 5px;
-            background: #f7c948;
-            border-radius: 3px;
-            animation: wave 0.8s infinite alternate;
-        }
-        @keyframes wave {
-            0% { height: 5px; }
-            100% { height: 30px; }
-        }
-        .interact-radio-tv {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-        }
-        .interact-radio-tv button {
-            background: #f7c948;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #0b3d5c;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        .interact-radio-tv button:hover {
-            transform: scale(1.05);
-            background: #f5c542;
-        }
-        .interact-radio-tv .record-btn {
-            background: #e74c3c;
-            color: white;
-        }
-        .interact-radio-tv .record-btn:hover {
-            background: #c0392b;
-        }
-        .interaction-section {
-            background: rgba(245, 250, 255, 0.8);
-            backdrop-filter: blur(4px);
-            padding: 20px;
-            border-radius: 20px;
-            margin: 25px 0;
-            border: 1px solid #dce6ef;
-        }
-        .interaction-section h3 {
-            color: #0b3d5c;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .interaction-section .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .interaction-section .btn-group button {
-            background: #1a6a8a;
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(26, 106, 138, 0.2);
-        }
-        .interaction-section .btn-group button:hover {
-            background: #0b4f6a;
-            transform: scale(1.02);
-            box-shadow: 0 6px 14px rgba(26, 106, 138, 0.3);
-        }
-        #interactionResponse {
-            margin-top: 15px;
-            padding: 12px;
-            background: white;
-            border-radius: 12px;
-            min-height: 50px;
-            border-right: 4px solid #f7c948;
-        }
-        .article-card {
-            background: white;
-            border: 1px solid #e3edf5;
-            border-radius: 20px;
-            padding: 22px 28px;
-            margin-bottom: 25px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-            border-right: 6px solid #1a6a8a;
-        }
-        .article-card:hover {
-            border-color: #b8d4e8;
-            box-shadow: 0 8px 25px rgba(26, 106, 138, 0.10);
-            transform: translateY(-3px);
-        }
-        .article-card h3 {
-            color: #0b3d5c;
-            margin-top: 0;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #eef5fa;
-            padding-bottom: 10px;
-        }
-        .btn {
-            background: #ecf3f9;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: #0b3f5c;
-            cursor: pointer;
-            transition: 0.15s;
-            font-weight: 500;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-        }
-        .btn:hover {
-            background: #d4e4f0;
-            transform: scale(1.02);
-        }
-        .btn-primary {
-            background: #1a6a8a;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #0b4f6a;
-        }
-        .stat-grid {
+        
+        .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 16px;
-            background: #f5faff;
-            padding: 22px;
-            border-radius: 20px;
-            margin: 30px 0 20px 0;
-            text-align: center;
-            border: 1px solid #e3edf5;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
         }
-        .stat-item .number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a6a8a;
-            display: block;
+        
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
         }
-        #graph-container ul {
-            list-style: none;
-            padding: 0;
+        
+        .section {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
             display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .radio-player, .tv-player {
+            background: #1a202c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .radio-player audio, .tv-player video {
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .playlist {
+            display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 8px 12px;
+            margin-top: 10px;
         }
-        #graph-container li {
-            background: #f0f6fc;
-            padding: 6px 18px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: #1d4b66;
-            border: 1px solid #dde9f3;
-        }
-        #brain-status {
-            background: #e2edf8;
-            padding: 12px 20px;
-            border-radius: 40px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            color: #003153;
-            border-right: 6px solid #f7c948;
-        }
-        .technical-info {
-            margin-top: 40px;
-            padding: 15px 22px;
-            background: #fafcfe;
-            border-radius: 20px;
-            border: 1px solid #dce6ef;
-            font-size: 0.85rem;
-            color: #2c4a66;
-        }
-        .technical-info summary {
+        
+        .playlist button {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
-            color: #1a6a8a;
+            transition: all 0.3s;
         }
-        .contact-box {
-            margin: 30px 0 20px;
-            padding: 25px 30px;
-            background: linear-gradient(145deg, #ffecd2, #fcb69f);
-            border-radius: 30px;
-            border: 2px solid #f7c948;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        
+        .playlist button:hover {
+            background: #667eea;
+            transform: scale(1.05);
         }
-        .contact-box h3 {
-            color: #0b3d5c;
-            margin-top: 0;
-            font-size: 1.8rem;
-            border-bottom: 3px solid #f7c948;
-            display: inline-block;
-            padding-bottom: 8px;
+        
+        .playlist button.active {
+            background: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
         }
-        .contact-box .contact-info {
+        
+        .action-buttons {
             display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px 30px;
-            margin-top: 20px;
-            font-size: 1rem;
+            margin-top: 15px;
         }
-        .contact-box .contact-info span {
+        
+        .action-buttons button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .action-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .items-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .item-card {
             background: white;
-            padding: 8px 18px;
-            border-radius: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
         }
-        .contact-box .contact-info a {
-            color: #1a6a8a;
-            text-decoration: none;
-            font-weight: 500;
+        
+        .item-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
-        @media (max-width: 600px) {
-            .header h1 { font-size: 1.4rem; }
-            .content { padding: 15px; }
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .profile-img { width: 70px; height: 70px; }
-            .radio-box, .tv-box { min-width: 260px; }
+        
+        .item-card h3 {
+            color: #2d3748;
+            margin-bottom: 8px;
         }
-        .fade-in {
-            animation: fadeIn 0.6s ease-in-out;
+        
+        .item-card .meta {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 8px;
         }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+        
+        .item-card .description {
+            color: #4a5568;
+            margin-bottom: 10px;
         }
-        /* نمادهای قدیمی رادیو و تلویزیون با آیکون های فونت‌آوسم */
-        .old-radio-icon { color: #8B4513; }
-        .old-tv-icon { color: #4A4A4A; }
+        
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .item-actions button {
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .item-actions button:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .knowledge-stats {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .knowledge-stats h3 {
+            margin-bottom: 10px;
+        }
+        
+        .knowledge-stats .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .knowledge-stats .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .knowledge-stats .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .knowledge-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .knowledge-item h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .knowledge-item .meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .knowledge-item .summary {
+            background: #f7fafc;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .knowledge-item .capabilities ul {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 8px 0;
+        }
+        
+        .knowledge-item .capabilities li {
+            background: #ebf8ff;
+            color: #2b6cb0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .knowledge-item .relations {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .knowledge-item .relations ul {
+            list-style: none;
+            margin: 8px 0;
+        }
+        
+        .knowledge-item .relations li {
+            color: #4a5568;
+            font-size: 0.9em;
+            padding: 4px 0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        
+        .modal-content textarea {
+            min-height: 100px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .modal-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-actions .submit-btn {
+            background: #667eea;
+            color: white;
+        }
+        
+        .modal-actions .cancel-btn {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .modal-actions button:hover {
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <!-- هدر با مشخصات کامل -->
-    <div class="header">
-        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center;">
-            <div id="profile-slideshow" style="width:100px; height:100px; border-radius:50%; border:3px solid #f7c948; box-shadow:0 4px 12px rgba(0,0,0,0.15); overflow:hidden; flex-shrink:0;">
-                <img id="profile-image" src="/ghrezaei1399.github.io/images/1.jpg" alt="دکتر غلامرضا رضائی" style="width:100%; height:100%; object-fit:cover;">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧠 آزمایشگاه هوشمند دکتر رضائی</h1>
+            <p>رادیوتلویزیون مبتنی بر دانش - پردازش هوشمند مقالات، کتاب‌ها و پوسترها</p>
+        </div>
+        
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Radio Section -->
+            <div class="section">
+                <h2>📻 رادیو هوشمند</h2>
+                <div class="radio-player">
+                    <audio id="radioPlayer" controls style="width: 100%;">
+                        <source src="" type="audio/mpeg">
+                        مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
+                    </audio>
+                </div>
+                <div class="playlist" id="radioPlaylist">
+                    <button data-audio="/ghrezaei1399.github.io/house/ai/audio1.mp3.mp3" class="active">🎵 ترک ۱</button>
+                    <button data-audio="/ghrezaei1399.github.io/house/ai/audio2.mp3.mp3">🎵 ترک ۲</button>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="openModal('request')">📥 درخواست فایل</button>
+                    <button onclick="openModal('voice')">🎤 ارسال ویس</button>
+                    <button onclick="shareContent()">🔗 اشتراک</button>
+                </div>
             </div>
-            <div>
-                <h1>رادیو تلویزیون هوشمند <span>دکتر رضائی</span></h1>
-                <p style="margin:5px 0 0; opacity:0.9;">معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی انسان‌محور</p>
-                <p style="margin:5px 0 0; opacity:0.7; font-size:0.9rem;">📧 ghrezaei1399@gmail.com | 🔗 <a href="https://www.linkedin.com/in/rezaei-researcher" style="color:#f7c948;text-decoration:underline;">LinkedIn</a></p>
+            
+            <!-- TV Section -->
+            <div class="section">
+                <h2>📺 تلویزیون هوشمند</h2>
+                <div class="tv-player">
+                    <video id="tvPlayer" controls style="width: 100%;">
+                        <source src="" type="video/mp4">
+                        مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                    </video>
+                </div>
+                <div class="playlist" id="tvPlaylist">
+                    <button data-video="/ghrezaei1399.github.io/house/ai/video1.mp4.mp4" class="active">🎬 ویدیو ۱</button>
+                    <button data-video="/ghrezaei1399.github.io/house/ai/video2.mp4.mp4">🎬 ویدیو ۲</button>
+                </div>
+                <div class="action-buttons">
+                    <button onclick="openModal('video')">📤 ارسال ویدیو</button>
+                    <button onclick="openModal('comment')">💬 نظر</button>
+                    <button onclick="shareContent()">🔗 اشتراک</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Knowledge Section -->
+        <div class="section" style="margin-bottom: 30px;">
+            <h2>🧠 دانش هوشمند</h2>
+            <div id="knowledge-container">
+                <!-- Knowledge will be displayed here -->
+            </div>
+        </div>
+        
+        <!-- Books and Posters Grid -->
+        <div class="main-grid">
+            <!-- Books Section -->
+            <div class="section">
+                <h2>📚 کتاب‌ها</h2>
+                <div class="items-grid" id="booksContainer">
+                    <!-- Books will be loaded from library.json -->
+                </div>
+            </div>
+            
+            <!-- Posters Section -->
+            <div class="section">
+                <h2>🎨 پوسترها</h2>
+                <div class="items-grid" id="postersContainer">
+                    <!-- Posters will be loaded from library.json -->
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="content">
-        <div id="brain-status">در حال راه‌اندازی...</div>
-
-        <!-- رادیو و تلویزیون -->
-        <div class="radio-tv-container">
-            <!-- رادیو -->
-            <div class="radio-box fade-in">
-                <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
-                <audio id="radioPlayer" class="radio-player" controls>
-                    <source src="#" type="audio/mpeg">
-                </audio>
-                <div id="radioList"></div>
-                <div class="radio-wave" id="radioWave">
-                    <div class="wave-bar" style="animation-delay:0s"></div>
-                    <div class="wave-bar" style="animation-delay:0.1s"></div>
-                    <div class="wave-bar" style="animation-delay:0.2s"></div>
-                    <div class="wave-bar" style="animation-delay:0.3s"></div>
-                    <div class="wave-bar" style="animation-delay:0.4s"></div>
-                    <div class="wave-bar" style="animation-delay:0.5s"></div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">ارسال درخواست</h3>
+            <form id="modalForm">
+                <input type="text" id="modalName" placeholder="نام شما" required>
+                <input type="email" id="modalEmail" placeholder="ایمیل شما" required>
+                <textarea id="modalMessage" placeholder="پیام شما..."></textarea>
+                <input type="file" id="modalFile" accept="audio/*,video/*" style="display:none;">
+                <div class="modal-actions">
+                    <button type="submit" class="submit-btn">ارسال</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal()">لغو</button>
                 </div>
-                <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-                <div class="interact-radio-tv">
-                    <button onclick="RadioTV.requestAudio()"><i class="fas fa-music"></i> درخواست فایل صوتی خاص</button>
-                    <button class="record-btn" onclick="RadioTV.sendVoice()"><i class="fas fa-microphone"></i> ارسال ویس</button>
-                    <button onclick="RadioTV.share('رادیو')"><i class="fas fa-share-alt"></i> اشتراک</button>
-                </div>
-                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
-                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
-                </p>
-            </div>
-
-            <!-- تلویزیون -->
-            <div class="tv-box fade-in">
-                <h2><i class="fas fa-tv old-tv-icon"></i> تلویزیون هوشمند</h2>
-                <video id="tvPlayer" class="tv-player" controls>
-                    <source src="#" type="video/mp4">
-                </video>
-                <div id="tvList"></div>
-                <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-                <div class="interact-radio-tv">
-                    <button onclick="RadioTV.requestVideo()"><i class="fas fa-video"></i> درخواست فایل تصویری خاص</button>
-                    <button class="record-btn" onclick="RadioTV.sendVideo()"><i class="fas fa-camera"></i> ارسال ویدئو</button>
-                    <button onclick="RadioTV.share('تلویزیون')"><i class="fas fa-share-alt"></i> اشتراک</button>
-                </div>
-                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
-                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
-                </p>
-            </div>
+            </form>
         </div>
-
-        <!-- مقالات و آمار -->
-        <div id="articles-container"></div>
-        <!-- بخش کتاب‌ها -->
-<div id="books-container"></div>
-
-<!-- بخش پوسترها -->
-<div id="posters-container"></div>
-        <div id="statistics-container"></div>
-        <div id="graph-container"></div>
-
-        <!-- بخش تعامل با ادمین -->
-        <div class="interaction-section fade-in" id="admin-section">
-            <h3><i class="fas fa-user-cog" style="color:#1a6a8a;"></i> ارتباط با ادمین / مالک</h3>
-            <div class="btn-group">
-                <button onclick="RadioTV.sendTextAdmin()"><i class="fas fa-pen"></i> ارسال متن</button>
-                <button onclick="RadioTV.sendVoiceAdmin()"><i class="fas fa-microphone-alt"></i> ارسال ویس</button>
-                <button onclick="RadioTV.sendVideoAdmin()"><i class="fas fa-video"></i> ارسال ویدیو</button>
-            </div>
-            <div id="interactionResponse"></div>
-            <p style="font-size:0.85rem; color:#555; margin-top:10px;">
-                ✅ در صورت صلاحدید و با ابزار مناسب با شما تماس خواهیم گرفت.
-            </p>
-        </div>
-<div id="books-container"></div>
-        <!-- باکس ارتباط با دکتر رضائی -->
-<div class="contact-box fade-in" style="background: linear-gradient(145deg, #e0f0ff, #f5f9ff); border: 2px solid #f7c948; border-radius: 30px; padding: 25px 30px; margin: 30px 0 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
-    <h3 style="color: #0b3d5c; margin-top: 0; font-size: 1.8rem; border-bottom: 3px solid #f7c948; display: inline-block; padding-bottom: 8px;">
-        📬 ارتباط با دکتر رضائی
-    </h3>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px 25px; margin-top: 20px; font-size: 1rem;">
-        <span style="background: white; padding: 8px 18px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-            <i class="fas fa-envelope" style="color: #1a6a8a;"></i> <strong>ایمیل:</strong> ghrezaei1399@gmail.com
-        </span>
-        <span style="background: white; padding: 8px 18px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-            <i class="fab fa-linkedin" style="color: #0a66c2;"></i> <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank" style="color: #1a6a8a; text-decoration: none; font-weight: 500;">linkedin.com/in/rezaei-researcher</a>
-        </span>
-        <span style="background: white; padding: 8px 18px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-            <i class="fas fa-globe" style="color: #2a8ab0;"></i> <strong>سایت اصلی:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank" style="color: #1a6a8a; text-decoration: none; font-weight: 500;">مشاهده</a>
-        </span>
-        <span style="background: white; padding: 8px 18px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-            <i class="fas fa-users" style="color: #f7c948;"></i> <strong>انجمن رسمی:</strong> <a href="https://zenodo.org/communities/sphere-of-ai-culture-civilization-activism/records?q=&l=list&p=1&s=10&sort=newest" target="_blank" style="color: #1a6a8a; text-decoration: none; font-weight: 500;">مشاهده در Zenodo</a>
-        </span>
     </div>
-</div>
-
-        <!-- بخش فنی -->
-        <details class="technical-info">
-            <summary>وضعیت فنی (برای عیب‌یابی)</summary>
-            <div id="technical-details"></div>
-        </details>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
-<script src="./storage.js"></script>
-<script src="./self-healing.js"></script>
-<script src="./extractors.js"></script>
-<script src="./knowledge-builder.js"></script>
-<script src="./article-agent.js"></script>
-<script src="./hooshi1.js"></script>
-<script src="./graph.js"></script>
-<script src="./relation-agent.js"></script>
-<script src="./migration-agent.js"></script>
-<script src="./brain.js"></script>
-<script src="./ui-display.js"></script>
-<script src="./handler.js"></script>
-<script src="./intelligent-agent.js"></script>
-<script src="./radio-tv.js"></script>
-<script>
-    console.log("AI PAGE LOADED");
-    console.log(window.location.href);
-</script>
-
-<script>
-(function() {
-  const images = [
-    "/ghrezaei1399.github.io/images/1.jpg",
-    "/ghrezaei1399.github.io/images/2.jpg",
-    "/ghrezaei1399.github.io/images/3.jpg",
-    "/ghrezaei1399.github.io/images/4.bmp",
-    "/ghrezaei1399.github.io/images/5.jpg",
-    "/ghrezaei1399.github.io/images/6.jpg",
-    "/ghrezaei1399.github.io/images/7.jpg",
-    "/ghrezaei1399.github.io/images/8.jpg",
-    "/ghrezaei1399.github.io/images/9.jpg",
-    "/ghrezaei1399.github.io/images/10.jpg",
-    "/ghrezaei1399.github.io/images/11.png",
-    "/ghrezaei1399.github.io/images/12.jpg"
-];
-    let currentIndex = 0;
-    const imgElement = document.getElementById('profile-image');
-    if (imgElement) {
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length;
-            imgElement.src = images[currentIndex];
-            console.log('تغییر تصویر به:', images[currentIndex]);
-        }, 3000);
-    } else {
-        console.error('عنصر profile-image پیدا نشد!');
-    }
-})();
-</script>
+    
+    <!-- Scripts -->
+    <script src="/ghrezaei1399.github.io/house/ai/library.json" id="libraryData"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/extractors.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/knowledge-builder.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/pdf-reader.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/article-agent.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/process-articles.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/brain.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/ui-display.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/radio-tv.js"></script>
+    <script src="/ghrezaei1399.github.io/house/ai/intelligent-agent.js"></script>
+    
+    <script>
+        // Global functions for UI
+        let currentModalType = '';
+        
+        function openModal(type) {
+            currentModalType = type;
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const fileInput = document.getElementById('modalFile');
+            
+            switch(type) {
+                case 'request':
+                    title.textContent = '📥 درخواست فایل جدید';
+                    fileInput.style.display = 'none';
+                    break;
+                case 'voice':
+                    title.textContent = '🎤 ارسال ویس';
+                    fileInput.style.display = 'block';
+                    fileInput.accept = 'audio/*';
+                    break;
+                case 'video':
+                    title.textContent = '📤 ارسال ویدیو';
+                    fileInput.style.display = 'block';
+                    fileInput.accept = 'video/*';
+                    break;
+                case 'comment':
+                    title.textContent = '💬 ارسال نظر';
+                    fileInput.style.display = 'none';
+                    break;
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+            document.getElementById('modalForm').reset();
+        }
+        
+        function shareContent() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'آزمایشگاه هوشمند دکتر رضائی',
+                    text: 'به آزمایشگاه هوشمند دکتر رضائی خوش آمدید',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('🔗 لینک کپی شد!');
+                }).catch(() => {
+                    alert('🔗 لینک: ' + window.location.href);
+                });
+            }
+        }
+        
+        // Radio and TV controls
+        document.addEventListener('DOMContentLoaded', function() {
+            // Radio playlist
+            const radioButtons = document.querySelectorAll('#radioPlaylist button');
+            const radioPlayer = document.getElementById('radioPlayer');
+            
+            radioButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    radioButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    radioPlayer.src = this.dataset.audio;
+                    radioPlayer.load();
+                    radioPlayer.play();
+                });
+            });
+            
+            // TV playlist
+            const tvButtons = document.querySelectorAll('#tvPlaylist button');
+            const tvPlayer = document.getElementById('tvPlayer');
+            
+            tvButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    tvButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    tvPlayer.src = this.dataset.video;
+                    tvPlayer.load();
+                    tvPlayer.play();
+                });
+            });
+            
+            // Load initial media
+            if (radioButtons.length > 0) {
+                radioButtons[0].click();
+            }
+            if (tvButtons.length > 0) {
+                tvButtons[0].click();
+            }
+            
+            // Modal form submission
+            document.getElementById('modalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('modalName').value;
+                const email = document.getElementById('modalEmail').value;
+                const message = document.getElementById('modalMessage').value;
+                const file = document.getElementById('modalFile').files[0];
+                
+                alert(`✅ درخواست شما با موفقیت ارسال شد!\n\nنام: ${name}\nایمیل: ${email}\nپیام: ${message || 'بدون پیام'}\nفایل: ${file ? file.name : 'بدون فایل'}`);
+                
+                closeModal();
+                
+                // Here you can send to server or save to localStorage
+                const requestData = {
+                    type: currentModalType,
+                    name: name,
+                    email: email,
+                    message: message,
+                    file: file ? file.name : null,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to localStorage
+                let requests = JSON.parse(localStorage.getItem('userRequests') || '[]');
+                requests.push(requestData);
+                localStorage.setItem('userRequests', JSON.stringify(requests));
+            });
+            
+            // Load library data and initialize brain
+            fetch('/ghrezaei1399.github.io/house/ai/library.json')
+                .then(response => response.json())
+                .then(data => {
+                    window.libraryData = data;
+                    displayItems(data.books || [], 'booksContainer', 'book');
+                    displayItems(data.posters || [], 'postersContainer', 'poster');
+                    
+                    // Initialize brain after library data is loaded
+                    if (typeof brain !== 'undefined') {
+                        brain.initialize();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading library:', error);
+                });
+        });
+        
+        function displayItems(items, containerId, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (!items || items.length === 0) {
+                container.innerHTML = '<p style="color: #718096;">هیچ موردی یافت نشد</p>';
+                return;
+            }
+            
+            container.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <h3>${item.title}</h3>
+                    <div class="meta">نویسنده: ${item.author || 'ناشناس'} | سال: ${item.year || 'نامشخص'}</div>
+                    <div class="description">${item.description || 'توضیحات در دسترس نیست'}</div>
+                    ${item.price ? `<div class="meta">💰 قیمت: ${item.price}</div>` : ''}
+                    ${item.publisher ? `<div class="meta">📚 ناشر: ${item.publisher}</div>` : ''}
+                    <div class="item-actions">
+                        <button onclick="handleAction('buy', '${item.id}')">🛒 درخواست خرید</button>
+                        <button onclick="handleAction('comment', '${item.id}')">💬 نظر</button>
+                        ${item.path ? `<button onclick="handleAction('download', '${item.id}')">📥 دانلود</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function handleAction(action, id) {
+            switch(action) {
+                case 'buy':
+                    alert(`🛒 درخواست خرید برای آیتم ${id} ارسال شد.`);
+                    break;
+                case 'comment':
+                    openModal('comment');
+                    break;
+                case 'download':
+                    alert(`📥 دانلود آیتم ${id} شروع شد.`);
+                    break;
+                default:
+                    alert(`عملیات ${action} برای آیتم ${id} انجام شد.`);
+            }
+        }
+        
+        // Close modal on outside click
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        console.log('✅ AI Lab loaded successfully!');
+    </script>
 </body>
 </html>
