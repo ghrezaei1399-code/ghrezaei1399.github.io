@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رادیو تلویزیون هوشمند دکتر رضائی</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;700;900&display=swap');
@@ -71,6 +70,14 @@
             z-index: 1;
             margin: 6px 0 0;
             opacity: 0.9;
+        }
+        .header .subtitle {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #f7c948;
+            font-weight: 400;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
         }
         .profile-img {
             width: 100px;
@@ -214,67 +221,63 @@
             min-height: 50px;
             border-right: 4px solid #f7c948;
         }
-        .article-card {
-            background: white;
-            border: 1px solid #e3edf5;
-            border-radius: 20px;
-            padding: 22px 28px;
-            margin-bottom: 25px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-            border-right: 6px solid #1a6a8a;
-        }
-        .article-card:hover {
-            border-color: #b8d4e8;
-            box-shadow: 0 8px 25px rgba(26, 106, 138, 0.10);
-            transform: translateY(-3px);
-        }
-        .article-card h3 {
+        .section-title {
+            font-size: 1.6rem;
             color: #0b3d5c;
-            margin-top: 0;
-            font-size: 1.5rem;
+            margin: 35px 0 15px 0;
+            border-bottom: 4px solid #f7c948;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 20px 0 30px 0;
+        }
+        .item-card {
+            background: linear-gradient(145deg, #ffffff, #f5f9ff);
+            border-radius: 24px;
+            padding: 22px 25px;
+            border: 1px solid rgba(26, 106, 138, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(26, 106, 138, 0.10);
+            border-color: #f7c948;
+        }
+        .item-card h3 {
+            color: #0b3d5c;
             border-bottom: 2px solid #eef5fa;
             padding-bottom: 10px;
-        }
-        .btn {
-            background: #ecf3f9;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: #0b3f5c;
-            cursor: pointer;
-            transition: 0.15s;
-            font-weight: 500;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-        }
-        .btn:hover {
-            background: #d4e4f0;
-            transform: scale(1.02);
-        }
-        .btn-primary {
-            background: #1a6a8a;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #0b4f6a;
+            margin-top: 0;
         }
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 16px;
-            background: #f5faff;
+            background: linear-gradient(145deg, #e0f0ff, #f5f9ff);
             padding: 22px;
             border-radius: 20px;
             margin: 30px 0 20px 0;
             text-align: center;
-            border: 1px solid #e3edf5;
+            border: 1px solid rgba(26, 106, 138, 0.1);
         }
         .stat-item .number {
             font-size: 1.8rem;
             font-weight: 700;
             color: #1a6a8a;
             display: block;
+        }
+        #graph-container {
+            background: linear-gradient(145deg, #f0f7fe, #ffffff);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(26, 106, 138, 0.08);
+            margin: 25px 0;
         }
         #graph-container ul {
             list-style: none;
@@ -299,20 +302,6 @@
             font-size: 0.95rem;
             color: #003153;
             border-right: 6px solid #f7c948;
-        }
-        .technical-info {
-            margin-top: 40px;
-            padding: 15px 22px;
-            background: #fafcfe;
-            border-radius: 20px;
-            border: 1px solid #dce6ef;
-            font-size: 0.85rem;
-            color: #2c4a66;
-        }
-        .technical-info summary {
-            cursor: pointer;
-            font-weight: 600;
-            color: #1a6a8a;
         }
         .contact-box {
             margin: 30px 0 20px;
@@ -356,6 +345,7 @@
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
             .profile-img { width: 70px; height: 70px; }
             .radio-box, .tv-box { min-width: 260px; }
+            .card-container { grid-template-columns: 1fr; }
         }
         .fade-in {
             animation: fadeIn 0.6s ease-in-out;
@@ -381,6 +371,7 @@
                 <h1>رادیو تلویزیون هوشمند <span>دکتر رضائی</span></h1>
                 <p style="margin:5px 0 0; opacity:0.9;">معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی انسان‌محور</p>
                 <p style="margin:5px 0 0; opacity:0.7; font-size:0.9rem;">📧 ghrezaei1399@gmail.com | 🔗 <a href="https://www.linkedin.com/in/rezaei-researcher" style="color:#f7c948;text-decoration:underline;">LinkedIn</a></p>
+                <div class="subtitle">📡 رادیو تلویزیون آماده‌ی پذیرش انواع محصولات و خدمات است</div>
             </div>
         </div>
     </div>
@@ -389,7 +380,7 @@
         <div id="brain-status">در حال راه‌اندازی...</div>
 
         <!-- رادیو و تلویزیون -->
-        <div class="radio-tv-container">
+        <div class="radio-tv-container" id="radio-tv-container">
             <!-- رادیو -->
             <div class="radio-box fade-in">
                 <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
@@ -435,12 +426,27 @@
             </div>
         </div>
 
-        <!-- مقالات و آمار -->
-        <div id="articles-container"></div>
-        <div id="books-container"></div>
-        <div id="posters-container"></div>
+        <!-- بخش مقالات -->
+        <h2 class="section-title">📄 مقالات</h2>
+        <div id="articles-container" class="card-container"></div>
+
+        <!-- بخش کتاب‌ها -->
+        <h2 class="section-title">📚 کتاب‌ها</h2>
+        <div id="books-container" class="card-container"></div>
+
+        <!-- بخش پوسترها -->
+        <h2 class="section-title">🖼️ پوسترها</h2>
+        <div id="posters-container" class="card-container"></div>
+
+        <!-- آمار -->
+        <h2 class="section-title">📊 آمار</h2>
         <div id="statistics-container"></div>
-        <div id="graph-container"></div>
+
+        <!-- گراف روابط -->
+        <h2 class="section-title">🔗 روابط دانش</h2>
+        <div id="graph-container">
+            <p style="color:#1a6a8a; font-weight:400;">🔹 منتظر ارتباطات موثر با شما هستیم.</p>
+        </div>
 
         <!-- بخش تعامل با ادمین -->
         <div class="interaction-section fade-in" id="admin-section">
@@ -456,9 +462,9 @@
             </p>
         </div>
 
-        <!-- باکس تماس دکتر رضائی -->
+        <!-- باکس تماس -->
         <div class="contact-box fade-in">
-            <h3>📬 ارتباط با دکتر رضائی</h3>
+            <h3>📬 راه‌های ارتباط با ما</h3>
             <div class="contact-info">
                 <span><i class="fas fa-envelope" style="color:#1a6a8a;"></i> <strong>ایمیل:</strong> ghrezaei1399@gmail.com</span>
                 <span><i class="fab fa-linkedin" style="color:#0a66c2;"></i> <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank">linkedin.com/in/rezaei-researcher</a></span>
@@ -466,91 +472,7 @@
                 <span><i class="fas fa-users" style="color:#f7c948;"></i> <strong>انجمن رسمی:</strong> <a href="https://zenodo.org/communities/sphere-of-ai-culture-civilization-activism/records?q=&l=list&p=1&s=10&sort=newest" target="_blank">مشاهده در Zenodo</a></span>
             </div>
         </div>
-<!-- نوار ابزار متحرک چرخشی با سرعت تنظیم‌شده -->
-<div style="
-    margin: 30px 0 0 0;
-    padding: 14px 0;
-    background: linear-gradient(90deg, #0b2a3d, #1a4a6a, #0b2a3d);
-    background-size: 200% 100%;
-    border-radius: 50px;
-    overflow: hidden;
-    border: 2px solid rgba(247, 201, 72, 0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
-    position: relative;
-    backdrop-filter: blur(2px);
-    direction: rtl;
-    animation: shimmerBorder 4s ease-in-out infinite;
-">
-    <div id="scrollingToolbar" style="
-        display: flex;
-        animation: scrollToolbar 12s linear infinite;
-        white-space: nowrap;
-        gap: 50px;
-        padding: 0 25px;
-        font-family: 'Vazir', 'Tahoma', sans-serif;
-        font-size: 1rem;
-        color: #fff;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    ">
-        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-            <i class="fas fa-file-alt" style="color: #f7c948;"></i>
-            <strong style="color: #f7c948;">مقالات:</strong>
-            <span>هوشمندسازی همراهان روشنایی</span>
-            <span style="color: #88c8f0; margin:0 4px;">•</span>
-            <span>نهضت نظریه‌پردازی عمل‌گرا</span>
-        </span>
 
-        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-            <i class="fas fa-book" style="color: #f7c948;"></i>
-            <strong style="color: #f7c948;">کتاب‌ها:</strong>
-            <span>آوای دل</span>
-            <span style="color: #88c8f0; margin:0 4px;">•</span>
-            <span>ترنم دل</span>
-        </span>
-
-        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-            <i class="fas fa-palette" style="color: #f7c948;"></i>
-            <strong style="color: #f7c948;">پوسترها:</strong>
-            <span>بیداری دیجیتال</span>
-            <span style="color: #88c8f0; margin:0 4px;">•</span>
-            <span>همراهان روشنایی</span>
-        </span>
-
-        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-            <i class="fas fa-tv" style="color: #f7c948;"></i>
-            <strong style="color: #f7c948;">رادیو/تلویزیون:</strong>
-            <span>سخنرانی استاد فلانی</span>
-            <span style="color: #88c8f0; margin:0 4px;">•</span>
-            <span>کانال خبری</span>
-            <span style="color: #88c8f0; margin:0 4px;">•</span>
-            <span>کانال مستند</span>
-        </span>
-
-        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-            <i class="fas fa-headset" style="color: #f7c948;"></i>
-            <strong style="color: #f7c948;">ارتباط با ادمین:</strong>
-            <span>آماده دریافت پیام شما</span>
-        </span>
-    </div>
-</div>
-
-<style>
-@keyframes scrollToolbar {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-@keyframes shimmerBorder {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-</style>
-        <!-- بخش فنی -->
-        <details class="technical-info">
-            <summary>وضعیت فنی (برای عیب‌یابی)</summary>
-            <div id="technical-details"></div>
-        </details>
     </div>
 </div>
 
