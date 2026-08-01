@@ -1,7 +1,7 @@
-// article-agent.js - نسخه نهایی
+// article-agent.js - نسخه نهایی با مسیرهای صحیح
 const ArticleAgent = {
     name: "Article Reader",
-    version: "6.0",
+    version: "7.0",
 
     async scan(memory) {
         console.log("ArticleAgent started with pdf.js");
@@ -13,10 +13,10 @@ const ArticleAgent = {
         for (const article of library.articles) {
             scanned++;
             if (!memory.articles[article.id]) {
-                // ساخت مسیر کامل فایل PDF
-                const pdfUrl = article.file.startsWith('/') ? article.file : `/${article.file}`;
                 let fullText = "";
                 try {
+                    // ساخت مسیر کامل فایل PDF
+                    const pdfUrl = `/ghrezaei1399.github.io/house/ai/${article.file}`;
                     const loadingTask = pdfjsLib.getDocument(pdfUrl);
                     const pdf = await loadingTask.promise;
                     let text = "";
@@ -32,7 +32,6 @@ const ArticleAgent = {
                     fullText = `${article.title}. ${article.tags.join('، ')}`;
                 }
 
-                // استخراج خلاصه و قابلیت‌ها
                 const extracted = await Extractors.extract(article, fullText);
                 const newArticle = await KnowledgeBuilder.build(article, extracted);
                 memory.articles[article.id] = newArticle;
