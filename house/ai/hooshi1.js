@@ -1,6 +1,6 @@
-// hooshi1.js - نسخه نهایی (بدون بازنویسی ArticleAgent)
+// hooshi1.js - نسخه نهایی
 const SmartProcessor = {
-    version: "1.2",
+    version: "2.0",
 
     async processAll(memory) {
         const library = await this.loadLibrary();
@@ -71,16 +71,10 @@ const SmartProcessor = {
     }
 };
 
-// =============================================
-// اضافه کردن پردازش کتاب‌ها و پوسترها به ArticleAgent
-// =============================================
+// اضافه شدن به ArticleAgent بدون بازنویسی
 const originalScan = ArticleAgent.scan;
 ArticleAgent.scan = async function(memory) {
-    // اجرای پردازش اصلی مقالات
     const result = await originalScan.call(this, memory);
-    
-    // پردازش کتاب‌ها و پوسترها
     await SmartProcessor.processAll(memory);
-    
     return result;
 };
