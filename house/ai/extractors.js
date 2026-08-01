@@ -1,5 +1,5 @@
 const Extractors = {
-    version: "2.5",
+    version: "3.0",
     extract(article, fullText) {
         const text = fullText || `${article.title}. ${article.tags.join('، ')}`;
         const summary = this.generateSummary(text);
