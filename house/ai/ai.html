@@ -442,76 +442,77 @@
         💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
     </p>
 </div>
-           
-        <!-- نوار ابزار متحرک چرخشی (جلوه ویژه) -->
-        <div style="
-            margin: 30px 0 0 0;
-            padding: 14px 0;
-            background: linear-gradient(90deg, #0b2a3d, #1a4a6a, #0b2a3d);
-            background-size: 200% 100%;
-            border-radius: 50px;
-            overflow: hidden;
-            border: 2px solid rgba(247, 201, 72, 0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
-            position: relative;
-            backdrop-filter: blur(2px);
-            direction: rtl;
-            animation: shimmerBorder 4s ease-in-out infinite;
-        ">
-            <div id="scrollingToolbar" style="
-                display: flex;
-                animation: scrollToolbar 12s linear infinite;
-                white-space: nowrap;
-                gap: 50px;
-                padding: 0 25px;
-                font-family: 'Vazir', 'Tahoma', sans-serif;
-                font-size: 1rem;
-                color: #fff;
-                text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            ">
-                <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas fa-file-alt" style="color: #f7c948;"></i>
-                    <strong style="color: #f7c948;">مقالات:</strong>
-                    <span>هوشمندسازی همراهان روشنایی</span>
-                    <span style="color: #88c8f0; margin:0 4px;">•</span>
-                    <span>نهضت نظریه‌پردازی عمل‌گرا</span>
-                </span>
+         <!-- نوار ابزار متحرک چرخان (پایین صفحه) -->
+<div style="
+    margin: 40px 0 0 0;
+    padding: 12px 0;
+    background: linear-gradient(90deg, #0b2a3d, #1a4a6a, #0b2a3d);
+    background-size: 200% 100%;
+    border-radius: 40px;
+    overflow: hidden;
+    border: 2px solid rgba(247, 201, 72, 0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    position: relative;
+    direction: rtl;
+">
+    <div id="scrollingToolbar" style="
+        display: flex;
+        animation: scrollToolbar 12s linear infinite;
+        white-space: nowrap;
+        gap: 40px;
+        padding: 0 20px;
+        font-family: 'Vazir', 'Tahoma', sans-serif;
+        font-size: 0.95rem;
+        color: #fff;
+    ">
+        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 30px;">
+            <i class="fas fa-file-alt" style="color: #f7c948;"></i>
+            <strong style="color: #f7c948;">مقالات:</strong>
+            <span>هوشمندسازی همراهان روشنایی</span>
+            <span style="color: #88c8f0; margin:0 4px;">•</span>
+            <span>نهضت نظریه‌پردازی عمل‌گرا</span>
+        </span>
 
-                <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas fa-book" style="color: #f7c948;"></i>
-                    <strong style="color: #f7c948;">کتاب‌ها:</strong>
-                    <span>آوای دل</span>
-                    <span style="color: #88c8f0; margin:0 4px;">•</span>
-                    <span>ترنم دل</span>
-                </span>
+        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 30px;">
+            <i class="fas fa-book" style="color: #f7c948;"></i>
+            <strong style="color: #f7c948;">کتاب‌ها:</strong>
+            <span>آوای دل</span>
+            <span style="color: #88c8f0; margin:0 4px;">•</span>
+            <span>ترنم دل</span>
+        </span>
 
-                <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas fa-palette" style="color: #f7c948;"></i>
-                    <strong style="color: #f7c948;">پوسترها:</strong>
-                    <span>بیداری دیجیتال</span>
-                    <span style="color: #88c8f0; margin:0 4px;">•</span>
-                    <span>همراهان روشنایی</span>
-                </span>
+        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 30px;">
+            <i class="fas fa-palette" style="color: #f7c948;"></i>
+            <strong style="color: #f7c948;">پوسترها:</strong>
+            <span>بیداری دیجیتال</span>
+            <span style="color: #88c8f0; margin:0 4px;">•</span>
+            <span>همراهان روشنایی</span>
+        </span>
 
-                <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas fa-tv" style="color: #f7c948;"></i>
-                    <strong style="color: #f7c948;">رادیو/تلویزیون:</strong>
-                    <span>سخنرانی استاد فلانی</span>
-                    <span style="color: #88c8f0; margin:0 4px;">•</span>
-                    <span>کانال خبری</span>
-                    <span style="color: #88c8f0; margin:0 4px;">•</span>
-                    <span>کانال مستند</span>
-                </span>
+        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 30px;">
+            <i class="fas fa-tv" style="color: #f7c948;"></i>
+            <strong style="color: #f7c948;">رادیو/تلویزیون:</strong>
+            <span>سخنرانی استاد فلانی</span>
+            <span style="color: #88c8f0; margin:0 4px;">•</span>
+            <span>کانال خبری</span>
+            <span style="color: #88c8f0; margin:0 4px;">•</span>
+            <span>کانال مستند</span>
+        </span>
 
-                <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.06); padding: 4px 18px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);">
-                    <i class="fas fa-headset" style="color: #f7c948;"></i>
-                    <strong style="color: #f7c948;">ارتباط با ادمین:</strong>
-                    <span>آماده دریافت پیام شما</span>
-                </span>
-            </div>
-        </div>
+        <span style="display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.05); padding: 4px 16px; border-radius: 30px;">
+            <i class="fas fa-headset" style="color: #f7c948;"></i>
+            <strong style="color: #f7c948;">ارتباط با ادمین:</strong>
+            <span>آماده دریافت پیام شما</span>
+        </span>
+    </div>
+</div>
 
-        <style>
+<style>
+@keyframes scrollToolbar {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+</style>  
         @keyframes scrollToolbar {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
