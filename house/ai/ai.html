@@ -1,896 +1,528 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>خانه هوشمند دکتر رضائی</title>
-    
-    <!-- ====== فونت ====== -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    
-    <!-- ====== PDF.js ====== -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    </script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رادیو تلویزیون هوشمند دکتر رضائی</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ====== RESET & BASE ====== */
+        @import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;700;900&display=swap');
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            font-family: 'IRANSans', 'Tahoma', sans-serif;
-            background: #f0f2f5;
-            color: #1e293b;
-            line-height: 1.6;
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            color: #1a2b3c;
         }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* ====== HEADER با عکس ====== */
-        .main-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding: 30px 20px 20px;
-            text-align: center;
-            border-bottom: 4px solid #3b82f6;
-            position: relative;
-        }
-
-        .main-header .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid #3b82f6;
-            object-fit: cover;
-            margin-bottom: 12px;
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        .main-header h1 {
-            font-size: 2rem;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        .main-header .subtitle {
-            color: #94a3b8;
-            font-size: 1rem;
-            margin-top: 4px;
-        }
-
-        .main-header .badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 14px;
-        }
-
-        .main-header .badge-group span {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(4px);
-            padding: 6px 18px;
-            border-radius: 30px;
-            color: #e2e8f0;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        /* ====== CONTAINER ====== */
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 24px 20px 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
-
-        /* ====== STATS ROW ====== */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .stats-row .stat-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 18px 14px;
+        .header {
+            background: linear-gradient(135deg, #0b3d5c, #1a6a8a, #2a8ab0);
+            color: white;
+            padding: 30px 35px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #e9edf2;
+            border-bottom: 4px solid #f7c948;
+            position: relative;
+            overflow: hidden;
         }
-
-        .stats-row .stat-box .num {
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,215,0,0.08) 0%, transparent 70%);
+            animation: shimmer 8s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .header h1 {
             font-size: 2rem;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .header h1 span {
             font-weight: 700;
-            color: #0f172a;
+            color: #f7c948;
         }
-
-        .stats-row .stat-box .label {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 2px;
+        .header p {
+            position: relative;
+            z-index: 1;
+            margin: 6px 0 0;
+            opacity: 0.9;
         }
-
-        /* ====== GRID ====== */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 30px;
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #f7c948;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            object-fit: cover;
         }
-
-        @media (max-width: 900px) {
-            .two-col {
-                grid-template-columns: 1fr;
-            }
+        .content {
+            padding: 30px 35px;
         }
-
-        /* ====== CARD ====== */
-        .card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 22px 20px 26px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.03);
-            border: 1px solid #eef2f6;
+        .radio-tv-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 25px 0;
         }
-
-        .card h2 {
-            font-size: 1.3rem;
-            margin-bottom: 16px;
+        .radio-box, .tv-box {
+            flex: 1;
+            min-width: 320px;
+            background: linear-gradient(145deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 24px;
+            padding: 25px;
+            color: #1a2b3c;
+            border: 2px solid #f7c948;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .radio-box:hover, .tv-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .radio-box h2, .tv-box h2 {
+            color: #0b3d5c;
+            margin-top: 0;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #0f172a;
+            font-size: 1.8rem;
         }
-
-        .card h2 i {
-            color: #3b82f6;
-        }
-
-        /* ====== پلیرها ====== */
-        .player-box {
-            background: #0b1120;
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 14px;
-        }
-
-        .player-box audio,
-        .player-box video {
+        .radio-player, .tv-player {
             width: 100%;
-            border-radius: 10px;
-            display: block;
-        }
-
-        .playlist-btns {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 12px 0 6px;
-        }
-
-        .playlist-btns button {
-            background: #f1f5f9;
-            border: none;
-            padding: 7px 18px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #1e293b;
-        }
-
-        .playlist-btns button:hover {
-            background: #dbeafe;
-        }
-
-        .playlist-btns button.active {
-            background: #3b82f6;
-            color: #fff;
-        }
-
-        .action-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .action-row button {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #1e293b;
-        }
-
-        .action-row button:hover {
-            background: #eef2ff;
-            border-color: #3b82f6;
-        }
-
-        /* ====== ARTICLES ====== */
-        .articles-grid {
-            display: grid;
-            gap: 16px;
-            margin-top: 6px;
-        }
-
-        .article-item {
-            background: #f8fafc;
-            border-radius: 14px;
-            padding: 16px 18px;
-            border: 1px solid #eef2f6;
-            transition: 0.2s;
-        }
-
-        .article-item:hover {
-            border-color: #b9d0f0;
-        }
-
-        .article-item h3 {
-            font-size: 1rem;
-            color: #0f172a;
-        }
-
-        .article-item .meta {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin: 4px 0 8px;
-        }
-
-        .article-item .summary {
-            font-size: 0.9rem;
-            color: #334155;
+            border-radius: 12px;
             background: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: 6px 0 8px;
-            border-right: 3px solid #3b82f6;
+            margin: 10px 0;
         }
-
-        .article-item .caps {
+        .tv-player {
+            max-height: 300px;
+        }
+        .radio-player {
+            max-height: 60px;
+        }
+        .radio-wave {
             display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 6px 0 8px;
+            justify-content: center;
+            gap: 5px;
+            height: 35px;
+            margin: 10px 0;
         }
-
-        .article-item .caps span {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .wave-bar {
+            width: 5px;
+            background: #f7c948;
+            border-radius: 3px;
+            animation: wave 0.8s infinite alternate;
         }
-
-        .article-item .relations {
-            font-size: 0.8rem;
-            color: #475569;
-            margin-top: 6px;
-            padding-top: 6px;
-            border-top: 1px dashed #d1d9e6;
+        @keyframes wave {
+            0% { height: 5px; }
+            100% { height: 30px; }
         }
-
-        /* ====== BOOKS & POSTERS ====== */
-        .items-grid {
-            display: grid;
-            gap: 14px;
-            margin-top: 6px;
-        }
-
-        .item-card {
-            background: #fafcff;
-            border-radius: 14px;
-            padding: 16px 18px;
-            border: 1px solid #eef2f6;
-            transition: 0.2s;
-        }
-
-        .item-card:hover {
-            border-color: #b9d0f0;
-        }
-
-        .item-card h3 {
-            font-size: 1rem;
-            color: #0f172a;
-        }
-
-        .item-card .meta {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin: 2px 0 6px;
-        }
-
-        .item-card .desc {
-            font-size: 0.9rem;
-            color: #334155;
-            margin: 4px 0 8px;
-        }
-
-        .item-card .actions {
+        .interact-radio-tv {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 15px;
         }
-
-        .item-card .actions button {
-            background: #f1f5f9;
+        .interact-radio-tv button {
+            background: #f7c948;
             border: none;
-            padding: 4px 14px;
+            padding: 8px 16px;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #0b3d5c;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-
-        .item-card .actions button:hover {
-            background: #dbeafe;
+        .interact-radio-tv button:hover {
+            transform: scale(1.05);
+            background: #f5c542;
         }
-
-        /* ====== FOOTER ====== */
-        .main-footer {
-            background: #0f172a;
-            color: #cbd5e1;
-            padding: 30px 20px 20px;
-            margin-top: 40px;
-            border-top: 3px solid #3b82f6;
+        .interact-radio-tv .record-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .interact-radio-tv .record-btn:hover {
+            background: #c0392b;
+        }
+        .interaction-section {
+            background: rgba(245, 250, 255, 0.8);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 25px 0;
+            border: 1px solid #dce6ef;
+        }
+        .interaction-section h3 {
+            color: #0b3d5c;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .interaction-section .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .interaction-section .btn-group button {
+            background: #1a6a8a;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(26, 106, 138, 0.2);
+        }
+        .interaction-section .btn-group button:hover {
+            background: #0b4f6a;
+            transform: scale(1.02);
+            box-shadow: 0 6px 14px rgba(26, 106, 138, 0.3);
+        }
+        #interactionResponse {
+            margin-top: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            min-height: 50px;
+            border-right: 4px solid #f7c948;
+        }
+        .article-card {
+            background: white;
+            border: 1px solid #e3edf5;
+            border-radius: 20px;
+            padding: 22px 28px;
+            margin-bottom: 25px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            border-right: 6px solid #1a6a8a;
+        }
+        .article-card:hover {
+            border-color: #b8d4e8;
+            box-shadow: 0 8px 25px rgba(26, 106, 138, 0.10);
+            transform: translateY(-3px);
+        }
+        .article-card h3 {
+            color: #0b3d5c;
+            margin-top: 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eef5fa;
+            padding-bottom: 10px;
+        }
+        .btn {
+            background: #ecf3f9;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #0b3f5c;
+            cursor: pointer;
+            transition: 0.15s;
+            font-weight: 500;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+        .btn:hover {
+            background: #d4e4f0;
+            transform: scale(1.02);
+        }
+        .btn-primary {
+            background: #1a6a8a;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0b4f6a;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 16px;
+            background: #f5faff;
+            padding: 22px;
+            border-radius: 20px;
+            margin: 30px 0 20px 0;
             text-align: center;
+            border: 1px solid #e3edf5;
         }
-
-        .main-footer .footer-links {
+        .stat-item .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a6a8a;
+            display: block;
+        }
+        #graph-container ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+        #graph-container li {
+            background: #f0f6fc;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #1d4b66;
+            border: 1px solid #dde9f3;
+        }
+        #brain-status {
+            background: #e2edf8;
+            padding: 12px 20px;
+            border-radius: 40px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #003153;
+            border-right: 6px solid #f7c948;
+        }
+        .technical-info {
+            margin-top: 40px;
+            padding: 15px 22px;
+            background: #fafcfe;
+            border-radius: 20px;
+            border: 1px solid #dce6ef;
+            font-size: 0.85rem;
+            color: #2c4a66;
+        }
+        .technical-info summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #1a6a8a;
+        }
+        .contact-box {
+            margin: 30px 0 20px;
+            padding: 25px 30px;
+            background: linear-gradient(145deg, #e0f0ff, #f5f9ff);
+            border-radius: 30px;
+            border: 2px solid #f7c948;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .contact-box h3 {
+            color: #0b3d5c;
+            margin-top: 0;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #f7c948;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        .contact-box .contact-info {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px 36px;
-            margin-bottom: 14px;
+            gap: 15px 25px;
+            margin-top: 20px;
+            font-size: 1rem;
         }
-
-        .main-footer .footer-links a {
-            color: #94a3b8;
-            transition: 0.2s;
-            font-size: 0.9rem;
+        .contact-box .contact-info span {
+            background: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-
-        .main-footer .footer-links a:hover {
-            color: #fff;
+        .contact-box .contact-info a {
+            color: #1a6a8a;
+            text-decoration: none;
+            font-weight: 500;
         }
-
-        .main-footer .copy {
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        /* ====== MODAL ====== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal-box {
-            background: #fff;
-            border-radius: 24px;
-            padding: 30px 28px;
-            max-width: 480px;
-            width: 92%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-box h3 {
-            margin-bottom: 16px;
-            color: #0f172a;
-        }
-
-        .modal-box input,
-        .modal-box textarea {
-            width: 100%;
-            padding: 10px 14px;
-            margin-bottom: 12px;
-            border: 1px solid #d1d9e6;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .modal-box textarea {
-            min-height: 90px;
-        }
-
-        .modal-box .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 6px;
-        }
-
-        .modal-box .modal-actions button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .modal-box .modal-actions .btn-submit {
-            background: #3b82f6;
-            color: #fff;
-        }
-
-        .modal-box .modal-actions .btn-submit:hover {
-            background: #2563eb;
-        }
-
-        .modal-box .modal-actions .btn-cancel {
-            background: #e9edf2;
-            color: #1e293b;
-        }
-
-        .modal-box .modal-actions .btn-cancel:hover {
-            background: #d1d9e6;
-        }
-
-        /* ====== RESPONSIVE ====== */
         @media (max-width: 600px) {
-            .main-header h1 {
-                font-size: 1.5rem;
-            }
-            .main-header .profile-img {
-                width: 90px;
-                height: 90px;
-            }
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .header h1 { font-size: 1.4rem; }
+            .content { padding: 15px; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .profile-img { width: 70px; height: 70px; }
+            .radio-box, .tv-box { min-width: 260px; }
         }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .old-radio-icon { color: #8B4513; }
+        .old-tv-icon { color: #4A4A4A; }
     </style>
 </head>
 <body>
 
-<!-- ============================================================ -->
-<!-- HEADER با عکس و آدرس‌ها -->
-<!-- ============================================================ -->
-<header class="main-header">
-    <img 
-        src="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/house/ai/dr-rezaei.jpg" 
-        alt="دکتر رضائی" 
-        class="profile-img"
-        onerror="this.src='https://ui-avatars.com/api/?name=Dr+Rezaei&size=120&background=3b82f6&color=fff'"
-    />
-    <h1>دکتر غلامرضا رضائی</h1>
-    <div class="subtitle">🧠 هوش مصنوعی • یادگیری ماشین • پردازش زبان طبیعی</div>
-    <div class="badge-group">
-        <span><i class="fas fa-university"></i> عضو هیئت علمی</span>
-        <span><i class="fas fa-microscope"></i> پژوهشگر ارشد</span>
-        <span><i class="fas fa-globe"></i> AI Lab</span>
-    </div>
-</header>
-
-<!-- ============================================================ -->
-<!-- CONTAINER -->
-<!-- ============================================================ -->
 <div class="container">
-
-    <!-- ====== STATS ====== -->
-    <div class="stats-row" id="statsRow">
-        <div class="stat-box">
-            <div class="num" id="statArticles">0</div>
-            <div class="label">📄 مقالات</div>
-        </div>
-        <div class="stat-box">
-            <div class="num" id="statBooks">0</div>
-            <div class="label">📚 کتاب‌ها</div>
-        </div>
-        <div class="stat-box">
-            <div class="num" id="statPosters">0</div>
-            <div class="label">🎨 پوسترها</div>
-        </div>
-        <div class="stat-box">
-            <div class="num" id="statRelations">0</div>
-            <div class="label">🔗 روابط دانش</div>
+    <!-- هدر با مشخصات کامل -->
+    <div class="header">
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center;">
+            <div id="profile-slideshow" style="width:100px; height:100px; border-radius:50%; border:3px solid #f7c948; box-shadow:0 4px 12px rgba(0,0,0,0.15); overflow:hidden; flex-shrink:0;">
+                <img id="profile-image" src="/ghrezaei1399.github.io/images/1.jpg" alt="دکتر غلامرضا رضائی" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <div>
+                <h1>رادیو تلویزیون هوشمند <span>دکتر رضائی</span></h1>
+                <p style="margin:5px 0 0; opacity:0.9;">معمار تحول سازمانی | نظریه‌پرداز هوش مصنوعی انسان‌محور</p>
+                <p style="margin:5px 0 0; opacity:0.7; font-size:0.9rem;">📧 ghrezaei1399@gmail.com | 🔗 <a href="https://www.linkedin.com/in/rezaei-researcher" style="color:#f7c948;text-decoration:underline;">LinkedIn</a></p>
+            </div>
         </div>
     </div>
 
-    <!-- ====== رادیو + تلویزیون ====== -->
-    <div class="two-col">
-        <!-- رادیو -->
-        <div class="card">
-            <h2><i class="fas fa-radio"></i> رادیو هوشمند</h2>
-            <div class="player-box">
-                <audio id="radioPlayer" controls style="width:100%;">
-                    <source src="" type="audio/mpeg" />
+    <div class="content">
+        <div id="brain-status">در حال راه‌اندازی...</div>
+
+        <!-- رادیو و تلویزیون -->
+        <div class="radio-tv-container">
+            <!-- رادیو -->
+            <div class="radio-box fade-in">
+                <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
+                <audio id="radioPlayer" class="radio-player" controls>
+                    <source src="#" type="audio/mpeg">
                 </audio>
+                <div id="radioList"></div>
+                <div class="radio-wave" id="radioWave">
+                    <div class="wave-bar" style="animation-delay:0s"></div>
+                    <div class="wave-bar" style="animation-delay:0.1s"></div>
+                    <div class="wave-bar" style="animation-delay:0.2s"></div>
+                    <div class="wave-bar" style="animation-delay:0.3s"></div>
+                    <div class="wave-bar" style="animation-delay:0.4s"></div>
+                    <div class="wave-bar" style="animation-delay:0.5s"></div>
+                </div>
+                <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+                <div class="interact-radio-tv">
+                    <button onclick="RadioTV.requestAudio()"><i class="fas fa-music"></i> درخواست فایل صوتی خاص</button>
+                    <button class="record-btn" onclick="RadioTV.sendVoice()"><i class="fas fa-microphone"></i> ارسال ویس</button>
+                    <button onclick="RadioTV.share('رادیو')"><i class="fas fa-share-alt"></i> اشتراک</button>
+                </div>
+                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
+                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
+                </p>
             </div>
-            <div class="playlist-btns" id="radioPlaylist">
-                <button data-src="/ghrezaei1399.github.io/house/ai/audio1.mp3.mp3" class="active">🎵 ترک ۱</button>
-                <button data-src="/ghrezaei1399.github.io/house/ai/audio2.mp3.mp3">🎵 ترک ۲</button>
-            </div>
-            <div class="action-row">
-                <button onclick="openModal('request')"><i class="fas fa-download"></i> درخواست فایل</button>
-                <button onclick="openModal('voice')"><i class="fas fa-microphone"></i> ارسال ویس</button>
-                <button onclick="shareContent()"><i class="fas fa-share-alt"></i> اشتراک</button>
-            </div>
-        </div>
 
-        <!-- تلویزیون -->
-        <div class="card">
-            <h2><i class="fas fa-tv"></i> تلویزیون هوشمند</h2>
-            <div class="player-box">
-                <video id="tvPlayer" controls style="width:100%;">
-                    <source src="" type="video/mp4" />
+            <!-- تلویزیون -->
+            <div class="tv-box fade-in">
+                <h2><i class="fas fa-tv old-tv-icon"></i> تلویزیون هوشمند</h2>
+                <video id="tvPlayer" class="tv-player" controls>
+                    <source src="#" type="video/mp4">
                 </video>
-            </div>
-            <div class="playlist-btns" id="tvPlaylist">
-                <button data-src="/ghrezaei1399.github.io/house/ai/video1.mp4.mp4" class="active">🎬 ویدیو ۱</button>
-                <button data-src="/ghrezaei1399.github.io/house/ai/video2.mp4.mp4">🎬 ویدیو ۲</button>
-            </div>
-            <div class="action-row">
-                <button onclick="openModal('video')"><i class="fas fa-upload"></i> ارسال ویدیو</button>
-                <button onclick="openModal('comment')"><i class="fas fa-comment"></i> نظر</button>
-                <button onclick="shareContent()"><i class="fas fa-share-alt"></i> اشتراک</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ====== مقالات ====== -->
-    <div class="card" style="margin-bottom:30px;">
-        <h2><i class="fas fa-file-alt"></i> مقالات هوشمند</h2>
-        <div class="articles-grid" id="articlesContainer">
-            <!-- توسط JavaScript پر می‌شود -->
-        </div>
-    </div>
-
-    <!-- ====== کتاب‌ها + پوسترها ====== -->
-    <div class="two-col">
-        <!-- کتاب‌ها -->
-        <div class="card">
-            <h2><i class="fas fa-book"></i> کتاب‌ها</h2>
-            <div class="items-grid" id="booksContainer">
-                <!-- توسط JavaScript پر می‌شود -->
+                <div id="tvList"></div>
+                <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+                <div class="interact-radio-tv">
+                    <button onclick="RadioTV.requestVideo()"><i class="fas fa-video"></i> درخواست فایل تصویری خاص</button>
+                    <button class="record-btn" onclick="RadioTV.sendVideo()"><i class="fas fa-camera"></i> ارسال ویدئو</button>
+                    <button onclick="RadioTV.share('تلویزیون')"><i class="fas fa-share-alt"></i> اشتراک</button>
+                </div>
+                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
+                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
+                </p>
             </div>
         </div>
 
-        <!-- پوسترها -->
-        <div class="card">
-            <h2><i class="fas fa-poster"></i> پوسترها</h2>
-            <div class="items-grid" id="postersContainer">
-                <!-- توسط JavaScript پر می‌شود -->
+        <!-- مقالات و آمار -->
+        <div id="articles-container"></div>
+        <div id="books-container"></div>
+        <div id="posters-container"></div>
+        <div id="statistics-container"></div>
+        <div id="graph-container"></div>
+
+        <!-- بخش تعامل با ادمین -->
+        <div class="interaction-section fade-in" id="admin-section">
+            <h3><i class="fas fa-user-cog" style="color:#1a6a8a;"></i> ارتباط با ادمین / مالک</h3>
+            <div class="btn-group">
+                <button onclick="RadioTV.sendTextAdmin()"><i class="fas fa-pen"></i> ارسال متن</button>
+                <button onclick="RadioTV.sendVoiceAdmin()"><i class="fas fa-microphone-alt"></i> ارسال ویس</button>
+                <button onclick="RadioTV.sendVideoAdmin()"><i class="fas fa-video"></i> ارسال ویدیو</button>
+            </div>
+            <div id="interactionResponse"></div>
+            <p style="font-size:0.85rem; color:#555; margin-top:10px;">
+                ✅ در صورت صلاحدید و با ابزار مناسب با شما تماس خواهیم گرفت.
+            </p>
+        </div>
+
+        <!-- باکس تماس دکتر رضائی -->
+        <div class="contact-box fade-in">
+            <h3>📬 ارتباط با دکتر رضائی</h3>
+            <div class="contact-info">
+                <span><i class="fas fa-envelope" style="color:#1a6a8a;"></i> <strong>ایمیل:</strong> ghrezaei1399@gmail.com</span>
+                <span><i class="fab fa-linkedin" style="color:#0a66c2;"></i> <strong>لینکدین:</strong> <a href="https://www.linkedin.com/in/rezaei-researcher" target="_blank">linkedin.com/in/rezaei-researcher</a></span>
+                <span><i class="fas fa-globe" style="color:#2a8ab0;"></i> <strong>سایت اصلی:</strong> <a href="https://ghrezaei1399-code.github.io/ghrezaei1399.github.io/" target="_blank">مشاهده</a></span>
+                <span><i class="fas fa-users" style="color:#f7c948;"></i> <strong>انجمن رسمی:</strong> <a href="https://zenodo.org/communities/sphere-of-ai-culture-civilization-activism/records?q=&l=list&p=1&s=10&sort=newest" target="_blank">مشاهده در Zenodo</a></span>
             </div>
         </div>
-    </div>
 
-</div>
-
-<!-- ============================================================ -->
-<!-- FOOTER با آدرس‌ها -->
-<!-- ============================================================ -->
-<footer class="main-footer">
-    <div class="footer-links">
-        <a href="#"><i class="fas fa-envelope"></i> info@drrezaei.ai</a>
-        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="#"><i class="fab fa-github"></i> GitHub</a>
-        <a href="#"><i class="fas fa-phone"></i> ۰۲۱-۱۲۳۴۵۶۷۸</a>
-        <a href="#"><i class="fas fa-map-marker-alt"></i> دانشگاه صنعتی شریف</a>
-    </div>
-    <div class="copy">
-        &copy; ۱۴۰۴ - تمامی حقوق برای دکتر غلامرضا رضائی محفوظ است.
-    </div>
-</footer>
-
-<!-- ============================================================ -->
-<!-- MODAL -->
-<!-- ============================================================ -->
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box">
-        <h3 id="modalTitle">ارسال درخواست</h3>
-        <form id="modalForm">
-            <input type="text" id="modalName" placeholder="نام شما" required />
-            <input type="email" id="modalEmail" placeholder="ایمیل شما" required />
-            <textarea id="modalMessage" placeholder="پیام شما..."></textarea>
-            <input type="file" id="modalFile" accept="audio/*,video/*" style="display:none;" />
-            <div class="modal-actions">
-                <button type="submit" class="btn-submit">ارسال</button>
-                <button type="button" class="btn-cancel" onclick="closeModal()">لغو</button>
-            </div>
-        </form>
+        <!-- بخش فنی -->
+        <details class="technical-info">
+            <summary>وضعیت فنی (برای عیب‌یابی)</summary>
+            <div id="technical-details"></div>
+        </details>
     </div>
 </div>
 
- <!-- ============================================================ -->
-<!-- SCRIPTS -->
-<!-- ============================================================ -->
-
-<!-- کتابخانه‌های اصلی -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-parse/1.1.1/pdf-parse.min.js"></script>
+<script src="./storage.js"></script>
+<script src="./self-healing.js"></script>
+<script src="./extractors.js"></script>
+<script src="./knowledge-builder.js"></script>
+<script src="./article-agent.js"></script>
+<script src="./hooshi1.js"></script>
+<script src="./graph.js"></script>
+<script src="./relation-agent.js"></script>
+<script src="./migration-agent.js"></script>
+<script src="./brain.js"></script>
+<script src="./ui-display.js"></script>
+<script src="./handler.js"></script>
+<script src="./intelligent-agent.js"></script>
+<script src="./radio-tv.js"></script>
 <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    console.log("AI PAGE LOADED");
+    console.log(window.location.href);
 </script>
-<script src="/ghrezaei1399.github.io/house/ai/extractors.js"></script>
-<script src="/ghrezaei1399.github.io/house/ai/knowledge-builder.js"></script>
-<script src="/ghrezaei1399.github.io/house/ai/pdf-reader.js"></script>
-<script src="/ghrezaei1399.github.io/house/ai/article-agent.js"></script>
-<script src="/ghrezaei1399.github.io/house/ai/brain.js"></script>
-<script src="/ghrezaei1399.github.io/house/ai/ui-display.js"></script>
 
-<!-- ============================================================ -->
-<!-- LOGIC -->
-<!-- ============================================================ -->
 <script>
-    // ====== متغیرهای سراسری ======
-    let libraryData = null;
-
-    // ====== توابع مودال ======
-    function openModal(type) {
-        const overlay = document.getElementById('modalOverlay');
-        const title = document.getElementById('modalTitle');
-        const fileInput = document.getElementById('modalFile');
-
-        const titles = {
-            request: '📥 درخواست فایل جدید',
-            voice: '🎤 ارسال ویس',
-            video: '📤 ارسال ویدیو',
-            comment: '💬 ارسال نظر'
-        };
-        title.textContent = titles[type] || 'ارسال درخواست';
-
-        if (type === 'voice') {
-            fileInput.style.display = 'block';
-            fileInput.accept = 'audio/*';
-        } else if (type === 'video') {
-            fileInput.style.display = 'block';
-            fileInput.accept = 'video/*';
-        } else {
-            fileInput.style.display = 'none';
-        }
-
-        overlay.classList.add('show');
+(function() {
+  const images = [
+    "/ghrezaei1399.github.io/images/1.jpg",
+    "/ghrezaei1399.github.io/images/2.jpg",
+    "/ghrezaei1399.github.io/images/3.jpg",
+    "/ghrezaei1399.github.io/images/4.bmp",
+    "/ghrezaei1399.github.io/images/5.jpg",
+    "/ghrezaei1399.github.io/images/6.jpg",
+    "/ghrezaei1399.github.io/images/7.jpg",
+    "/ghrezaei1399.github.io/images/8.jpg",
+    "/ghrezaei1399.github.io/images/9.jpg",
+    "/ghrezaei1399.github.io/images/10.jpg",
+    "/ghrezaei1399.github.io/images/11.png",
+    "/ghrezaei1399.github.io/images/12.jpg"
+];
+    let currentIndex = 0;
+    const imgElement = document.getElementById('profile-image');
+    if (imgElement) {
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            imgElement.src = images[currentIndex];
+            console.log('تغییر تصویر به:', images[currentIndex]);
+        }, 3000);
+    } else {
+        console.error('عنصر profile-image پیدا نشد!');
     }
-
-    function closeModal() {
-        document.getElementById('modalOverlay').classList.remove('show');
-        document.getElementById('modalForm').reset();
-    }
-
-    // بستن مودال با کلیک بیرون
-    document.getElementById('modalOverlay').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
-    });
-
-    // ارسال فرم مودال
-    document.getElementById('modalForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('modalName').value;
-        const email = document.getElementById('modalEmail').value;
-        const msg = document.getElementById('modalMessage').value;
-        const file = document.getElementById('modalFile').files[0];
-
-        alert('✅ درخواست شما با موفقیت ارسال شد!\n\n' +
-              'نام: ' + name + '\n' +
-              'ایمیل: ' + email + '\n' +
-              'پیام: ' + (msg || 'بدون پیام') + '\n' +
-              'فایل: ' + (file ? file.name : 'بدون فایل'));
-
-        // ذخیره در localStorage
-        const requests = JSON.parse(localStorage.getItem('userRequests') || '[]');
-        requests.push({
-            name, email, message: msg, file: file ? file.name : null,
-            timestamp: new Date().toISOString()
-        });
-        localStorage.setItem('userRequests', JSON.stringify(requests));
-
-        closeModal();
-    });
-
-    // ====== اشتراک ======
-    function shareContent() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'آزمایشگاه هوشمند دکتر رضائی',
-                text: 'به آزمایشگاه هوشمند دکتر رضائی خوش آمدید',
-                url: window.location.href
-            }).catch(() => {});
-        } else {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => alert('🔗 لینک کپی شد!'))
-                .catch(() => alert('🔗 لینک: ' + window.location.href));
-        }
-    }
-
-    // ====== پلیرها ======
-    document.addEventListener('DOMContentLoaded', function() {
-        // رادیو
-        const radioBtns = document.querySelectorAll('#radioPlaylist button');
-        const radioPlayer = document.getElementById('radioPlayer');
-        radioBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                radioBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                radioPlayer.src = this.dataset.src;
-                radioPlayer.load();
-                radioPlayer.play().catch(() => {});
-            });
-        });
-        if (radioBtns.length) radioBtns[0].click();
-
-        // تلویزیون
-        const tvBtns = document.querySelectorAll('#tvPlaylist button');
-        const tvPlayer = document.getElementById('tvPlayer');
-        tvBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                tvBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                tvPlayer.src = this.dataset.src;
-                tvPlayer.load();
-                tvPlayer.play().catch(() => {});
-            });
-        });
-        if (tvBtns.length) tvBtns[0].click();
-    });
-
-    // ====== بارگذاری داده‌ها ======
-    fetch('/ghrezaei1399.github.io/house/ai/library.json')
-        .then(res => {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.json();
-        })
-        .then(data => {
-            libraryData = data;
-            window.libraryData = data;
-
-            // نمایش کتاب‌ها و پوسترها
-            renderBooks(data.books || []);
-            renderPosters(data.posters || []);
-
-            // راه‌اندازی مغز
-            if (typeof brain !== 'undefined' && brain.initialize) {
-                brain.initialize().then(() => {
-                    updateStats();
-                    renderArticles();
-                });
-            } else {
-                console.warn('Brain not found');
-                renderArticlesFallback(data.articles || []);
-            }
-        })
-        .catch(err => {
-            console.error('❌ خطا در بارگذاری library.json:', err);
-            document.getElementById('articlesContainer').innerHTML =
-                '<p style="color:#ef4444;">⚠️ خطا در بارگذاری داده‌ها</p>';
-        });
-
-    // ====== رندر کتاب‌ها ======
-    function renderBooks(books) {
-        const container = document.getElementById('booksContainer');
-        if (!books.length) {
-            container.innerHTML = '<p style="color:#94a3b8;">هیچ کتابی یافت نشد</p>';
-            return;
-        }
-        container.innerHTML = books.map(b => `
-            <div class="item-card">
-                <h3>${b.title}</h3>
-                <div class="meta">✍️ ${b.author || 'ناشناس'} • ${b.year || ''} • ${b.publisher || ''}</div>
-                <div class="desc">${b.description || 'توضیحی موجود نیست'}</div>
-                ${b.price ? `<div class="meta">💰 ${b.price}</div>` : ''}
-                <div class="actions">
-                    <button onclick="alert('🛒 درخواست خرید برای ${b.title}')">🛒 خرید</button>
-                    <button onclick="openModal('comment')">💬 نظر</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // ====== رندر پوسترها ======
-    function renderPosters(posters) {
-        const container = document.getElementById('postersContainer');
-        if (!posters.length) {
-            container.innerHTML = '<p style="color:#94a3b8;">هیچ پوستری یافت نشد</p>';
-            return;
-        }
-        container.innerHTML = posters.map(p => `
-            <div class="item-card">
-                <h3>${p.title}</h3>
-                <div class="meta">✍️ ${p.author || 'ناشناس'} • ${p.year || ''} • ${p.event || ''}</div>
-                <div class="desc">${p.description || 'توضیحی موجود نیست'}</div>
-                ${p.price ? `<div class="meta">💰 ${p.price}</div>` : ''}
-                <div class="actions">
-                    <button onclick="alert('🛒 درخواست خرید برای ${p.title}')">🛒 خرید</button>
-                    <button onclick="openModal('comment')">💬 نظر</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // ====== رندر مقالات (از Brain) ======
-    function renderArticles() {
-        const container = document.getElementById('articlesContainer');
-        if (!container) return;
-        
-        const all = knowledgeBuilder ? knowledgeBuilder.getAllKnowledge() : [];
-        const articles = all.filter(k => k.type === 'article');
-
-        if (!articles.length) {
-            container.innerHTML = '<p style="color:#94a3b8;">هیچ مقاله‌ای پردازش نشده است</p>';
-            return;
-        }
-
-        container.innerHTML = articles.map(a => `
-            <div class="article-item">
-                <h3>${a.title}</h3>
-                <div class="meta">✍️ ${a.author} • ${a.year} • ${a.metadata?.pageCount || ''} صفحه</div>
-                <div class="summary">${a.summary || 'خلاصه در دسترس نیست'}</div>
-                <div class="caps">
-                    ${(a.capabilities || ['هفت قابلیت: ندارد']).map(c => `<span>${c}</span>`).join('')}
-                </div>
-                ${a.relations && a.relations.length ? `
-                    <div class="relations">
-                        🔗 ${a.relations.length} رابطه: 
-                        ${a.relations.map(r => r.type).join('، ')}
-                    </div>
-                ` : ''}
-            </div>
-        `).join('');
-    }
-
-    // ====== رندر مقالات (Fallback) ======
-    function renderArticlesFallback(articles) {
-        const container = document.getElementById('articlesContainer');
-        if (!articles.length) {
-            container.innerHTML = '<p style="color:#94a3b8;">هیچ مقاله‌ای یافت نشد</p>';
-            return;
-        }
-        container.innerHTML = articles.map(a => `
-            <div class="article-item">
-                <h3>${a.title}</h3>
-                <div class="meta">✍️ ${a.author || 'ناشناس'} • ${a.year || ''}</div>
-                <div class="summary">⏳ در حال پردازش...</div>
-            </div>
-        `).join('');
-    }
-
-    // ====== به‌روزرسانی آمار ======
-    function updateStats() {
-        if (!knowledgeBuilder) return;
-        const stats = knowledgeBuilder.getStatistics();
-        document.getElementById('statArticles').textContent = stats.objectsByType?.article || 0;
-        document.getElementById('statBooks').textContent = stats.objectsByType?.book || 0;
-        document.getElementById('statPosters').textContent = stats.objectsByType?.poster || 0;
-        document.getElementById('statRelations').textContent = stats.totalRelations || 0;
-    }
-
-    // ====== expose برای دکمه‌ها ======
-    window.openModal = openModal;
-    window.closeModal = closeModal;
-    window.shareContent = shareContent;
-
-    console.log('✅ صفحه هوشمند دکتر رضائی بارگذاری شد');
+})();
 </script>
 </body>
-</html>   
-
-
+</html>
