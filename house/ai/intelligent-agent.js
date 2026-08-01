@@ -1,126 +1,130 @@
-// intelligent-agent.js - عامل هوشمند مرکزی برای تعامل و پردازش
-const IntelligentAgent = {
-    version: "1.0",
-    // تابع اصلی برای پردازش درخواست‌های مخاطب
-    async processRequest(requestType, data, memory) {
-        switch (requestType) {
-            case 'purchase':
-                return this.handlePurchase(data, memory);
-            case 'comment':
-                return this.handleComment(data, memory);
-            case 'problem':
-                return this.handleProblem(data, memory);
-            default:
-                return { status: 'error', message: 'درخواست نامعتبر' };
-        }
-    },
+// intelligent-agent.js - عامل هوشمند برای تعامل با مخاطب
+class IntelligentAgent {
+    constructor() {
+        this.knowledgeBuilder = knowledgeBuilder;
+        this.userRequests = JSON.parse(localStorage.getItem('userRequests') || '[]');
+        console.log('✅ IntelligentAgent initialized');
+    }
 
-    // مدیریت درخواست خرید
-    handlePurchase(data, memory) {
-        // پیدا کردن مقاله یا کتاب درخواستی
-        const item = memory.articles[data.articleId] || memory.books[data.articleId];
-        if (!item) {
-            return { status: 'error', message: 'محصول یافت نشد' };
-        }
-        // ثبت درخواست در localStorage
-        const purchases = JSON.parse(localStorage.getItem('PURCHASE_REQUESTS') || '[]');
-        purchases.push({
-            itemId: data.articleId,
-            itemTitle: item.title.fa,
-            buyerName: data.name,
-            address: data.address,
-            postalCode: data.postalCode,
-            quantity: data.quantity,
-            date: new Date().toISOString()
-        });
-        localStorage.setItem('PURCHASE_REQUESTS', JSON.stringify(purchases));
-        return { status: 'success', message: 'درخواست خرید شما ثبت شد. ادمین با شما تماس خواهد گرفت.' };
-    },
+    // پاسخ به درخواست‌های کاربر
+    handleRequest(request) {
+        const responses = {
+            'help': '💡 راهنمای سیستم:\n- برای پخش رادیو از بخش رادیو استفاده کنید\n- برای پخش ویدیو از بخش تلویزیون استفاده کنید\n- مقالات، کتاب‌ها و پوسترها در بخش دانش نمایش داده می‌شوند',
+            'articles': `📚 تعداد مقالات: ${this.getArticleCount()}\n${this.getArticleList()}`,
+            'books': `📖 تعداد کتاب‌ها: ${this.getBookCount()}\n${this.getBookList()}`,
+            'posters': `🎨 تعداد پوسترها: ${this.getPosterCount()}\n${this.getPosterList()}`,
+            'stats': this.getStatistics(),
+            'relations': this.getRelationsInfo(),
+        };
 
-    // مدیریت نظر هوشمند
-    handleComment(data, memory) {
-        // پیدا کردن مقاله مرتبط
-        const article = memory.articles[data.articleId];
-        if (!article) {
-            return { status: 'error', message: 'مقاله یافت نشد' };
-        }
-        // تولید پاسخ هوشمند بر اساس محتوای مقاله
-        const response = this.generateSmartResponse(data.comment, article);
-        // ذخیره تعامل
-        const interactions = JSON.parse(localStorage.getItem('SMART_INTERACTIONS') || '[]');
-        interactions.push({
-            articleId: data.articleId,
-            comment: data.comment,
-            response: response,
-            date: new Date().toISOString()
-        });
-        localStorage.setItem('SMART_INTERACTIONS', JSON.stringify(interactions));
-        return { status: 'success', message: response };
-    },
-
-    // تولید پاسخ هوشمند
-    generateSmartResponse(comment, article) {
-        // بررسی کلمات کلیدی در نظر
-        const keywords = article.keywords.fa || [];
-        let response = 'از نظر شما متشکرم. ';
-        for (const keyword of keywords) {
-            if (comment.includes(keyword)) {
-                response += `بر اساس مقاله "${article.title.fa}"، موضوع "${keyword}" یکی از مفاهیم کلیدی است. `;
+        const normalizedRequest = request.toLowerCase().trim();
+        for (const [key, response] of Object.entries(responses)) {
+            if (normalizedRequest.includes(key)) {
                 return response;
             }
         }
-        response += `این موضوع با مفاهیم "${keywords.slice(0, 3).join('، ')}" مرتبط است.`;
-        return response;
-    },
 
-    // مدیریت حل مشکل
-    handleProblem(data, memory) {
-        // جستجو در گراف دانش
-        const results = this.searchKnowledgeGraph(data.problem, memory);
-        // ذخیره مشکل
-        const issues = JSON.parse(localStorage.getItem('SOLVED_ISSUES') || '[]');
-        issues.push({
-            problem: data.problem,
-            solution: results,
-            date: new Date().toISOString()
-        });
-        localStorage.setItem('SOLVED_ISSUES', JSON.stringify(issues));
-        return { status: 'success', message: results };
-    },
-
-    // جستجو در گراف دانش
-    searchKnowledgeGraph(query, memory) {
-        const results = [];
-        // جستجو در مقالات
-        for (const id in memory.articles) {
-            const article = memory.articles[id];
-            const text = `${article.title.fa} ${article.summary.fa}`;
-            if (text.includes(query)) {
-                results.push({ type: 'مقاله', title: article.title.fa, id: article.id });
-            }
-        }
-        // جستجو در کتاب‌ها
-        for (const id in memory.books) {
-            const book = memory.books[id];
-            const text = `${book.title.fa} ${book.summary.fa}`;
-            if (text.includes(query)) {
-                results.push({ type: 'کتاب', title: book.title.fa, id: book.id });
-            }
-        }
-        // جستجو در منابع خارجی (اگر external-sources.json موجود باشد)
-        try {
-            const sources = JSON.parse(localStorage.getItem('EXTERNAL_SOURCES') || '[]');
-            for (const source of sources) {
-                if (source.type === 'library') {
-                    results.push({ type: 'منبع خارجی', title: source.name, id: 'EXT-' + source.id });
-                }
-            }
-        } catch (e) {
-            console.warn('خطا در بارگذاری منابع خارجی:', e);
-        }
-        if (results.length === 0) {
-            return 'هیچ نتیجه‌ای در گراف دانش یافت نشد.';
-        }
-        return results.map(r => `${r.type}: "${r.title}" (شناسه: ${r.id})`).join('\n');
+        return this.getSmartResponse(request);
     }
-};
+
+    getArticleCount() {
+        return this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'article').length;
+    }
+
+    getBookCount() {
+        return this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'book').length;
+    }
+
+    getPosterCount() {
+        return this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'poster').length;
+    }
+
+    getArticleList() {
+        const articles = this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'article');
+        return articles.map(a => `- ${a.title} (${a.author})`).join('\n') || 'هیچ مقاله‌ای یافت نشد';
+    }
+
+    getBookList() {
+        const books = this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'book');
+        return books.map(b => `- ${b.title} (${b.author})`).join('\n') || 'هیچ کتابی یافت نشد';
+    }
+
+    getPosterList() {
+        const posters = this.knowledgeBuilder.knowledgeObjects.filter(k => k.type === 'poster');
+        return posters.map(p => `- ${p.title} (${p.author})`).join('\n') || 'هیچ پوستری یافت نشد';
+    }
+
+    getStatistics() {
+        const stats = this.knowledgeBuilder.getStatistics();
+        return `📊 آمار سیستم:\n- کل اشیاء دانش: ${stats.totalObjects}\n- کل روابط: ${stats.totalRelations}\n- مقالات: ${stats.objectsByType.article || 0}\n- کتاب‌ها: ${stats.objectsByType.book || 0}\n- پوسترها: ${stats.objectsByType.poster || 0}`;
+    }
+
+    getRelationsInfo() {
+        const relations = this.knowledgeBuilder.getRelations();
+        if (relations.length === 0) {
+            return '🔗 هیچ رابطه‌ای یافت نشد';
+        }
+        return `🔗 تعداد روابط: ${relations.length}\n${relations.slice(0, 5).map(r => 
+            `- ${r.type} (امتیاز: ${r.score})`
+        ).join('\n')}`;
+    }
+
+    getSmartResponse(request) {
+        const keywords = ['سلام', 'خوبی', 'چطوری', 'هی'];
+        if (keywords.some(k => request.includes(k))) {
+            return '👋 سلام! خوش آمدید به آزمایشگاه هوشمند دکتر رضائی. چطور می‌توانم کمک کنم؟';
+        }
+
+        if (request.includes('خرید') || request.includes('قیمت')) {
+            return '🛒 برای خرید محصولات، لطفاً روی دکمه "درخواست خرید" در هر آیتم کلیک کنید.';
+        }
+
+        if (request.includes('دانلود')) {
+            return '📥 برای دانلود فایل‌ها، روی دکمه "دانلود" در هر آیتم کلیک کنید.';
+        }
+
+        return `🤔 متوجه سوال شما نشدم. لطفاً یکی از این کلمات کلیدی را استفاده کنید:\n${Object.keys({
+            help: 'راهنما',
+            articles: 'مقالات',
+            books: 'کتاب‌ها',
+            posters: 'پوسترها',
+            stats: 'آمار',
+            relations: 'روابط'
+        }).join(', ')}`;
+    }
+
+    // ثبت درخواست کاربر
+    logRequest(request) {
+        this.userRequests.push({
+            request: request,
+            timestamp: new Date().toISOString(),
+            response: this.handleRequest(request)
+        });
+        localStorage.setItem('userRequests', JSON.stringify(this.userRequests));
+    }
+
+    // دریافت تاریخچه درخواست‌ها
+    getRequestHistory() {
+        return this.userRequests;
+    }
+
+    // دریافت پیشنهادات هوشمند
+    getSuggestions() {
+        const suggestions = [
+            '📚 برای دیدن مقالات، "مقالات" را تایپ کنید',
+            '📖 برای دیدن کتاب‌ها، "کتاب‌ها" را تایپ کنید',
+            '🎨 برای دیدن پوسترها، "پوسترها" را تایپ کنید',
+            '📊 برای دیدن آمار، "آمار" را تایپ کنید',
+            '🔗 برای دیدن روابط، "روابط" را تایپ کنید',
+            '💡 برای راهنما، "help" یا "راهنما" را تایپ کنید'
+        ];
+        return suggestions[Math.floor(Math.random() * suggestions.length)];
+    }
+}
+
+// ایجاد نمونه جهانی
+const intelligentAgent = new IntelligentAgent();
+console.log('✅ IntelligentAgent module loaded');
+
+// تابع global برای استفاده در HTML
+window.intelligentAgent = intelligentAgent;
