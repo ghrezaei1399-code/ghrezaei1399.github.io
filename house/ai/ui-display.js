@@ -15,14 +15,13 @@ const UIDisplay = {
             const div = document.createElement('div');
             div.className = 'article-card';
             div.innerHTML = `
-                <h3>${article.title.fa}</h3>
+                <h3>📄 ${article.title.fa}</h3>
                 <p><strong>خلاصه:</strong> ${article.summary.fa || 'ندارد'}</p>
                 <p><strong>هفت قابلیت:</strong> ${(article.sevenCapabilities.fa || []).join('، ') || 'ندارد'}</p>
                 <p><strong>مرحله:</strong> ${article.ai.state}</p>
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('${article.id}')">📩 درخواست خرید</button>
-                    <button class="btn" onclick="UIDisplay.smartComment('${article.id}')">💬 نظر هوشمند</button>
-                    <button class="btn" onclick="UIDisplay.solveProblem('${article.id}')">🔧 حل مشکل</button>
+                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('article', '${article.id}')">📩 درخواست خرید</button>
+                    <button class="btn" onclick="UIDisplay.submitComment('article', '${article.id}')">💬 نظر</button>
                 </div>
                 <hr>
             `;
@@ -30,31 +29,79 @@ const UIDisplay = {
         }
     },
 
-    requestPurchase(articleId) {
+    renderBooks(books) {
+        const container = document.getElementById('books-container');
+        if (!container) return;
+        container.innerHTML = '';
+        for (const id in books) {
+            const book = books[id];
+            const div = document.createElement('div');
+            div.className = 'item-card book-card';
+            div.innerHTML = `
+                <h3>📚 ${book.title}</h3>
+                <p><strong>نویسنده:</strong> ${book.author || 'نامشخص'}</p>
+                <p><strong>ناشر:</strong> ${book.publisher || 'نامشخص'}</p>
+                <p><strong>سال انتشار:</strong> ${book.year || 'نامشخص'}</p>
+                <p><strong>خلاصه:</strong> ${book.summary || 'ندارد'}</p>
+                <p><strong>قیمت:</strong> ${book.price || 'تماس بگیرید'}</p>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('book', '${id}')">📩 درخواست خرید</button>
+                    <button class="btn" onclick="UIDisplay.submitComment('book', '${id}')">💬 نظر</button>
+                </div>
+                <hr>
+            `;
+            container.appendChild(div);
+        }
+    },
+
+    renderPosters(posters) {
+        const container = document.getElementById('posters-container');
+        if (!container) return;
+        container.innerHTML = '';
+        for (const id in posters) {
+            const poster = posters[id];
+            const div = document.createElement('div');
+            div.className = 'item-card poster-card';
+            div.innerHTML = `
+                <h3>🖼️ ${poster.title}</h3>
+                <p><strong>توضیحات:</strong> ${poster.description || 'ندارد'}</p>
+                <p><strong>تاریخ:</strong> ${poster.date || 'نامشخص'}</p>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="UIDisplay.requestPurchase('poster', '${id}')">📩 درخواست خرید</button>
+                    <button class="btn" onclick="UIDisplay.submitComment('poster', '${id}')">💬 نظر</button>
+                </div>
+                <hr>
+            `;
+            container.appendChild(div);
+        }
+    },
+
+    requestPurchase(type, id) {
         const name = prompt('نام و نام خانوادگی:');
         if (!name) return;
         const address = prompt('آدرس کامل:');
         if (!address) return;
-        const postalCode = prompt('کد پستی:');
-        if (!postalCode) return;
+        const phone = prompt('شماره تماس:');
+        if (!phone) return;
         const quantity = prompt('تعداد:', '1');
         if (!quantity) return;
-        const data = { articleId, name, address, postalCode, quantity };
-        IntelligentAgent.processRequest('purchase', data, window.memory).then(result => alert(result.message));
+        const data = { type, id, name, address, phone, quantity, date: new Date().toISOString() };
+        const key = `${type.toUpperCase()}_PURCHASES`;
+        const purchases = JSON.parse(localStorage.getItem(key) || '[]');
+        purchases.push(data);
+        localStorage.setItem(key, JSON.stringify(purchases));
+        alert('✅ درخواست شما ثبت شد. ادمین با شما تماس خواهد گرفت.');
     },
 
-    smartComment(articleId) {
+    submitComment(type, id) {
         const comment = prompt('نظر خود را بنویسید:');
         if (!comment) return;
-        const data = { articleId, comment };
-        IntelligentAgent.processRequest('comment', data, window.memory).then(result => alert(result.message));
-    },
-
-    solveProblem(articleId) {
-        const problem = prompt('مشکل خود را شرح دهید:');
-        if (!problem) return;
-        const data = { articleId, problem };
-        IntelligentAgent.processRequest('problem', data, window.memory).then(result => alert(result.message));
+        const data = { type, id, comment, date: new Date().toISOString() };
+        const key = `${type.toUpperCase()}_COMMENTS`;
+        const comments = JSON.parse(localStorage.getItem(key) || '[]');
+        comments.push(data);
+        localStorage.setItem(key, JSON.stringify(comments));
+        alert('✅ نظر شما ثبت شد.');
     },
 
     renderStatistics(statistics) {
@@ -105,6 +152,8 @@ const UIDisplay = {
             KnowledgeBuilder.updateState(memory);
         }
         this.renderArticles(memory.articles || {});
+        this.renderBooks(memory.books || {});
+        this.renderPosters(memory.posters || {});
         this.renderStatistics(memory.statistics || {});
         this.renderGraph(memory.relations || []);
     }
