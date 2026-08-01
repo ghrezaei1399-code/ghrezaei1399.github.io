@@ -69,7 +69,7 @@ class Extractors {
     }
 
     extractKeywords(text, maxWords = 10) {
-        const stopWords = ['و', 'با', 'از', 'برای', 'به', 'در', 'این', 'آن', 'که', 'را', 'های', 'نیز', 'هم', 'یا', 'تا', 'بر', 'با', 'بدون', 'با'];
+        const stopWords = ['و', 'با', 'از', 'برای', 'به', 'در', 'این', 'آن', 'که', 'را', 'های', 'نیز', 'هم', 'یا', 'تا', 'بر', 'بدون'];
         const words = text.toLowerCase().split(/\s+/);
         const wordFreq = {};
         
