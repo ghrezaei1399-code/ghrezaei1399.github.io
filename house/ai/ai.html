@@ -622,11 +622,15 @@
     </div>
 </div>
 
-<!-- ============================================================ -->
+ <!-- ============================================================ -->
 <!-- SCRIPTS -->
 <!-- ============================================================ -->
 
 <!-- کتابخانه‌های اصلی -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
 <script src="/ghrezaei1399.github.io/house/ai/extractors.js"></script>
 <script src="/ghrezaei1399.github.io/house/ai/knowledge-builder.js"></script>
 <script src="/ghrezaei1399.github.io/house/ai/pdf-reader.js"></script>
@@ -825,6 +829,8 @@
     // ====== رندر مقالات (از Brain) ======
     function renderArticles() {
         const container = document.getElementById('articlesContainer');
+        if (!container) return;
+        
         const all = knowledgeBuilder ? knowledgeBuilder.getAllKnowledge() : [];
         const articles = all.filter(k => k.type === 'article');
 
@@ -884,10 +890,7 @@
 
     console.log('✅ صفحه هوشمند دکتر رضائی بارگذاری شد');
 </script>
-<!-- اضافه کردن pdf.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-</script>
 </body>
-</html>
+</html>   
+
+
