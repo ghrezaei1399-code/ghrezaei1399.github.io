@@ -381,50 +381,50 @@
         <!-- رادیو و تلویزیون -->
         <div class="radio-tv-container" id="radio-tv-container">
             <!-- رادیو -->
-            <div class="radio-box fade-in">
-                <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
-                <audio id="radioPlayer" class="radio-player" controls>
-                    <source src="#" type="audio/mpeg">
-                </audio>
-                <div id="radioList"></div>
-                <div class="radio-wave" id="radioWave">
-                    <div class="wave-bar" style="animation-delay:0s"></div>
-                    <div class="wave-bar" style="animation-delay:0.1s"></div>
-                    <div class="wave-bar" style="animation-delay:0.2s"></div>
-                    <div class="wave-bar" style="animation-delay:0.3s"></div>
-                    <div class="wave-bar" style="animation-delay:0.4s"></div>
-                    <div class="wave-bar" style="animation-delay:0.5s"></div>
-                </div>
-                <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-                <div class="interact-radio-tv">
-                    <button onclick="RadioTV.requestAudio()"><i class="fas fa-music"></i> درخواست فایل صوتی خاص</button>
-                    <button class="record-btn" onclick="RadioTV.sendVoice()"><i class="fas fa-microphone"></i> ارسال ویس</button>
-                    <button onclick="RadioTV.share('رادیو')"><i class="fas fa-share-alt"></i> اشتراک</button>
-                </div>
-                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
-                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
-                </p>
-            </div>
+            <!-- رادیو هوشمند -->
+<div class="radio-box fade-in">
+    <h2><i class="fas fa-radio old-radio-icon"></i> رادیو هوشمند</h2>
+    <audio id="radioPlayer" class="radio-player" controls>
+        <source src="#" type="audio/mpeg">
+    </audio>
+    <div id="radioList"></div>
+    <div class="radio-wave" id="radioWave">
+        <div class="wave-bar" style="animation-delay:0s"></div>
+        <div class="wave-bar" style="animation-delay:0.1s"></div>
+        <div class="wave-bar" style="animation-delay:0.2s"></div>
+        <div class="wave-bar" style="animation-delay:0.3s"></div>
+        <div class="wave-bar" style="animation-delay:0.4s"></div>
+        <div class="wave-bar" style="animation-delay:0.5s"></div>
+    </div>
+    <p id="radioNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+    <div class="interact-radio-tv">
+        <button onclick="RadioTV.requestAudio()"><i class="fas fa-music"></i> درخواست فایل صوتی خاص</button>
+        <button class="record-btn" onclick="RadioTV.sendVoice()"><i class="fas fa-microphone"></i> ارسال ویس</button>
+        <button onclick="RadioTV.share('رادیو')"><i class="fas fa-share-alt"></i> اشتراک</button>
+    </div>
+    <p style="font-size:0.8rem; color:#555; margin-top:10px;">
+        💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویس، اجازه دسترسی به میکروفون را بدهید.
+    </p>
+</div>
 
-            <!-- تلویزیون -->
-            <div class="tv-box fade-in">
-                <h2><i class="fas fa-tv old-tv-icon"></i> تلویزیون هوشمند</h2>
-                <video id="tvPlayer" class="tv-player" controls>
-                    <source src="#" type="video/mp4">
-                </video>
-                <div id="tvList"></div>
-                <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
-                <div class="interact-radio-tv">
-                    <button onclick="RadioTV.requestVideo()"><i class="fas fa-video"></i> درخواست فایل تصویری خاص</button>
-                    <button class="record-btn" onclick="RadioTV.sendVideo()"><i class="fas fa-camera"></i> ارسال ویدئو</button>
-                    <button onclick="RadioTV.share('تلویزیون')"><i class="fas fa-share-alt"></i> اشتراک</button>
-                </div>
-                <p style="font-size:0.8rem; color:#555; margin-top:10px;">
-                    💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
-                </p>
-            </div>
-        </div>
-
+<!-- تلویزیون هوشمند -->
+<div class="tv-box fade-in">
+    <h2><i class="fas fa-tv old-tv-icon"></i> تلویزیون هوشمند</h2>
+    <video id="tvPlayer" class="tv-player" controls>
+        <source src="#" type="video/mp4">
+    </video>
+    <div id="tvList"></div>
+    <p id="tvNowPlaying" style="font-size:0.9rem; opacity:0.9;">در حال پخش: قطع نشده</p>
+    <div class="interact-radio-tv">
+        <button onclick="RadioTV.requestVideo()"><i class="fas fa-video"></i> درخواست فایل تصویری خاص</button>
+        <button class="record-btn" onclick="RadioTV.sendVideo()"><i class="fas fa-camera"></i> ارسال ویدئو</button>
+        <button onclick="RadioTV.share('تلویزیون')"><i class="fas fa-share-alt"></i> اشتراک</button>
+    </div>
+    <p style="font-size:0.8rem; color:#555; margin-top:10px;">
+        💡 راهنما: برای درخواست فایل، روی دکمه کلیک کنید. برای ارسال ویدئو، اجازه دسترسی به دوربین را بدهید.
+    </p>
+</div>
+           
         <!-- نوار ابزار متحرک چرخشی (جلوه ویژه) -->
         <div style="
             margin: 30px 0 0 0;
