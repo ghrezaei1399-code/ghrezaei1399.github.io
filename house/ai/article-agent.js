@@ -1,7 +1,7 @@
 // article-agent.js - نسخه با pdf.js
 const ArticleAgent = {
     name: "Article Reader",
-    version: "5.0",
+    version: "5.1",
 
     async scan(memory) {
         console.log("ArticleAgent started with pdf.js");
