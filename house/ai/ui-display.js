@@ -1,3 +1,4 @@
+// ui-display.js - نسخه کامل و اصلاح‌شده
 const UIDisplay = {
     version: "3.1",
     renderArticles(articles) {
@@ -120,7 +121,7 @@ const UIDisplay = {
         if (!container) return;
         container.innerHTML = '';
         if (!relations || relations.length === 0) {
-            container.innerHTML = '<p>🔹 هیچ رابطه‌ای ثبت نشده است.</p>';
+            container.innerHTML = '<p style="color:#1a6a8a; font-weight:400;">🔹 منتظر ارتباطات موثر با شما هستیم.</p>';
             return;
         }
         const uniqueRelations = [];
