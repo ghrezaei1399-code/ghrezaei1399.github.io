@@ -1,7 +1,7 @@
-// article-agent.js - نسخه کاملاً مستقل
+// article-agent.js - نسخه با مدیریت خطا
 const ArticleAgent = {
     name: "Article Reader",
-    version: "4.7",
+    version: "4.8",
     async scan(memory) {
         console.log("ArticleAgent started");
         const response = await fetch("library.json");
@@ -10,11 +10,12 @@ const ArticleAgent = {
         for (const article of library.articles) {
             scanned++;
             if (!memory.articles[article.id]) {
-                // استفاده از متن نمونه
-                const sampleText = `عنوان: ${article.title}. برچسب‌ها: ${article.tags.join('، ')}.`;
+                // مدیریت tags در صورت undefined
+                const tags = article.tags || [];
+                const sampleText = `عنوان: ${article.title}. برچسب‌ها: ${tags.join('، ')}.`;
                 const extracted = {
                     summary: { fa: sampleText, en: "" },
-                    sevenCapabilities: { fa: article.tags || [], en: [] }
+                    sevenCapabilities: { fa: tags, en: [] }
                 };
                 const newArticle = await KnowledgeBuilder.build(article, extracted);
                 memory.articles[article.id] = newArticle;
