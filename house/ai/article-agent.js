@@ -1,7 +1,7 @@
-// article-agent.js - نسخه ساده بدون وابستگی اضافی
+// article-agent.js - نسخه کاملاً مستقل
 const ArticleAgent = {
     name: "Article Reader",
-    version: "4.6",
+    version: "4.7",
     async scan(memory) {
         console.log("ArticleAgent started");
         const response = await fetch("library.json");
@@ -10,8 +10,8 @@ const ArticleAgent = {
         for (const article of library.articles) {
             scanned++;
             if (!memory.articles[article.id]) {
-                // استفاده از متن نمونه برای نمایش مقالات
-                const sampleText = `عنوان: ${article.title}. این یک متن نمونه از مقاله است.`;
+                // استفاده از متن نمونه
+                const sampleText = `عنوان: ${article.title}. برچسب‌ها: ${article.tags.join('، ')}.`;
                 const extracted = {
                     summary: { fa: sampleText, en: "" },
                     sevenCapabilities: { fa: article.tags || [], en: [] }
