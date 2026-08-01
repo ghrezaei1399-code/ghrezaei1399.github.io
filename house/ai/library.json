@@ -33,10 +33,10 @@
       "domain": "هوش مصنوعی",
       "priority": 2,
       "tags": [
-        "هوش مصنوعی",
-        "رادیو",
         "نهضت نظریه‌پردازی عمل‌گرا",
         "سکوت حیرانی اندیشمندان",
+        "هوش مصنوعی هم‌تراز با ارزش‌ها",
+        "مهندسی فرهنگی نامرئی",
         "تحول تدریجی جامعه"
       ],
       "relations": {
@@ -45,6 +45,48 @@
         "posters": [],
         "rooms": []
       }
+    }
+  ],
+  "books": [
+    {
+      "id": "BK-0001",
+      "type": "book",
+      "title": "کتاب اول",
+      "author": "نویسنده اول",
+      "publisher": "ناشر اول",
+      "year": 1403,
+      "summary": "خلاصه کتاب اول",
+      "price": "۵۰,۰۰۰ تومان",
+      "file": "/books/book1.pdf"
+    },
+    {
+      "id": "BK-0002",
+      "type": "book",
+      "title": "کتاب دوم",
+      "author": "نویسنده دوم",
+      "publisher": "ناشر دوم",
+      "year": 1402,
+      "summary": "خلاصه کتاب دوم",
+      "price": "۷۵,۰۰۰ تومان",
+      "file": "/books/book2.pdf"
+    }
+  ],
+  "posters": [
+    {
+      "id": "PS-0001",
+      "type": "poster",
+      "title": "پوستر اول",
+      "description": "توضیحات پوستر اول",
+      "date": "۱۴۰۳/۰۴/۱۵",
+      "file": "/images/poster1.pdf"
+    },
+    {
+      "id": "PS-0002",
+      "type": "poster",
+      "title": "پوستر دوم",
+      "description": "توضیحات پوستر دوم",
+      "date": "۱۴۰۳/۰۵/۰۱",
+      "file": "/images/poster2.pdf"
     }
   ]
 }
