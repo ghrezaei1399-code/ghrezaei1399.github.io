@@ -156,5 +156,6 @@ const UIDisplay = {
         this.renderPosters(memory.posters || {});
         this.renderStatistics(memory.statistics || {});
         this.renderGraph(memory.relations || []);
+        this.renderBooks(memory.books || {});
     }
 };
