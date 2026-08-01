@@ -1,7 +1,7 @@
-// article-agent.js - نسخه با pdf.js
+// article-agent.js - نسخه با pdf.js (بدون تغییر در امضا)
 const ArticleAgent = {
     name: "Article Reader",
-    version: "5.1",
+    version: "5.2",
 
     async scan(memory) {
         console.log("ArticleAgent started with pdf.js");
@@ -13,7 +13,6 @@ const ArticleAgent = {
         for (const article of library.articles) {
             scanned++;
             if (!memory.articles[article.id]) {
-                // خواندن متن از PDF با pdf.js
                 let fullText = "";
                 try {
                     const pdfUrl = article.file;
@@ -32,7 +31,6 @@ const ArticleAgent = {
                     fullText = `${article.title}. ${article.tags.join('، ')}`;
                 }
 
-                // استخراج خلاصه و قابلیت‌ها
                 const extracted = await Extractors.extract(article, fullText);
                 const newArticle = await KnowledgeBuilder.build(article, extracted);
                 memory.articles[article.id] = newArticle;
