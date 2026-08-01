@@ -1,7 +1,7 @@
 // brain.js - هسته اصلی سیستم
 class Brain {
     constructor() {
-        this.articleProcessor = articleProcessor;
+        this.articleAgent = articleAgent;
         this.knowledgeBuilder = knowledgeBuilder;
         this.initialized = false;
         console.log('🧠 Brain initialized');
@@ -25,7 +25,9 @@ class Brain {
             // پردازش مقالات
             if (libraryData.articles && libraryData.articles.length > 0) {
                 console.log(`📚 Processing ${libraryData.articles.length} articles...`);
-                await this.articleProcessor.processAllArticles(libraryData.articles);
+                for (const article of libraryData.articles) {
+                    await this.articleAgent.processArticle(article);
+                }
             }
             
             // پردازش کتاب‌ها
@@ -46,11 +48,6 @@ class Brain {
             const stats = this.knowledgeBuilder.getStatistics();
             console.log('📊 Statistics:', stats);
             
-            // نمایش در UI
-            if (typeof uiDisplay !== 'undefined') {
-                uiDisplay.displayKnowledge();
-            }
-            
         } catch (error) {
             console.error('❌ Brain initialization error:', error);
         }
@@ -58,8 +55,7 @@ class Brain {
 
     processBooks(books) {
         for (const book of books) {
-            const knowledge = this.knowledgeBuilder.build({
-                id: `book_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+            this.knowledgeBuilder.build({
                 type: 'book',
                 title: book.title,
                 author: book.author || 'ناشناس',
@@ -71,17 +67,15 @@ class Brain {
                     publisher: book.publisher || 'نامشخص',
                     price: book.price || 'نامشخص',
                     processedAt: new Date().toISOString()
-                },
-                relations: []
+                }
             });
-            console.log(`📖 Book processed: ${knowledge.title}`);
+            console.log(`📖 Book processed: ${book.title}`);
         }
     }
 
     processPosters(posters) {
         for (const poster of posters) {
-            const knowledge = this.knowledgeBuilder.build({
-                id: `poster_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+            this.knowledgeBuilder.build({
                 type: 'poster',
                 title: poster.title,
                 author: poster.author || 'ناشناس',
@@ -93,10 +87,9 @@ class Brain {
                     event: poster.event || 'نامشخص',
                     price: poster.price || 'نامشخص',
                     processedAt: new Date().toISOString()
-                },
-                relations: []
+                }
             });
-            console.log(`🎨 Poster processed: ${knowledge.title}`);
+            console.log(`🎨 Poster processed: ${poster.title}`);
         }
     }
 
@@ -115,11 +108,4 @@ class Brain {
 
 // ایجاد نمونه جهانی
 const brain = new Brain();
-
-// اجرا پس از بارگذاری کامل صفحه
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('📄 DOM loaded, initializing brain...');
-    await brain.initialize();
-});
-
 console.log('✅ Brain module loaded');
