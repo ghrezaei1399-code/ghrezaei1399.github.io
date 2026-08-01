@@ -1,6 +1,6 @@
-// hooshi1.js - نسخه نهایی
+// hooshi1.js - نسخه اصلاح‌شده
 const SmartProcessor = {
-    version: "2.0",
+    version: "2.1",
     async processAll(memory) {
         const library = await this.loadLibrary();
         if (!library) return;
@@ -40,11 +40,11 @@ const SmartProcessor = {
 
     async processArticle(article, memory) {
         if (memory.articles[article.id]) return;
-        const keywords = article.keywords || [];
-        const sampleText = `عنوان: ${article.title}. نویسنده: ${article.author}. سال: ${article.year}.`;
+        const tags = article.tags || [];
+        const sampleText = `عنوان: ${article.title}. برچسب‌ها: ${tags.join('، ')}.`;
         const extracted = {
             summary: { fa: sampleText, en: "" },
-            sevenCapabilities: { fa: keywords, en: [] }
+            sevenCapabilities: { fa: tags, en: [] }
         };
         const newArticle = await KnowledgeBuilder.build(article, extracted);
         memory.articles[article.id] = newArticle;
@@ -52,12 +52,24 @@ const SmartProcessor = {
 
     async processBook(book, memory) {
         if (memory.books[book.id]) return;
-        memory.books[book.id] = await KnowledgeBuilder.build(book, {});
+        // ساخت یک extracted کامل برای کتاب
+        const extracted = {
+            summary: { fa: book.summary || "خلاصه در دسترس نیست", en: "" },
+            sevenCapabilities: { fa: [], en: [] }
+        };
+        const newBook = await KnowledgeBuilder.build(book, extracted);
+        memory.books[book.id] = newBook;
     },
 
     async processPoster(poster, memory) {
         if (memory.posters[poster.id]) return;
-        memory.posters[poster.id] = await KnowledgeBuilder.build(poster, {});
+        // ساخت یک extracted کامل برای پوستر
+        const extracted = {
+            summary: { fa: poster.description || "توضیح در دسترس نیست", en: "" },
+            sevenCapabilities: { fa: [], en: [] }
+        };
+        const newPoster = await KnowledgeBuilder.build(poster, extracted);
+        memory.posters[poster.id] = newPoster;
     },
 
     updateStatistics(memory) {
@@ -74,7 +86,7 @@ const SmartProcessor = {
 // اصلاح ArticleAgent برای استفاده از SmartProcessor
 const originalScan = ArticleAgent.scan;
 ArticleAgent.scan = async function(memory) {
-    console.log("ArticleAgent started with SmartProcessor v2.0");
+    console.log("ArticleAgent started with SmartProcessor v2.1");
     await SmartProcessor.processAll(memory);
     return { scanned: Object.keys(memory.articles).length, processed: 0 };
 };
