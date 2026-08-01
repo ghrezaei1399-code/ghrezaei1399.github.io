@@ -1,46 +1,34 @@
-// article-agent.js - نسخه نهایی با مسیرهای صحیح
-const ArticleAgent = {
-    name: "Article Reader",
-    version: "7.0",
-
-    async scan(memory) {
-        console.log("ArticleAgent started with pdf.js");
-
-        const response = await fetch("library.json");
-        const library = await response.json();
-        let scanned = 0, processed = 0;
-
-        for (const article of library.articles) {
-            scanned++;
-            if (!memory.articles[article.id]) {
-                let fullText = "";
-                try {
-                    // ساخت مسیر کامل فایل PDF
-                    const pdfUrl = `/ghrezaei1399.github.io/house/ai/${article.file}`;
-                    const loadingTask = pdfjsLib.getDocument(pdfUrl);
-                    const pdf = await loadingTask.promise;
-                    let text = "";
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const content = await page.getTextContent();
-                        const strings = content.items.map(item => item.str);
-                        text += strings.join(" ") + "\n";
-                    }
-                    fullText = text;
-                } catch (e) {
-                    console.warn("خطا در خواندن PDF:", e);
-                    fullText = `${article.title}. ${article.tags.join('، ')}`;
-                }
-
-                const extracted = await Extractors.extract(article, fullText);
-                const newArticle = await KnowledgeBuilder.build(article, extracted);
-                memory.articles[article.id] = newArticle;
-                processed++;
-            }
-        }
-
-        memory.statistics.totalArticles = scanned;
-        memory.statistics.processedArticles = Object.keys(memory.articles).length;
-        return { scanned, processed };
+// article-agent.js - پردازش مقالات با pdf.js
+class ArticleAgent {
+    constructor() {
+        this.pdfReader = pdfReader;
+        this.extractors = extractors;
+        this.knowledgeBuilder = knowledgeBuilder;
+        console.log('✅ ArticleAgent initialized');
     }
-};
+
+    async processArticle(article) {
+        try {
+            console.log(`📝 Processing article: ${article.title}`);
+            
+            if (!article.path) {
+                console.warn('⚠️ No path provided for article:', article.title);
+                return this.createFallbackArticle(article, 'مسیر فایل مشخص نشده است');
+            }
+            
+            const pdfResult = await this.pdfReader.readPDFViaFetch(article.path);
+            
+            if (!pdfResult.success) {
+                console.error('❌ Failed to read PDF:', pdfResult.error);
+                return this.createFallbackArticle(article, pdfResult.error);
+            }
+            
+            const extracted = this.extractors.extractAll(pdfResult.text);
+            
+            const knowledge = this.knowledgeBuilder.build({
+                type: 'article',
+                title: article.title,
+                author: article.author || 'Unknown',
+                year: article.year || new Date().getFullYear(),
+                fullText: pdfResult.text,
+               
