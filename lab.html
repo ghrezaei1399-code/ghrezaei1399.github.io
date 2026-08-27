@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آزمایشگاه سپهر خردمندی | دستیار مشاهده</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #e67e22; --bg: #fdfdfd; --text: #333; }
+        body { font-family: Tahoma, Arial, sans-serif; line-height: 1.8; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+        header { background: var(--primary); color: white; padding: 1.5rem 1rem; text-align: center; }
+        h1 { margin: 0; font-size: 1.5rem; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { border: 1px solid #eee; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; resize: vertical; }
+        button { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+        button:hover { background: #d35400; }
+        .result { display: none; background: #f9f9f9; border-right: 4px solid var(--accent); padding: 15px; margin-top: 20px; }
+        .principle { font-weight: bold; color: var(--primary); margin-top: 10px; display: block; }
+        .back-link { display: inline-block; margin-top: 20px; color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>آزمایشگاه سپهر خردمندی</h1>
+    <p>دستیار هوشمند مشاهده و کشف ظرفیت‌ها</p>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>ورودی پرونده ظهور</h2>
+        <p>مشکل یا پدیده مورد نظر خود را بدون قضاوت و صرفاً با توصیف واقعیت بنویسید:</p>
+        <textarea id="problemInput" placeholder="مثال: کاهش انگیزه جوانان برای مشارکت اجتماعی..."></textarea>
+        <button onclick="analyzeProblem()">تحلیل سپهری</button>
+    </div>
+
+    <div id="resultArea" class="result card">
+        <h3>خروجی جعبه ابزار سپهر خردمندی</h3>
+        <div id="analysisContent"></div>
+    </div>
+
+    <a href="index.html" class="back-link">← بازگشت به صفحه اصلی</a>
+</div>
+
+<script>
+    function analyzeProblem() {
+        const input = document.getElementById('problemInput').value.toLowerCase();
+        const resultArea = document.getElementById('resultArea');
+        const content = document.getElementById('analysisContent');
+        
+        if (!input.trim()) {
+            alert("لطفاً توضیحی وارد کنید.");
+            return;
+        }
+
+        // منطق ساده‌سازی شده بر اساس اصول آزمایشگاه
+        let guidance = "";
+        
+        // اصل ۱: تعلیق معنا و مشاهده خام
+        guidance += `<span class="principle">۱. اصل مشاهده خام (تعلیق معنا):</span>
+                     <p>قبل از هر راه‌حل، آیا تمام ابعاد پدیده را دیده‌اید؟ از برچسب‌زنی (مثل 'بی‌غیرتی' یا 'تنبلی') پرهیز کنید. فقط وقایع را لیست کنید.</p>`;
+
+        // اصل ۲: کشف ظرفیت‌ها
+        guidance += `<span class="principle">۲. کشف ظرفیت‌های پنهان:</span>
+                     <p>در دل این مشکل، چه ظرفیتی نهفته است؟ (مثلاً در 'اعتراض'، ظرفیت 'مطالبه‌گری' وجود دارد). چه چیزی هنوز تجلی نیافته است؟</p>`;
+
+        // اصل ۳: چندسپهری بودن
+        guidance += `<span class="principle">۳. نگاه چندسپهری:</span>
+                     <p>این پدیده فقط اقتصادی نیست. کدام سپهرها درگیرند؟ (فرهنگ، فناوری، حکمرانی، روان). گسست بین کدام سپهرها باعث این وضعیت شده است؟</p>`;
+
+        // اصل ۴: کرامت انسانی
+        guidance += `<span class="principle">۴. معیار کرامت انسانی:</span>
+                     <p>آیا راه‌حل‌های احتمالی، کرامت انسان‌های درگیر را حفظ می‌کند یا آن را تقلیل می‌دهد؟ ظهور باید در خدمت گسترش کرامت باشد.</p>`;
+
+        // اصل ۵: ماتریس ظهور
+        guidance += `<span class="principle">۵. پیشنهاد برای ماتریس ظهور:</span>
+                     <p>این پرونده را در خوشه‌های اطلس (انسان، دانش، حکمرانی، بقا) قرار دهید. موانع تجلی را شناسایی کنید، نه فقط مشکلات را.</p>`;
+
+        content.innerHTML = guidance;
+        resultArea.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
