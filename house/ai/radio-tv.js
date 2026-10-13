@@ -6,6 +6,7 @@ const RadioTV = {
         { type: 'video', title: 'ویدیو نمونه ۱', src: 'video1.mp4.mp4' },
         { type: 'video', title: 'ویدیو نمونه ۲', src: 'video2.mp4.mp4' }
     ],
+    workerApi: 'https://futuremakers-api.ghrezaei1399.workers.dev',
     currentRadioIndex: 0,
     currentTvIndex: 0,
     mediaRecorder: null,
