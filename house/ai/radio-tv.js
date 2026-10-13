@@ -122,32 +122,41 @@ const RadioTV = {
     },
 
     sendVoice() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const chunks = [];
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'audio/webm' });
-                    const url = URL.createObjectURL(blob);
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            const recorder = new MediaRecorder(stream);
+            const chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'audio/webm' });
+                const url = URL.createObjectURL(blob);
+                document.getElementById('interactionResponse').innerHTML = `
+                    🎤 ویس شما ضبط شد. <a href="${url}" download="voice-message.webm">دانلود</a>
+                    <br>در حال ارسال به سرور...
+                `;
+                try {
+                    await fetch(this.workerApi + '/api/ai/radio-tv/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ feedback_type: 'voice', content: 'ویس ضبط شده', media_url: url })
+                    });
                     document.getElementById('interactionResponse').innerHTML = `
-                        🎤 ویس شما ارسال شد. <a href="${url}" download="voice-message.webm">دانلود</a>
-                        <br>این ویس برای بررسی به ادمین ارسال شد.
+                        🎤 ویس شما با موفقیت ثبت شد. <a href="${url}" download="voice-message.webm">دانلود</a>
                     `;
-                    const voices = JSON.parse(localStorage.getItem('VOICE_MESSAGES') || '[]');
-                    voices.push({ url, date: new Date().toISOString(), status: 'new' });
-                    localStorage.setItem('VOICE_MESSAGES', JSON.stringify(voices));
-                };
-                recorder.start();
-                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس... (حداکثر ۳۰ ثانیه)';
-                setTimeout(() => {
-                    if (recorder.state === 'recording') recorder.stop();
-                }, 30000);
-            })
-            .catch(() => {
-                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
-            });
-    },
+                } catch (e) {
+                    document.getElementById('interactionResponse').innerHTML = 'خطا در ارسال به سرور.';
+                }
+            };
+            recorder.start();
+            document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس... (حداکثر ۳۰ ثانیه)';
+            setTimeout(() => {
+                if (recorder.state === 'recording') recorder.stop();
+            }, 30000);
+        })
+        .catch(() => {
+            document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
+        });
+},
 
     share(contentType) {
         const platform = prompt('لطفاً پلتفرم مورد نظر را وارد کنید (مثلاً واتساپ، تلگرام، ایمیل):');
@@ -169,32 +178,41 @@ const RadioTV = {
     },
 
     sendVideo() {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const chunks = [];
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            const recorder = new MediaRecorder(stream);
+            const chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                document.getElementById('interactionResponse').innerHTML = `
+                    📹 ویدئو شما ضبط شد. <a href="${url}" download="video-message.webm">دانلود</a>
+                    <br>در حال ارسال به سرور...
+                `;
+                try {
+                    await fetch(this.workerApi + '/api/ai/radio-tv/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ feedback_type: 'video', content: 'ویدیو ضبط شده', media_url: url })
+                    });
                     document.getElementById('interactionResponse').innerHTML = `
-                        📹 ویدئو شما ارسال شد. <a href="${url}" download="video-message.webm">دانلود</a>
-                        <br>این ویدئو برای بررسی به ادمین ارسال شد.
+                        📹 ویدئو شما با موفقیت ثبت شد. <a href="${url}" download="video-message.webm">دانلود</a>
                     `;
-                    const videos = JSON.parse(localStorage.getItem('VIDEO_MESSAGES') || '[]');
-                    videos.push({ url, date: new Date().toISOString(), status: 'new' });
-                    localStorage.setItem('VIDEO_MESSAGES', JSON.stringify(videos));
-                };
-                recorder.start();
-                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدئو... (حداکثر ۳۰ ثانیه)';
-                setTimeout(() => {
-                    if (recorder.state === 'recording') recorder.stop();
-                }, 30000);
-            })
-            .catch(() => {
-                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
-            });
-    },
+                } catch (e) {
+                    document.getElementById('interactionResponse').innerHTML = 'خطا در ارسال به سرور.';
+                }
+            };
+            recorder.start();
+            document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدئو... (حداکثر ۳۰ ثانیه)';
+            setTimeout(() => {
+                if (recorder.state === 'recording') recorder.stop();
+            }, 30000);
+        })
+        .catch(() => {
+            document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
+        });
+},
 
     requestVideo() {
         const title = prompt('نام فایل تصویری مورد نظر را وارد کنید:');
@@ -203,59 +221,86 @@ const RadioTV = {
         }
     },
 
-    sendTextAdmin() {
-        const msg = prompt('پیام خود را برای ادمین بنویسید:');
-        if (msg) {
-            document.getElementById('interactionResponse').innerHTML = `✍️ پیام شما به ادمین ارسال شد: "${msg}"`;
-            const messages = JSON.parse(localStorage.getItem('ADMIN_MESSAGES') || '[]');
-            messages.push({ type: 'text', content: msg, date: new Date().toISOString() });
-            localStorage.setItem('ADMIN_MESSAGES', JSON.stringify(messages));
+    async sendTextAdmin() {
+    const msg = prompt('پیام خود را برای ادمین بنویسید:');
+    if (msg) {
+        document.getElementById('interactionResponse').innerHTML = `✍️ در حال ارسال...`;
+        try {
+            await fetch(this.workerApi + '/api/ai/radio-tv/feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ feedback_type: 'text', content: msg })
+            });
+            document.getElementById('interactionResponse').innerHTML = `✍️ پیام شما با موفقیت به ادمین ارسال شد.`;
+        } catch (e) {
+            document.getElementById('interactionResponse').innerHTML = 'خطا در ارسال. لطفاً بعداً تلاش کنید.';
         }
-    },
+    }
+},
 
     sendVoiceAdmin() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const chunks = [];
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'audio/webm' });
-                    const url = URL.createObjectURL(blob);
-                    document.getElementById('interactionResponse').innerHTML = `🎤 ویس شما به ادمین ارسال شد. <a href="${url}" download="admin-voice.webm">دانلود</a>`;
-                };
-                recorder.start();
-                document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس برای ادمین... (حداکثر ۳۰ ثانیه)';
-                setTimeout(() => {
-                    if (recorder.state === 'recording') recorder.stop();
-                }, 30000);
-            })
-            .catch(() => {
-                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
-            });
-    },
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            const recorder = new MediaRecorder(stream);
+            const chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'audio/webm' });
+                const url = URL.createObjectURL(blob);
+                document.getElementById('interactionResponse').innerHTML = `🎤 ویس شما ضبط شد. در حال ارسال...`;
+                try {
+                    await fetch(this.workerApi + '/api/ai/radio-tv/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ feedback_type: 'voice_admin', content: 'ویس به ادمین', media_url: url })
+                    });
+                    document.getElementById('interactionResponse').innerHTML = `🎤 ویس شما با موفقیت به ادمین ارسال شد. <a href="${url}" download="admin-voice.webm">دانلود</a>`;
+                } catch (e) {
+                    document.getElementById('interactionResponse').innerHTML = 'خطا در ارسال.';
+                }
+            };
+            recorder.start();
+            document.getElementById('interactionResponse').innerHTML = '🎤 در حال ضبط ویس برای ادمین... (حداکثر ۳۰ ثانیه)';
+            setTimeout(() => {
+                if (recorder.state === 'recording') recorder.stop();
+            }, 30000);
+        })
+        .catch(() => {
+            document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به میکروفون امکان‌پذیر نیست.';
+        });
+},
 
-    sendVideoAdmin() {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(stream => {
-                const recorder = new MediaRecorder(stream);
-                const chunks = [];
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
-                    document.getElementById('interactionResponse').innerHTML = `📹 ویدیو شما به ادمین ارسال شد. <a href="${url}" download="admin-video.webm">دانلود</a>`;
-                };
-                recorder.start();
-                document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو برای ادمین... (حداکثر ۳۰ ثانیه)';
-                setTimeout(() => {
-                    if (recorder.state === 'recording') recorder.stop();
-                }, 30000);
-            })
-            .catch(() => {
-                document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
-            });
-    }
+   sendVideoAdmin() {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            const recorder = new MediaRecorder(stream);
+            const chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                document.getElementById('interactionResponse').innerHTML = `📹 ویدیو شما ضبط شد. در حال ارسال...`;
+                try {
+                    await fetch(this.workerApi + '/api/ai/radio-tv/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ feedback_type: 'video_admin', content: 'ویدیو به ادمین', media_url: url })
+                    });
+                    document.getElementById('interactionResponse').innerHTML = `📹 ویدیو شما با موفقیت به ادمین ارسال شد. <a href="${url}" download="admin-video.webm">دانلود</a>`;
+                } catch (e) {
+                    document.getElementById('interactionResponse').innerHTML = 'خطا در ارسال.';
+                }
+            };
+            recorder.start();
+            document.getElementById('interactionResponse').innerHTML = '📹 در حال ضبط ویدیو برای ادمین... (حداکثر ۳۰ ثانیه)';
+            setTimeout(() => {
+                if (recorder.state === 'recording') recorder.stop();
+            }, 30000);
+        })
+        .catch(() => {
+            document.getElementById('interactionResponse').innerHTML = '❌ دسترسی به دوربین امکان‌پذیر نیست.';
+        });
+}
 };
 
 document.addEventListener('DOMContentLoaded', () => RadioTV.init());
